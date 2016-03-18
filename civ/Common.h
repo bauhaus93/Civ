@@ -3,7 +3,12 @@
 #include <iostream>
 #include <string>
 
-#include <sdl\SDL.h>
+#ifdef _WIN32
+	#include <sdl\SDL.h>
+#endif
+#ifdef __linux__
+	#include <SDL/SDL.h>
+#endif
 
 namespace common{
 

@@ -1,21 +1,21 @@
+CC = g++
+CFLAGS = -std=c++14 -Wall
+LDFLAGS = -Wall -lSDL2
+SDLHEADER = SDL/SDL.h
 
-CC      = gcc
-CFLAGS  = -std=c++14 -pedantic -Wall
-LDFLAGS = -Wall
-SDLHEADER = sdl\SDL.h
-
-OBJ = Game.o Map.o FPSHandler.o  CivExceptions.o SDLManager.o Common.o SpriteFactory.o Sprite.o
+OBJ = Main.o Game.o Map.o FPSHandler.o  CivExceptions.o SDLManager.o Common.o SpriteFactory.o Sprite.o
 DEP = $(OBJ:.o=.d)
-BIN = civ.exe
+BIN = civ
 
 all: $(OBJ)
-    $(CC) $(CFLAGS) -o $(BIN) $(OBJ) $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $(BIN) $(OBJ) $(LDFLAGS)
 
 -include $(DEP)
 
-%.o: %.c
-    $(CC) -MD $(CFLAGS) -c $*.c -o $*.o
+%.o: %.cpp
+	$(CC) $(CFLAGS) -MD -c $*.cpp -o $*.o
 #    $(CC) -MM $(CFLAGS) $*.c > $*.d
 
 .PHONEY: clean
-    rm -f $(BIN) *.o *.d
+clean:
+	 rm -f $(BIN) *.o *.d

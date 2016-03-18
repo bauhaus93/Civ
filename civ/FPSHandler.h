@@ -2,7 +2,12 @@
 
 #include <chrono>
 
-#include <sdl\SDL.h>
+#ifdef _WIN32
+	#include <sdl\SDL.h>
+#endif
+#ifdef __linux__
+	#include <SDL2/SDL.h>
+#endif
 
 typedef std::chrono::time_point<std::chrono::steady_clock> timepoint;
 typedef std::chrono::duration<double> duration;

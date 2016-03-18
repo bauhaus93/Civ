@@ -4,7 +4,12 @@
 #include <string>
 #include <sstream>
 
-#include <sdl\SDL.h>
+#ifdef _WIN32
+	#include <sdl\SDL.h>
+#endif
+#ifdef __linux__
+	#include <SDL2/SDL.h>
+#endif
 
 class GameException : public std::exception{
 

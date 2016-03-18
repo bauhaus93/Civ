@@ -4,8 +4,8 @@
 #include <string>
 #include <memory>
 
-#include <sdl\SDL.h>
-#undef main
+//#include <sdl\SDL.h>
+//#undef main
 
 #include "SDLManager.h"
 #include "Game.h"
