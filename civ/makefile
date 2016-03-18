@@ -16,6 +16,6 @@ all: $(OBJ)
 	$(CC) $(CFLAGS) -MD -c $*.cpp -o $*.o
 #    $(CC) -MM $(CFLAGS) $*.c > $*.d
 
-.PHONEY: clean
+.PHONY: clean
 clean:
 	 rm -f $(BIN) *.o *.d
