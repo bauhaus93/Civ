@@ -16,14 +16,14 @@ using namespace std;
 int main(int argc, char **argv){
 
 	try{
-		SDL::Init("Civ", 50, 50, 1024, 768);
+		SDL::Init("Civ", 50, 50, 800, 600);
 	}
 	catch (const SDLException& e){
 		cerr << e.what() << endl;
 		return 1;
 	}
 
-	unique_ptr<Game> game = make_unique<Game>();
+	auto game = make_unique<Game>();
 
 	return game->Mainloop();
 }

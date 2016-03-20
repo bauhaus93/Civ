@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <iostream>
 
 
 #ifdef _WIN32
@@ -22,6 +23,7 @@ class Sprite{
 public:
 					Sprite(SDL_Surface* src, const SDL_Rect& dim);
 					Sprite(const Sprite&, const SDL_Rect& dim);
+					Sprite(const Sprite& s) = delete;
 					~Sprite(void);
 	void			Render(int x, int y);
 	Uint32			GetFormat(void) const;

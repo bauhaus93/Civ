@@ -31,8 +31,18 @@ void Game::Tick(void){
 	SDL_Event e;
 
 	while (SDL_PollEvent(&e) != 0){
-		if (e.type == SDL_QUIT)
-			throw CivException("Tick", "SDL_QUIT invoked");
+		switch (e.type){
+			case SDL_QUIT:
+				throw CivException("Tick", "SDL_QUIT invoked");
+				break;
+			case SDL_KEYUP:
+				if(e.key.keysym.sym == SDLK_q)
+					throw CivException("Tick", "Q pressed");
+				break;
+			default:
+				break;
+		}
+	
 		//TODO: Process Events
 	}
 

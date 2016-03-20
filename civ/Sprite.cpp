@@ -58,7 +58,8 @@ Sprite::~Sprite(void){
 void Sprite::Render(int x, int y){
 	rect.x = x;
 	rect.y = y;
-	SDL_RenderCopy(SDL::GetRenderer(), texture, nullptr, &rect);
+	if (SDL_RenderCopy(SDL::GetRenderer(), texture, nullptr, &rect) == -1)
+		throw SDLException("SDL_RenderCopy");
 }
 
 Uint32 Sprite::GetFormat(void) const{
