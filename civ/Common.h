@@ -2,17 +2,13 @@
 
 #include <iostream>
 #include <string>
-
-#ifdef _WIN32
-	#include <sdl\SDL.h>
-#endif
-#ifdef __linux__
-	#include <SDL/SDL.h>
-#endif
+#include <exception>
 
 namespace common{
 
-	void Error(const std::string& error);
 	void Log(const std::string& msg);
+	void Log(const std::exception& e);
+	void Log(const std::exception& e, const std::string exceptionName);
+	void Log(const std::exception & e, const std::string exceptionName, const char* file, int line);
 
 };

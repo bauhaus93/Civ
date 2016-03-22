@@ -5,7 +5,7 @@
 
 
 #ifdef _WIN32
-	#include <sdl\SDL.h>
+	#include <sdl/SDL.h>
 #endif
 #ifdef __linux__
 	#include <SDL2/SDL.h>

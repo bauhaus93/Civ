@@ -29,7 +29,7 @@ std::unique_ptr<Sprite> SpriteFactory::CreateSprite(const string& name, const SD
 		 s = baseImgs.at(name);
 	}
 	catch (const out_of_range& e){
-		cerr << "out_of_range Exception @ CreateSprite : " << e.what() << endl;
+		common::Log(e);
 		return nullptr;
 	}
 
@@ -40,7 +40,7 @@ std::unique_ptr<Sprite> SpriteFactory::CreateSprite(const string& name, const SD
 		sprite = make_unique<Sprite>(baseImgs.at(name), dim);
 	}
 	catch (const SDLException& e){
-		cerr << e.what() << endl;
+		common::Log(e);
 		return nullptr;
 	}
 

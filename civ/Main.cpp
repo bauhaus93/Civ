@@ -4,26 +4,38 @@
 #include <string>
 #include <memory>
 
-//#include <sdl\SDL.h>
-//#undef main
+#ifdef _WIN32
+#include <sdl\SDL.h>
+#undef main
+#endif
+
+#ifdef __linux__
+#include <SDL2/SDL.h>
+#endif
 
 #include "SDLManager.h"
 #include "Game.h"
 
 using namespace std;
 
-
 int main(int argc, char **argv){
+	unique_ptr<Game> game = nullptr;
 
 	try{
 		SDL::Init("Civ", 50, 50, 800, 600);
 	}
 	catch (const SDLException& e){
-		cerr << e.what() << endl;
+		common::Log(e);
 		return 1;
 	}
 
-	auto game = make_unique<Game>();
+	try{
+		game = make_unique<Game>();
+	}
+	catch (const GameException& e){
+		common::Log(e);
+		return 1;
+	}
 
 	return game->Mainloop();
 }

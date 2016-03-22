@@ -8,7 +8,7 @@ Game::Game(void):
 	map{},
 	fps{ 30 },
 	ticks{ 0 },
-	fpsCheckInterval{ 25 }{
+	fpsCheckInterval{ 20 }{
 }
 
 Game::~Game(void){
@@ -21,7 +21,7 @@ int Game::Mainloop(void){
 			Tick();
 		}
 		catch (const GameException& e){
-			cerr << e.what() << endl;
+			common::Log(e);
 			return 0;
 		}
 	}
@@ -42,7 +42,6 @@ void Game::Tick(void){
 			default:
 				break;
 		}
-	
 		//TODO: Process Events
 	}
 
