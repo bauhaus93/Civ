@@ -2,11 +2,11 @@
 
 using namespace std;
 
-Sprite::Sprite(SDL_Surface* src, const SDL_Rect& dim):
+Sprite::Sprite(SDL_Surface* src, const SDL_Rect& dim) :
 	texture{ nullptr },
 	rect{ 0, 0, 0, 0 }{
 
-	SDL_Surface *surf = SDL_CreateRGBSurface(0, dim.w, dim.h, 32, 0xFF, 0xFF<<8, 0xFF<<16, 0xFF<<24);
+	SDL_Surface *surf = SDL_CreateRGBSurface(0, dim.w, dim.h, (Uint32)32, (Uint32)0xFF, (Uint32)0xFF << 8, (Uint32)0xFF << 16, (Uint32)0xFF << 24);
 
 	if (surf == nullptr)
 		throw SDLException("SDL_CreateRGBSurface");
@@ -14,9 +14,15 @@ Sprite::Sprite(SDL_Surface* src, const SDL_Rect& dim):
 	if (SDL_BlitSurface(src, &dim, surf, nullptr) == -1)
 		throw SDLException("SDL_BlitSurface");
 
-	texture = SDL_CreateTextureFromSurface(SDL::GetRenderer(), surf);
+	//make texture SDL_TEXTUREACCESS_TARGET
+	SDL_Texture *tmp = SDL_CreateTextureFromSurface(SDL::GetRenderer(), surf);
 	SDL_FreeSurface(surf);
-	
+
+	texture = SDL_CreateTexture(SDL::GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, dim.w, dim.h);
+	SDL_Rect tmpRect{ 0, 0, dim.w, dim.h };
+	TextureOnTexture(tmp, tmpRect, texture, tmpRect);
+	SDL_DestroyTexture(tmp);
+
 	if (texture == nullptr)
 		throw SDLException("SDL_CreateTextureFromSurface");
 
@@ -27,32 +33,29 @@ Sprite::Sprite(SDL_Surface* src, const SDL_Rect& dim):
 		throw SDLException("SDL_QueryTexture");
 }
 
-Sprite::Sprite(const Sprite& sprite, const SDL_Rect& dim):
+Sprite::Sprite(const SDL_Rect& dim) :
 	texture{ nullptr },
-	rect{0, 0, dim.w, dim.h}{
+	rect{ 0, 0, dim.w, dim.h }{
 
-	texture = SDL_CreateTexture(SDL::GetRenderer(), sprite.GetFormat(), SDL_TEXTUREACCESS_TARGET, rect.w, rect.h);
+	texture = SDL_CreateTexture(SDL::GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, dim.w, dim.h);
 
 	if (texture == nullptr)
 		throw SDLException("SDL_CreateTexture");
+}
 
-	if (SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND) == -1)
-		throw SDLException("SDL_SetTextureBlendMode");
-
-	if (SDL_SetRenderTarget(SDL::GetRenderer(), texture) == -1)
-		throw SDLException("SDL_SetRenderTarget");
-
-	if (SDL_RenderCopy(SDL::GetRenderer(), sprite.texture, &dim, &rect) == -1)
-		throw SDLException("SDL_RenderCopy");
-
-	if (SDL_SetRenderTarget(SDL::GetRenderer(), nullptr) == -1)
-		throw SDLException("SDL_SetRenderTarget");
+Sprite::Sprite(const Sprite& src, const SDL_Rect& dim) :
+	Sprite{ dim }{
+	Add(src, dim);
 }
 
 
 Sprite::~Sprite(void){
 	if (texture != nullptr)
 		SDL_DestroyTexture(texture);
+}
+
+void Sprite::Add(const Sprite& sprite, const SDL_Rect& dim){
+	TextureOnTexture(sprite.texture, dim, texture, rect);
 }
 
 void Sprite::Render(int x, int y){
@@ -67,4 +70,19 @@ Uint32 Sprite::GetFormat(void) const{
 	if (SDL_QueryTexture(texture, &format, nullptr, nullptr, nullptr) == -1)
 		throw SDLException("SDL_QueryTexture");
 	return format;
+}
+
+
+void TextureOnTexture(SDL_Texture *src, const SDL_Rect& srcRect, SDL_Texture *dest, const SDL_Rect& destRect){
+	if (SDL_SetTextureBlendMode(dest, SDL_BLENDMODE_BLEND) == -1)
+		throw SDLException("SDL_SetTextureBlendMode");
+
+	if (SDL_SetRenderTarget(SDL::GetRenderer(), dest) == -1)
+		throw SDLException("SDL_SetRenderTarget");
+
+	if (SDL_RenderCopy(SDL::GetRenderer(), src, &srcRect, &destRect) == -1)
+		throw SDLException("SDL_RenderCopy");
+
+	if (SDL_SetRenderTarget(SDL::GetRenderer(), nullptr) == -1)
+		throw SDLException("SDL_SetRenderTarget");
 }

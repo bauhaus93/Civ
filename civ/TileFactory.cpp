@@ -10,7 +10,3 @@ void TileFactory::AddTileset(unique_ptr<Tileset> tileset){
 }
 
 
-unique_ptr<BaseTile> TileFactory::GetRandom(){
-	auto& floor = tilesets.at("desert")->GetRandomFloor();
-	return make_unique<BaseTile>(floor);
-}

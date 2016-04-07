@@ -5,41 +5,54 @@
 #include <memory>
 
 
+#include "Tile.h"
 #include "Sprite.h"
+#include "SpriteFactory.h"
+
+enum class NeighbourInfo{
+	DIFFERENT = 0,
+	SAME = 1
+};
+
+enum class NeighbourDiamond{
+	TOP_RIGHT = 1,
+	BOT_RIGHT = 2,
+	BOT_LEFT = 4,
+	TOP_LEFT = 8,
+
+	TOP = 16,
+	RIGHT = 32,
+	BOT = 64,
+	LEFT = 128
+};
+
+enum class TileType{
+	DESERT,
+	PRAIRIE,
+	GRASSLANDS,
+	FOREST,
+	HILLS,
+	MOUNTAINS,
+	TUNDRA,
+	ARCTIC,
+	SWAMP,
+	JUNGLE,
+	OCEAN
+};
 
 class Tileset{
 	
-	std::string			name;
-	std::vector<std::unique_ptr<Sprite>> floor;
-	std::vector<std::unique_ptr<Sprite>> onFloor;
-	std::vector<std::unique_ptr<Sprite>> resource;
+protected:
+	unsigned int		resourceChance;
 
 public:
-	Tileset(const std::string& name_);
+	Tileset(unsigned int resourceChance_);
 
-	void				AddFloor(std::unique_ptr<Sprite> sprite);
-	void				AddOnFloor(std::unique_ptr<Sprite> sprite);
-	void				AddResource(std::unique_ptr<Sprite> sprite);
+	virtual ~Tileset() = default;
 
-	Sprite&				GetRandomFloor();
+	virtual void CompleteTile(Tile& tile) = 0;
 
-	const std::string&	GetName() const { return name; };
 };
 
-inline void Tileset::AddFloor(std::unique_ptr<Sprite> sprite){
-	floor.push_back(std::move(sprite));
-}
 
-
-inline void Tileset::AddOnFloor(std::unique_ptr<Sprite> sprite){
-	onFloor.push_back(std::move(sprite));
-}
-
-inline void Tileset::AddResource(std::unique_ptr<Sprite> sprite){
-	resource.push_back(std::move(sprite));
-}
-
-inline Sprite& Tileset::GetRandomFloor(){
-	return *floor.at(0);
-}
 

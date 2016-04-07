@@ -5,7 +5,6 @@
 #include <string>
 
 #include "Tileset.h"
-#include "BaseTile.h"
 
 class TileFactory{
 
@@ -16,5 +15,4 @@ public:
 			TileFactory();
 	void	AddTileset(std::unique_ptr<Tileset> tileset);
 
-	std::unique_ptr<BaseTile> GetRandom();
 };

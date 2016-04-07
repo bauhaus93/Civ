@@ -21,6 +21,8 @@ using namespace std;
 int main(int argc, char **argv){
 	unique_ptr<Game> game = nullptr;
 
+	common::Seed();
+
 	try{
 		SDL::Init("Civ", 50, 50, 800, 600);
 	}
