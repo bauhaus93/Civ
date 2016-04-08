@@ -4,7 +4,6 @@
 #include <map>
 
 #include "SpriteFactory.h"
-#include "TileFactory.h"
 #include "Tileset.h"
 #include "TilesetSimple.h"
 #include "Tile.h"

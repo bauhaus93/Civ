@@ -2,6 +2,9 @@
 
 using namespace std;
 
+static void TextureOnTexture(SDL_Texture *src, const SDL_Rect& srcRect, SDL_Texture *dest, const SDL_Rect& destRect);
+
+
 Sprite::Sprite(SDL_Surface* src, const SDL_Rect& dim) :
 	texture{ nullptr },
 	rect{ 0, 0, 0, 0 }{
@@ -73,7 +76,7 @@ Uint32 Sprite::GetFormat(void) const{
 }
 
 
-void TextureOnTexture(SDL_Texture *src, const SDL_Rect& srcRect, SDL_Texture *dest, const SDL_Rect& destRect){
+static void TextureOnTexture(SDL_Texture *src, const SDL_Rect& srcRect, SDL_Texture *dest, const SDL_Rect& destRect){
 	if (SDL_SetTextureBlendMode(dest, SDL_BLENDMODE_BLEND) == -1)
 		throw SDLException("SDL_SetTextureBlendMode");
 

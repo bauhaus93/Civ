@@ -3,9 +3,11 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <algorithm>
 
 #include "Tileset.h"
-#include "SpriteFactory.h"
+#include "Tile.h"
+#include "Sprite.h"
 
 class TilesetSimple :
 	public Tileset{
@@ -21,6 +23,7 @@ public:
 	void AddFloor(std::unique_ptr<Sprite> sprite){ floor.push_back(move(sprite)); };
 	void AddResource(std::unique_ptr<Sprite> sprite){ resource.push_back(move(sprite)); };
 
-	virtual void CompleteTile(Tile& tile) override;
+	virtual void InitiateTile(Tile& tile) override;
+	virtual void CreateTileSprite(Tile& tile) override;
 };
 

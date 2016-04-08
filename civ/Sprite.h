@@ -15,7 +15,7 @@
 #include "SDLManager.h"
 #include "CivExceptions.h"
 
-static void TextureOnTexture(SDL_Texture *src, const SDL_Rect& srcRect, SDL_Texture *dest, const SDL_Rect& destRect);
+//static void TextureOnTexture(SDL_Texture *src, const SDL_Rect& srcRect, SDL_Texture *dest, const SDL_Rect& destRect);
 
 class Sprite{
 

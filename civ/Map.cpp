@@ -13,7 +13,8 @@ Map::Map(void){
 
 	tile = make_unique<Tile>();
 
-	tileset.at(TileType::DESERT)->CompleteTile(*tile);
+	tileset.at(0)->InitiateTile(*tile);
+	tileset.at(0)->CreateTileSprite(*tile);
 	
 }
 
@@ -32,26 +33,17 @@ void Map::LoadTilesets(){
 
 	auto ts = make_unique<TilesetSimple>(50);
 
-	/*constexpr SpritePosition desert[] = {	{0, 0, 1, 1},
+	constexpr SpritePosition desert[] = {	{0, 0, 1, 1},
 											{0, 1, 65, 0},
 											{1, 1, 65, 0},
 											{1, 1, 65, 0} };
 
+	ts->AddFloor(spriteFactory.CreateDiamondSprite("terrain1", 1, 1));
+	ts->AddFloor(spriteFactory.CreateDiamondSprite("terrain1", 66, 1));
+	ts->AddResource(spriteFactory.CreateDiamondSprite("terrain1", 131, 1));	
+	ts->AddResource(spriteFactory.CreateDiamondSprite("terrain1", 196, 1));
 
-	int x = 0, y = 0;
-
-	auto ModOffset = [&x, &y](SpritePosition& pos){pos.offsetType == 0 ? (x = pos.offsetX, y = pos.offsetY) : (x += pos.offsetX, y += pos.offsetY); };
-	auto AddByType = [this, &ts](SpritePosition& pos, int x, int y){pos.type == 0 ? (ts->AddFloor(this->spriteFactory.CreateDiamondSprite("terrain1", x, y))) : (ts->AddResource(this->spriteFactory.CreateDiamondSprite("terrain1", x, y))); };
-	auto AddToTilesets = [this, &ts](TileType type){this->tileset.insert(make_pair(type, move(ts))); };
-	
-	for (auto pos : desert){
-		ModOffset(pos);
-		cout << x << "/" << y << endl;
-		
-		AddByType(pos, x, y);
-	}
-	AddToTilesets(TileType::DESERT);*/
-
+	tileset.insert(make_pair(0, move(ts)));
 }
 
 

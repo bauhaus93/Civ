@@ -7,7 +7,9 @@
 
 #include "Tile.h"
 #include "Sprite.h"
-#include "SpriteFactory.h"
+
+
+typedef uint8_t TileType;
 
 enum class NeighbourInfo{
 	DIFFERENT = 0,
@@ -26,19 +28,6 @@ enum class NeighbourDiamond{
 	LEFT = 128
 };
 
-enum class TileType{
-	DESERT,
-	PRAIRIE,
-	GRASSLANDS,
-	FOREST,
-	HILLS,
-	MOUNTAINS,
-	TUNDRA,
-	ARCTIC,
-	SWAMP,
-	JUNGLE,
-	OCEAN
-};
 
 class Tileset{
 	
@@ -50,7 +39,8 @@ public:
 
 	virtual ~Tileset() = default;
 
-	virtual void CompleteTile(Tile& tile) = 0;
+	virtual void InitiateTile(Tile& tile) = 0;
+	virtual void CreateTileSprite(Tile& tile) = 0;
 
 };
 

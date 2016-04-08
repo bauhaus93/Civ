@@ -9,15 +9,26 @@ TilesetSimple::TilesetSimple(unsigned int resourceChance_):
 TilesetSimple::~TilesetSimple(){
 }
 
-void TilesetSimple::CompleteTile(Tile& tile) {
-	SDL_Rect rect{ 0, 0, 64, 32 };
-	unique_ptr<Sprite> sprite = make_unique<Sprite>(*floor.at(common::Random(floor.size())), rect);
+void TilesetSimple::InitiateTile(Tile& tile){
+	tile.AddSubTile(SubTileType::FLOOR, common::Random(floor.size()));
+	if(common::Random() < resourceChance)
+		tile.AddSubTile(SubTileType::RESOURCE, common::Random(resource.size()));
+}
 
-	if (common::Random() < resourceChance){
-		cout << "RESOURCE!" << endl;
-		tile.SetResource(true);
-		sprite->Add(*resource.at(common::Random(resource.size())), rect);
+void TilesetSimple::CreateTileSprite(Tile& tile) {
+	SDL_Rect rect{ 0, 0, 64, 32 };
+	unique_ptr<Sprite> sprite = nullptr;
+
+	
+	auto subTiles = tile.GetSubTiles();
+	auto it = find_if(subTiles.begin(), subTiles.end(), [](SubTile st){ return st.type==SubTileType::FLOOR; });
+
+	if(it != subTiles.end()){
+		sprite = make_unique<Sprite>(*floor.at((*it).index), rect);
 	}
+
+
+
 	tile.SetSprite(move(sprite));
 }
 
