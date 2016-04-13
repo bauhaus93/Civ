@@ -2,7 +2,8 @@
 
 using namespace std;
 
-Tileset::Tileset(unsigned int resourceChance_):
+Tileset::Tileset(const string& name_, unsigned int resourceChance_) :
+	name{ name_ },
 	resourceChance{ resourceChance_ }{
 
 }

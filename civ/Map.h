@@ -7,11 +7,14 @@
 #include "Tileset.h"
 #include "TilesetSimple.h"
 #include "Tile.h"
+#include "Grid.h"
+
 
 class Map{
 
-	SpriteFactory					spriteFactory;
+	SpriteFactory									spriteFactory;
 	std::map<TileType, std::unique_ptr<Tileset>>	tileset;
+	Grid											grid;
 
 	std::unique_ptr<Tile>	tile;
 
@@ -20,7 +23,7 @@ class Map{
 public:
 	Map(void);
 	~Map(void);
-	
+
 	void Render(void);
 };
 

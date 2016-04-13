@@ -9,8 +9,6 @@
 #include "Sprite.h"
 
 
-typedef uint8_t TileType;
-
 enum class NeighbourInfo{
 	DIFFERENT = 0,
 	SAME = 1
@@ -32,14 +30,15 @@ enum class NeighbourDiamond{
 class Tileset{
 	
 protected:
-	unsigned int		resourceChance;
+	std::string		name;
+	unsigned int	resourceChance;
 
 public:
-	Tileset(unsigned int resourceChance_);
+	Tileset(const std::string& name_, unsigned int resourceChance_);
 
 	virtual ~Tileset() = default;
 
-	virtual void InitiateTile(Tile& tile) = 0;
+	virtual std::unique_ptr<Tile> CreateTile(void) = 0;
 	virtual void CreateTileSprite(Tile& tile) = 0;
 
 };

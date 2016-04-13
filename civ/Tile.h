@@ -3,44 +3,40 @@
 #include <memory>
 #include <vector>
 
-
 #include "Sprite.h"
 
+typedef uint8_t TileType;
 
-
-enum class SubTileType{
-	FLOOR,
-	ONFLOOR,
-	RESOURCE,
+enum class TileExtensions{
+	RIVER,
+	STREET
+	//etc
 };
 
-
-struct SubTile{
-	SubTileType type;
-	int index;
-
-	SubTile(SubTileType type_, int index_) : type { type_ }, index { index_ } {}
-
-};
 
 
 class Tile{
 
-	std::unique_ptr<Sprite> sprite;
-	std::vector<SubTile> subTile;
+	TileType type;
+	Sprite& floor;
+	int resource;
 
+	std::unique_ptr<Sprite> sprite;
+	std::vector<TileExtensions> extensions;
 
 public:
 
-	Tile();
-	~Tile();
+				Tile(TileType type_, Sprite& floor_);
+				Tile(const Tile& other) = delete;
+				~Tile(void);
 
-	void AddSubTile(SubTileType type, int index){ subTile.emplace_back(type, index);}
-	void SetSprite(std::unique_ptr<Sprite> sprite_){ sprite = move(sprite_); }
+	void		SetResource(int newResource);
+	void		InitializeSprite(void);
+	void		AddSprite(Sprite& add);
 
-	const std::vector<SubTile>& GetSubTiles() { return subTile; };
+	int			GetResource(void) const;
 
-	void Render(int x, int y);
+	void		Render(int x, int y);
 };
 
 

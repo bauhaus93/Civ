@@ -11,11 +11,9 @@ Map::Map(void){
 
 	LoadTilesets();
 
-	tile = make_unique<Tile>();
-
-	tileset.at(0)->InitiateTile(*tile);
+	tile = tileset.at(0)->CreateTile();
 	tileset.at(0)->CreateTileSprite(*tile);
-	
+
 }
 
 
@@ -31,16 +29,16 @@ typedef struct{
 
 void Map::LoadTilesets(){
 
-	auto ts = make_unique<TilesetSimple>(50);
+	auto ts = make_unique<TilesetSimple>("desert", 50);
 
-	constexpr SpritePosition desert[] = {	{0, 0, 1, 1},
+	constexpr SpritePosition desert[] = { {0, 0, 1, 1},
 											{0, 1, 65, 0},
 											{1, 1, 65, 0},
 											{1, 1, 65, 0} };
 
 	ts->AddFloor(spriteFactory.CreateDiamondSprite("terrain1", 1, 1));
 	ts->AddFloor(spriteFactory.CreateDiamondSprite("terrain1", 66, 1));
-	ts->AddResource(spriteFactory.CreateDiamondSprite("terrain1", 131, 1));	
+	ts->AddResource(spriteFactory.CreateDiamondSprite("terrain1", 131, 1));
 	ts->AddResource(spriteFactory.CreateDiamondSprite("terrain1", 196, 1));
 
 	tileset.insert(make_pair(0, move(ts)));

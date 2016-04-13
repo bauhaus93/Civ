@@ -51,6 +51,11 @@ Sprite::Sprite(const Sprite& src, const SDL_Rect& dim) :
 	Add(src, dim);
 }
 
+Sprite::Sprite(const Sprite& src) :
+	Sprite{ src, src.GetRect() }{
+
+}
+
 
 Sprite::~Sprite(void){
 	if (texture != nullptr)
@@ -59,6 +64,10 @@ Sprite::~Sprite(void){
 
 void Sprite::Add(const Sprite& sprite, const SDL_Rect& dim){
 	TextureOnTexture(sprite.texture, dim, texture, rect);
+}
+
+void Sprite::Add(const Sprite& sprite){
+	Add(sprite, sprite.GetRect());
 }
 
 void Sprite::Render(int x, int y){
@@ -73,6 +82,10 @@ Uint32 Sprite::GetFormat(void) const{
 	if (SDL_QueryTexture(texture, &format, nullptr, nullptr, nullptr) == -1)
 		throw SDLException("SDL_QueryTexture");
 	return format;
+}
+
+const SDL_Rect& Sprite::GetRect() const{
+	return rect;
 }
 
 

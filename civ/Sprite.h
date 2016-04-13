@@ -26,13 +26,15 @@ public:
 					Sprite(const SDL_Rect & dim);
 					Sprite(const Sprite& src, const SDL_Rect& dim);
 					Sprite(SDL_Surface* src, const SDL_Rect& dim);
-					Sprite(const Sprite& s) = delete;
+					Sprite(const Sprite& s);// = delete;
 					
 					
 					
 					~Sprite(void);
 	void			Add(const Sprite& sprite, const SDL_Rect& dim);
+	void			Add(const Sprite & sprite);
 	void			Render(int x, int y);
 	Uint32			GetFormat(void) const;
+	const SDL_Rect&	GetRect() const;
 };
 

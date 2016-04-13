@@ -20,8 +20,6 @@ namespace common{
 	unsigned int Random(int range);
 	int Random(int min, int max);
 
-
-
 };
 
 inline void common::Seed(){
@@ -45,3 +43,4 @@ inline unsigned int common::Random(int range){
 inline int common::Random(int min, int max){
 	return min + (distributionStd(generator) % (abs(min) + max + 1));
 }
+

@@ -4,7 +4,7 @@ using namespace std;
 
 
 TilesetNeighbourAware::TilesetNeighbourAware(unsigned int resourceChance_):
-	Tileset{ resourceChance_ }{
+	Tileset{ "empty",  resourceChance_ }{
 }
 
 

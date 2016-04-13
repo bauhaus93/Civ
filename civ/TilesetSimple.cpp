@@ -2,34 +2,33 @@
 
 using namespace std;
 
-TilesetSimple::TilesetSimple(unsigned int resourceChance_):
-	Tileset{ resourceChance_ }{
+TilesetSimple::TilesetSimple(const string& name_, unsigned int resourceChance_):
+	Tileset{ name_, resourceChance_ }{
 }
 
-TilesetSimple::~TilesetSimple(){
+TilesetSimple::~TilesetSimple(void){
+
 }
 
-void TilesetSimple::InitiateTile(Tile& tile){
-	tile.AddSubTile(SubTileType::FLOOR, common::Random(floor.size()));
-	if(common::Random() < resourceChance)
-		tile.AddSubTile(SubTileType::RESOURCE, common::Random(resource.size()));
+std::unique_ptr<Tile> TilesetSimple::CreateTile(void){
+	unique_ptr<Tile> tile = make_unique<Tile>(*floor.at(common::Random(floor.size())));
+
+	if (common::Random() < resourceChance)
+		tile->SetResource(common::Random(resource.size()));
+
+	return move(tile);
 }
 
 void TilesetSimple::CreateTileSprite(Tile& tile) {
-	SDL_Rect rect{ 0, 0, 64, 32 };
-	unique_ptr<Sprite> sprite = nullptr;
+	constexpr SDL_Rect rect{ 0, 0, 64, 32 };
 
-	
-	auto subTiles = tile.GetSubTiles();
-	auto it = find_if(subTiles.begin(), subTiles.end(), [](SubTile st){ return st.type==SubTileType::FLOOR; });
+	tile.InitializeSprite();
 
-	if(it != subTiles.end()){
-		sprite = make_unique<Sprite>(*floor.at((*it).index), rect);
+	int resID = tile.GetResource();
+	if (resID != -1){
+		tile.AddSprite(*resource.at(resID));
 	}
-
-
-
-	tile.SetSprite(move(sprite));
+	
 }
 
 
