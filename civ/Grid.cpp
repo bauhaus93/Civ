@@ -15,16 +15,10 @@ Grid::~Grid(){
 		nodes.push_back(g.Next());
 	}
 
-	int deletedNodes = nodes.size();
-
 	while (!nodes.empty()){
 		delete nodes.back();
 		nodes.pop_back();
 	}
-
-	if (nodeCount != deletedNodes)
-		common::Log("Count of allocated Nodes does not equal count of deleted Nodes");
-
 }
 
 void Grid::Create(int sizeX, int sizeY){
@@ -85,20 +79,23 @@ Node* Grid::CreateBlock(int sizeX, int sizeY){
 	return myRoot;
 }
 
-Node* Grid::LinkRows(vector<Node*> top, vector<Node*> bot){
-	auto botIter = bot.begin();
-	bool advanced = (top.front()->GetY() % 2) != 0;
+Node* Grid::LinkRows(vector<Node*>& top, vector<Node*>& bot){
+	auto n = 0;
+	bool advanced = (top[0]->GetY() % 2) != 0;
 
-	cout << "linking (" << top.front()->GetX() << ", " << top.front()->GetY() << ") with (" << bot.front()->GetX() << ", " << bot.front()->GetY() << ") ";
-	cout << "linkage top-bot with " << (advanced ? "SouthWest" : "South East") << endl;
+	while (n < top.size()){
+		if (advanced){
+			top[n]->LinkWithSouthwest(bot[n]);
+			if (n + 1 < bot.size())
+				top[n]->LinkWithSoutheast(bot[n+1]);
 
-
-	for (auto topNode : top){
-		if (advanced)
-			topNode->LinkWithSouthwest(*botIter);
-		else
-			topNode->LinkWithSoutheast(*botIter);
-		botIter++;
+		}
+		else{
+			top[n]->LinkWithSoutheast(bot[n]);
+			if (n -1 >= 0)
+				top[n]->LinkWithSouthwest(bot[n-1]);
+		}
+		n++;
 	}
 	return bot.front();
 }
@@ -127,6 +124,7 @@ Node* GridTraversal::Next(void){
 			curr = rowFirst->GetSouthwest();
 		else
 			curr = rowFirst->GetSoutheast();
+		rowFirst = curr;
 		advanced = !advanced;
 	}
 	return currReturn;

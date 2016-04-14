@@ -14,8 +14,6 @@ class Grid{
 private:
 	Node* root;
 	Node* view;
-
-	int nodeCount;
 	
 public:
 	
@@ -26,7 +24,7 @@ public:
 	void Render(int screenX, int screenY);
 
 	Node* CreateBlock(int sizeX, int sizeY);
-	Node* LinkRows(std::vector<Node*> top, std::vector<Node*> bot);
+	Node* LinkRows(std::vector<Node*>& top, std::vector<Node*>& bot);
 	void LinkBlock(Node* root, Node* newBlock);
 	
 };

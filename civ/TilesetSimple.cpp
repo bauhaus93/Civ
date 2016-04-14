@@ -16,6 +16,7 @@ std::unique_ptr<Tile> TilesetSimple::CreateTile(void){
 	if (common::Random() < resourceChance)
 		tile->SetResource(common::Random(resource.size()));
 
+	CreateTileSprite(*tile);
 	return move(tile);
 }
 
@@ -28,5 +29,5 @@ void TilesetSimple::CreateTileSprite(Tile& tile) {
 	if (resID != -1){
 		tile.AddSprite(*resource.at(resID));
 	}
-
 }
+

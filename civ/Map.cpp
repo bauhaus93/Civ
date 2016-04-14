@@ -13,19 +13,14 @@ Map::Map(void){
 	tile = tileset.at(0)->CreateTile();
 	tileset.at(0)->CreateTileSprite(*tile);
 
-	grid.Create(64, 32);
+	grid.Create(64, 64);
 
 	GridTraversal g{ grid };
 
 	int i = 0;
 	while (g.HasNext()){
 		auto node = g.Next();
-
-		auto t = tileset.at(0)->CreateTile();
-		tileset.at(0)->CreateTileSprite(*t);
-
-		node->SetTile(move(t));
-		cout << "create tile #" << ++i << endl;
+		node->SetTile(move(tileset.at(0)->CreateTile()));
 	}
 
 }
@@ -50,6 +45,6 @@ void Map::LoadTilesets(){
 
 
 void Map::Render(void){
-	//grid.Render(1024, 768);
+	grid.Render(1024, 768);
 	//tile->Render(0, 0);
 }
