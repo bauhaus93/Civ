@@ -17,7 +17,7 @@ class TilesetSimple :
 
 
 public:
-	TilesetSimple(const std::string& name_, unsigned int resourceChance_);
+	TilesetSimple(const std::string& name_, TileType type_, unsigned int resourceChance_);
 	~TilesetSimple(void);
 
 	void AddFloor(std::unique_ptr<Sprite> sprite){ floor.push_back(move(sprite)); };
@@ -26,4 +26,3 @@ public:
 	virtual std::unique_ptr<Tile> CreateTile(void) override;
 	virtual void CreateTileSprite(Tile& tile) override;
 };
-

@@ -28,13 +28,14 @@ enum class NeighbourDiamond{
 
 
 class Tileset{
-	
+
 protected:
 	std::string		name;
+	TileType			type;
 	unsigned int	resourceChance;
 
 public:
-	Tileset(const std::string& name_, unsigned int resourceChance_);
+	Tileset(const std::string& name_, TileType type_, unsigned int resourceChance_);
 
 	virtual ~Tileset() = default;
 
@@ -42,6 +43,3 @@ public:
 	virtual void CreateTileSprite(Tile& tile) = 0;
 
 };
-
-
-

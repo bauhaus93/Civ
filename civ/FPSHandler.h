@@ -33,4 +33,3 @@ public:
 inline void FPSHandler::Delay(void){
 	SDL_Delay(static_cast<Uint32>(delay));
 }
-
