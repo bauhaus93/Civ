@@ -8,41 +8,46 @@
 							else if(b() != nullptr) return b()->a();\
 							return nullptr;}
 
+
 class Node{
 
 	std::unique_ptr<Tile> tile;
+	int		x;
+	int		y;
 
-	std::shared_ptr<Node>  northeast;
-	std::shared_ptr<Node>  northwest;
-	std::shared_ptr<Node>  southeast;
-	std::shared_ptr<Node>  southwest;
+	Node*  northeast;
+	Node*  northwest;
+	Node*  southeast;
+	Node*  southwest;
 
 
 public:
-					Node();
+					Node(int x_, int y_);
 					~Node();
 	inline void		SetTile(std::unique_ptr<Tile> tile_);
 	inline void		Render(int x, int y);
+	int				GetX() const{ return x; };
+	int				GetY() const{ return y; }
 
-	inline void		LinkWithNortheast(std::shared_ptr<Node> ne);
-	inline void		LinkWithNorthwest(std::shared_ptr<Node> nw);
-	inline void		LinkWithSoutheast(std::shared_ptr<Node> se);
-	inline void		LinkWithSouthwest(std::shared_ptr<Node> sw);
+	inline void		LinkWithNortheast(Node* ne);
+	inline void		LinkWithNorthwest(Node* nw);
+	inline void		LinkWithSoutheast(Node* se);
+	inline void		LinkWithSouthwest(Node* sw);
 
-	inline void		SetNortheast(std::shared_ptr<Node> ne);
-	inline void		SetNorthwest(std::shared_ptr<Node> nw);
-	inline void		SetSoutheast(std::shared_ptr<Node> se);
-	inline void		SetSouthwest(std::shared_ptr<Node> sw);
+	inline void		SetNortheast(Node* ne);
+	inline void		SetNorthwest(Node* nw);
+	inline void		SetSoutheast(Node* se);
+	inline void		SetSouthwest(Node* sw);
 
-	inline std::shared_ptr<Node>	GetNortheast(void);
-	inline std::shared_ptr<Node>	GetNorthwest(void);
-	inline std::shared_ptr<Node>	GetSoutheast(void);
-	inline std::shared_ptr<Node>	GetSouthwest(void);
+	inline Node*	GetNortheast(void);
+	inline Node*	GetNorthwest(void);
+	inline Node*	GetSoutheast(void);
+	inline Node*	GetSouthwest(void);
 
-	inline std::shared_ptr<Node>	GetNorth(void);
-	inline std::shared_ptr<Node>	GetSouth(void);
-	inline std::shared_ptr<Node>	GetWest(void);
-	inline std::shared_ptr<Node>	GetEast(void);
+	inline Node*	GetNorth(void);
+	inline Node*	GetSouth(void);
+	inline Node*	GetWest(void);
+	inline Node*	GetEast(void);
 
 };
 
@@ -50,77 +55,77 @@ void Node::SetTile(std::unique_ptr<Tile> tile_){
 	tile = move(tile_);
 }
 
-inline void Node::Render(int x, int y){
-	tile->Render(x, y);
+inline void Node::Render(int screenX, int screenY){
+	tile->Render(screenX, screenY);
 }
 
-void Node::LinkWithNortheast(std::shared_ptr<Node> ne){
+void Node::LinkWithNortheast(Node* ne){
 	SetNortheast(ne);
-	ne->SetSouthwest(static_cast<std::shared_ptr<Node>>(this));
+	ne->SetSouthwest(this);
 }
 
-void Node::LinkWithNorthwest(std::shared_ptr<Node> nw){
+void Node::LinkWithNorthwest(Node* nw){
 	SetNorthwest(nw);
-	nw->SetSoutheast(static_cast<std::shared_ptr<Node>>(this));
+	nw->SetSoutheast(this);
 }
 
-void Node::LinkWithSoutheast(std::shared_ptr<Node> se){
+void Node::LinkWithSoutheast(Node* se){
 	SetSoutheast(se);
-	se->SetNorthwest(static_cast<std::shared_ptr<Node>>(this));
+	se->SetNorthwest(this);
 }
 
-void Node::LinkWithSouthwest(std::shared_ptr<Node> sw){
+void Node::LinkWithSouthwest(Node* sw){
 	SetSouthwest(sw);
-	sw->SetNortheast(static_cast<std::shared_ptr<Node>>(this));
+	sw->SetNortheast(this);
 }
 
-void Node::SetNortheast(std::shared_ptr<Node> ne){
+void Node::SetNortheast(Node* ne){
 	northeast = ne;
 }
 
-void Node::SetNorthwest(std::shared_ptr<Node> nw){
+void Node::SetNorthwest(Node* nw){
 	northwest = nw;
 
 }
 
-void Node::SetSoutheast(std::shared_ptr<Node> se){
+void Node::SetSoutheast(Node* se){
 	southeast = se;
 
 }
 
-void Node::SetSouthwest(std::shared_ptr<Node> sw){
+void Node::SetSouthwest(Node* sw){
 	southwest = sw;
 }
 
-std::shared_ptr<Node> Node::GetNortheast(void){
+Node* Node::GetNortheast(void){
 	return northeast;
 }
 
-std::shared_ptr<Node> Node::GetNorthwest(void){
+Node* Node::GetNorthwest(void){
 	return northwest;
  }
 
-std::shared_ptr<Node> Node::GetSoutheast(void){
+Node* Node::GetSoutheast(void){
 	return southeast;
 }
 
-std::shared_ptr<Node> Node::GetSouthwest(void){
+Node* Node::GetSouthwest(void){
 	return southwest;
 }
 
-std::shared_ptr<Node> Node::GetNorth(void){
+Node* Node::GetNorth(void){
 	GET_NEIGHBOUR(GetNorthwest, GetNortheast);
 }
 
-std::shared_ptr<Node> Node::GetSouth(void){
+Node* Node::GetSouth(void){
 	GET_NEIGHBOUR(GetSouthwest, GetSoutheast);
 }
 
-std::shared_ptr<Node> Node::GetWest(void){
+Node* Node::GetWest(void){
 	GET_NEIGHBOUR(GetNorthwest, GetSouthwest);
 }
 
-std::shared_ptr<Node> Node::GetEast(void){
+Node* Node::GetEast(void){
 	GET_NEIGHBOUR(GetNortheast, GetSoutheast);
 }
 

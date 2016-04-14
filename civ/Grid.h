@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include <memory>
 
 #include "Node.h"
@@ -7,27 +8,52 @@
 
 class Grid{
 
-	std::shared_ptr<Node> root;
-	std::shared_ptr<Node> view;
+	friend class GridTraversal;
 
-	std::shared_ptr<Node> CreateLinkedTwoRow(int size);
 
-	class IterateAll{
+private:
+	Node* root;
+	Node* view;
 
-		std::shared_ptr<Node> operator++();
-
-		std::shared_ptr<Node> curr;
-		std::shared_ptr<Node> lastRowRoot;
-		
-	};
-
+	int nodeCount;
+	
 public:
+	
 	Grid();
 	~Grid();
 
 	void Create(int sizeX, int sizeY);
-	void Fill(Tileset & ts);
 	void Render(int screenX, int screenY);
+
+	Node* CreateBlock(int sizeX, int sizeY);
+	Node* LinkRows(std::vector<Node*> top, std::vector<Node*> bot);
+	void LinkBlock(Node* root, Node* newBlock);
 	
 };
+
+class GridTraversal{
+
+protected:
+	Node*	curr;
+	Node*	rowFirst;
+	bool	advanced;
+
+public:
+	GridTraversal(Grid& grid);
+	virtual ~GridTraversal(void);
+	virtual Node* Next(void);
+	bool HasNext() const{ return curr != nullptr; }
+};
+
+class GridTraversalRow: public GridTraversal{
+
+public:
+	GridTraversalRow(Grid& grid);
+	virtual ~GridTraversalRow(void);
+	virtual Node* Next(void) override;
+	void NextRow(void);
+	bool HasNextRow(){ return rowFirst != nullptr; }
+};
+
+
 

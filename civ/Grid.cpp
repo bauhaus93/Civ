@@ -8,74 +8,149 @@ Grid::Grid(){
 
 
 Grid::~Grid(){
+	vector<Node*> nodes;
+	GridTraversal g{ *this };
+
+	while (g.HasNext()){
+		nodes.push_back(g.Next());
+	}
+
+	int deletedNodes = nodes.size();
+
+	while (!nodes.empty()){
+		delete nodes.back();
+		nodes.pop_back();
+	}
+
+	if (nodeCount != deletedNodes)
+		common::Log("Count of allocated Nodes does not equal count of deleted Nodes");
+
 }
 
 void Grid::Create(int sizeX, int sizeY){
 
-	root = CreateLinkedTwoRow(sizeX);
+	root = CreateBlock(sizeX, sizeY);
 	view = root;
-
-	/*for (auto y = 0; y < sizeY; y++){
-		for (auto x = 0; x < sizeX; x++){
-
-		}
-	}*/
-}
-
-void Grid::Fill(Tileset& ts){
-
-
-
 }
 
 void Grid::Render(int screenX, int screenY){
 
 	int drawX = 0;
 	int drawY = 0;
-	bool odd = false;
+	bool advanced = false;
 
-	auto lastRowRoot = root;
-	auto node = root;
+	GridTraversalRow g{ *this };
 
 	while (drawY < screenY){
-		if (odd)
+		if (advanced)
 			drawX = 32;
 		else
 			drawX = 0;
 
-		while (drawX < screenX){
+		while (drawX < screenX && g.HasNext()){
+			auto node = g.Next();
 			node->Render(drawX, drawY);
-			node = node->GetEast();
 			drawX += 64;
-
-			if (node == nullptr)
-				break;
 		}
-
-		if (odd)
-			node = lastRowRoot->GetSouthwest();
-		else
-			node = lastRowRoot->GetSoutheast();
-
-		odd = !odd;
-
-		if (node == nullptr)
+		advanced = !advanced;
+		if (!g.HasNextRow())
 			break;
+		g.NextRow();
+		drawY += 16;
 	}
 }
 
-shared_ptr<Node> Grid::CreateLinkedTwoRow(int size){
-	auto root = make_shared<Node>();
-	auto lastNode = root;
 
-	for (int i = 0; i < 2 * size - 1; i++){
-		auto newNode = make_shared<Node>();
+Node* Grid::CreateBlock(int sizeX, int sizeY){
+	Node* myRoot = nullptr;
+	Node* curr = nullptr;
+	auto rowTop = make_unique<vector<Node*>>();
+	auto rowBot = make_unique<vector<Node*>>();
 
-		if (i % 2 == 0)
-			lastNode->LinkWithSoutheast(newNode);
-		else
-			lastNode->LinkWithNortheast(newNode);
-		lastNode = newNode;
+	cout << "create block" << endl;
+	for (int x = 0; x < sizeX; x++){
+		rowTop->push_back(new Node(x, 0));
 	}
-	return root;
+	curr = rowTop->front();
+	myRoot = curr;
+
+	for (int y = 1; y < sizeY; y++){
+		for (int x = 0; x < sizeX; x++){
+			rowBot->push_back(new Node(x, y));
+		}
+		curr = LinkRows(*rowTop, *rowBot);
+		rowTop = move(rowBot);
+		rowBot = make_unique<vector<Node*>>();
+	}
+	return myRoot;
+}
+
+Node* Grid::LinkRows(vector<Node*> top, vector<Node*> bot){
+	auto botIter = bot.begin();
+	bool advanced = (top.front()->GetY() % 2) != 0;
+
+	cout << "linking (" << top.front()->GetX() << ", " << top.front()->GetY() << ") with (" << bot.front()->GetX() << ", " << bot.front()->GetY() << ") ";
+	cout << "linkage top-bot with " << (advanced ? "SouthWest" : "South East") << endl;
+
+
+	for (auto topNode : top){
+		if (advanced)
+			topNode->LinkWithSouthwest(*botIter);
+		else
+			topNode->LinkWithSoutheast(*botIter);
+		botIter++;
+	}
+	return bot.front();
+}
+
+
+GridTraversal::GridTraversal(Grid& grid) :
+	curr{ grid.root },
+	rowFirst{ grid.root }{
+
+	if (curr->GetSouthwest() != nullptr)
+		advanced = true;
+	else
+		advanced = false;
+}
+
+GridTraversal::~GridTraversal(){
+
+}
+
+Node* GridTraversal::Next(void){
+	auto currReturn = curr;
+
+	curr = curr->GetEast();
+	if (curr == nullptr){
+		if (advanced)
+			curr = rowFirst->GetSouthwest();
+		else
+			curr = rowFirst->GetSoutheast();
+		advanced = !advanced;
+	}
+	return currReturn;
+}
+
+GridTraversalRow::GridTraversalRow(Grid & grid) :
+	GridTraversal{ grid }{
+}
+
+GridTraversalRow::~GridTraversalRow(void){
+}
+
+Node * GridTraversalRow::Next(void){
+	auto currReturn = curr;
+	curr = curr->GetEast();
+
+	return currReturn;
+}
+
+void GridTraversalRow::NextRow(void){
+	if (advanced)
+		curr = rowFirst->GetSouthwest();
+	else
+		curr = rowFirst->GetSoutheast();
+	rowFirst = curr;
+	advanced = !advanced;
 }
