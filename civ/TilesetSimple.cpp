@@ -21,8 +21,6 @@ std::unique_ptr<Tile> TilesetSimple::CreateTile(void){
 }
 
 void TilesetSimple::CreateTileSprite(Tile& tile) {
-	//constexpr SDL_Rect rect{ 0, 0, 64, 32 };
-
 	tile.InitializeSprite();
 
 	int resID = tile.GetResource();

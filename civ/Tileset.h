@@ -31,7 +31,7 @@ class Tileset{
 
 protected:
 	std::string		name;
-	TileType			type;
+	TileType		type;
 	unsigned int	resourceChance;
 
 public:

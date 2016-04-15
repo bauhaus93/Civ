@@ -80,7 +80,7 @@ Node* Grid::CreateBlock(int sizeX, int sizeY){
 }
 
 Node* Grid::LinkRows(vector<Node*>& top, vector<Node*>& bot){
-	auto n = 0;
+	decltype(top.size()) n = 0;
 	bool advanced = (top[0]->GetY() % 2) != 0;
 
 	while (n < top.size()){
@@ -92,7 +92,7 @@ Node* Grid::LinkRows(vector<Node*>& top, vector<Node*>& bot){
 		}
 		else{
 			top[n]->LinkWithSoutheast(bot[n]);
-			if (n -1 >= 0)
+			if (n >= 1)
 				top[n]->LinkWithSouthwest(bot[n-1]);
 		}
 		n++;

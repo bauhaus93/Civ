@@ -25,6 +25,7 @@ int Game::Mainloop(void){
 			return 0;
 		}
 	}
+	return 0;
 }
 
 void Game::Tick(void){

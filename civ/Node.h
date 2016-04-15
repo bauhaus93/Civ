@@ -26,8 +26,8 @@ public:
 					~Node();
 	inline void		SetTile(std::unique_ptr<Tile> tile_);
 	inline void		Render(int x, int y);
-	int				GetX() const{ return x; };
-	int				GetY() const{ return y; }
+	int				GetX(void) const{ return x; };
+	int				GetY(void) const{ return y; }
 
 	inline void		LinkWithNortheast(Node* ne);
 	inline void		LinkWithNorthwest(Node* nw);

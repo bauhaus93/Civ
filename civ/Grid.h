@@ -40,7 +40,7 @@ public:
 	GridTraversal(Grid& grid);
 	virtual ~GridTraversal(void);
 	virtual Node* Next(void);
-	bool HasNext() const{ return curr != nullptr; }
+	bool HasNext(void) const{ return curr != nullptr; }
 };
 
 class GridTraversalRow: public GridTraversal{
@@ -50,7 +50,7 @@ public:
 	virtual ~GridTraversalRow(void);
 	virtual Node* Next(void) override;
 	void NextRow(void);
-	bool HasNextRow(){ return rowFirst != nullptr; }
+	bool HasNextRow(void){ return rowFirst != nullptr; }
 };
 
 

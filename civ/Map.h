@@ -17,8 +17,6 @@ class Map{
 	std::map<TileType, std::unique_ptr<Tileset>>	tileset;
 	Grid											grid;
 
-	std::unique_ptr<Tile>	tile;
-
 	void LoadTilesets();
 
 public:

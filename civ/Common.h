@@ -41,6 +41,6 @@ inline unsigned int common::Random(int range){
 }
 
 inline int common::Random(int min, int max){
-	return min + (distributionStd(generator) % (abs(min) + max + 1));
+	return min + (distributionStd(generator) % (max - min + 1));
 }
 

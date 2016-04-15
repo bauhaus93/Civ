@@ -24,7 +24,7 @@ int main(int argc, char **argv){
 	common::Seed();
 
 	try{
-		SDL::Init("Civ", 50, 50, 800, 600);
+		SDL::Init("Civ", 50, 50, 1024, 768);
 	}
 	catch (const SDLException& e){
 		common::Log(e);
