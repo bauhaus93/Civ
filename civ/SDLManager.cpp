@@ -28,7 +28,7 @@ SDL::SDL(const string& windowName, int x, int y, int width, int height):
 	if (SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND) == -1)
 		throw SDLException("SDL_SetRenderDrawBlendMode");
 
-	common::Log("Renderer created!");
+		common::Log("Renderer created!");
 }
 
 SDL::~SDL(void){
