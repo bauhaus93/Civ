@@ -63,7 +63,7 @@ void SpriteFactory::AddTransparent(uint8_t rT, uint8_t gT, uint8_t bT){
 	
 }
 
-unique_ptr<Sprite> SpriteFactory::CreateSprite(const string& name, const SDL_Rect& dim){
+unique_ptr<Sprite> SpriteFactory::CreateSprite(const string& name, const Rect& dim){
 	unique_ptr<Sprite> sprite = nullptr;
 	SDL_Surface *s = nullptr;
 	
@@ -77,10 +77,6 @@ unique_ptr<Sprite> SpriteFactory::CreateSprite(const string& name, const SDL_Rec
 	}
 
 	try{
-		//if (SDL_SetColorKey(s, true, colorKey) == -1)
-		//	throw SDLException("SDL_SetColorKey");
-
-
 		sprite = make_unique<Sprite>(s, dim);
 	}
 	catch (const SDLException& e){
@@ -92,6 +88,6 @@ unique_ptr<Sprite> SpriteFactory::CreateSprite(const string& name, const SDL_Rec
 }
 
 unique_ptr<Sprite> SpriteFactory::CreateDiamondSprite(const string& name, int x, int y){
-	const SDL_Rect rect = { x, y, 64, 32 };
+	const Rect rect = { x, y, 64, 32 };
 	return move(CreateSprite(name, rect));
 }

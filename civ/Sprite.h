@@ -14,8 +14,7 @@
 #include "Common.h"
 #include "SDLManager.h"
 #include "CivExceptions.h"
-
-//static void TextureOnTexture(SDL_Texture *src, const SDL_Rect& srcRect, SDL_Texture *dest, const SDL_Rect& destRect);
+#include "Definitions.h"
 
 class Sprite{
 	friend class	Renderer;
@@ -24,16 +23,14 @@ class Sprite{
 	SDL_Rect		rect;
 
 public:
-					Sprite(const SDL_Rect & dim);
-					Sprite(const Sprite& src, const SDL_Rect& dim);
-					Sprite(SDL_Surface* src, const SDL_Rect& dim);
-					Sprite(const Sprite& s);// = delete;
-					
-					
-					
+					Sprite(const Rect& dim);
+					Sprite(const Sprite& src, const Rect& dim_);
+					Sprite(SDL_Surface* src, const Rect& dim_);
+					Sprite(const Sprite& s);
+		
 					~Sprite(void);
-	void			Add(const Sprite& sprite, const SDL_Rect& dim);
-	void			Add(const Sprite & sprite);
+	void			Add(const Sprite& sprite, const Rect& dim);
+	void			Add(const Sprite& sprite);
 	void			Render(int x, int y);
 	Uint32			GetFormat(void) const;
 	const SDL_Rect&	GetRect() const;

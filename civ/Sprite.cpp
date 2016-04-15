@@ -4,10 +4,20 @@ using namespace std;
 
 static void TextureOnTexture(SDL_Texture *src, const SDL_Rect& srcRect, SDL_Texture *dest, const SDL_Rect& destRect);
 
+inline Rect ToRect(const SDL_Rect& rect){
+	Rect r{ rect.x, rect.y, rect.w, rect.h };
+	return std::move(r);
+}
 
-Sprite::Sprite(SDL_Surface* src, const SDL_Rect& dim) :
+inline SDL_Rect ToSDLRect(const Rect& rect){
+	SDL_Rect r{ rect.x, rect.y, rect.w, rect.h };
+	return std::move(r);
+}
+
+Sprite::Sprite(SDL_Surface* src, const Rect& dim_) :
 	texture{ nullptr },
 	rect{ 0, 0, 0, 0 }{
+	SDL_Rect dim = ToSDLRect(dim_);
 
 	SDL_Surface *surf = SDL_CreateRGBSurface(0, dim.w, dim.h, (Uint32)32, (Uint32)0xFF, (Uint32)0xFF << 8, (Uint32)0xFF << 16, (Uint32)0xFF << 24);
 
@@ -36,7 +46,7 @@ Sprite::Sprite(SDL_Surface* src, const SDL_Rect& dim) :
 		throw SDLException("SDL_QueryTexture");
 }
 
-Sprite::Sprite(const SDL_Rect& dim) :
+Sprite::Sprite(const Rect& dim) :
 	texture{ nullptr },
 	rect{ 0, 0, dim.w, dim.h }{
 
@@ -46,13 +56,13 @@ Sprite::Sprite(const SDL_Rect& dim) :
 		throw SDLException("SDL_CreateTexture");
 }
 
-Sprite::Sprite(const Sprite& src, const SDL_Rect& dim) :
+Sprite::Sprite(const Sprite& src, const Rect& dim) :
 	Sprite{ dim }{
 	Add(src, dim);
 }
 
 Sprite::Sprite(const Sprite& src) :
-	Sprite{ src, src.GetRect() }{
+	Sprite{ src, ToRect(src.GetRect()) }{
 
 }
 
@@ -62,12 +72,12 @@ Sprite::~Sprite(void){
 		SDL_DestroyTexture(texture);
 }
 
-void Sprite::Add(const Sprite& sprite, const SDL_Rect& dim){
-	TextureOnTexture(sprite.texture, dim, texture, rect);
+void Sprite::Add(const Sprite& sprite, const Rect& dim){
+	TextureOnTexture(sprite.texture, ToSDLRect(dim), texture, rect);
 }
 
 void Sprite::Add(const Sprite& sprite){
-	Add(sprite, sprite.GetRect());
+	Add(sprite, ToRect(sprite.GetRect()));
 }
 
 void Sprite::Render(int x, int y){

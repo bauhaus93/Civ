@@ -67,9 +67,19 @@ void Game::Tick(void){
 
 void Game::Render(void){
 	auto start = common::Time();
-	renderer.Clear();
+
+	//Render on temporary Sprite
+	Sprite s{ Rect{0, 0, 800, 600} };
+	renderer.SetTarget(s);
 	map.Render();
 	renderer.Show();
+
+	//Draw Sprite on Screen
+	renderer.SetStdTarget();
+	renderer.Clear();
+	s.Render(0, 0);
+	renderer.Show();
+
 	lastRenderTime = common::TimeDiff(start);
 }
 
