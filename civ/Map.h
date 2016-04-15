@@ -21,9 +21,12 @@ class Map{
 	void LoadTilesets();
 
 public:
-	Map(const Rect& screen);
-	~Map(void);
+				Map(const Rect& screen);
+				~Map(void);
 
-	void Render(void);
+	void		AlignViewPos(int x, int y);
+	const Rect&	GetDrawField() const{ return drawField; }
+
+	void		Render(void);
 };
 

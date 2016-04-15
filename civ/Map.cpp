@@ -28,6 +28,13 @@ Map::~Map(void){
 
 }
 
+void Map::AlignViewPos(int x, int y){
+	x -= drawField.x;
+	y -= drawField.y;
+	if(x >= 0 && x < drawField.w && y >= 0 && y < drawField.h)
+		grid.AlignViewPos(x, y);
+}
+
 void Map::LoadTilesets(){
 	int x = 1, y = 1;
 

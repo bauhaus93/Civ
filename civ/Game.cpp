@@ -41,6 +41,12 @@ void Game::Tick(void){
 				if (e.key.keysym.sym == SDLK_q)
 					throw CivException("Tick", "Q pressed");
 				break;
+			case SDL_MOUSEBUTTONUP:
+				MouseEvent(e);
+				break;
+			case SDL_WINDOWEVENT:
+				WindowEvent(e);
+				break;
 			default:
 				break;
 		}
@@ -61,6 +67,25 @@ void Game::Tick(void){
 	ticks++;
 }
 
+void Game::WindowEvent(SDL_Event& e){
+	switch (e.window.event){
+		case SDL_WINDOWEVENT_MINIMIZED:
+			common::Log("MINIMIZED!");
+			break;
+		case SDL_WINDOWEVENT_RESTORED:
+			common::Log("RESTORED!");
+			break;
+		default:
+			break;
+	}
+}
+
+void Game::MouseEvent(SDL_Event& e){
+	if (e.button.button == SDL_BUTTON_LEFT)
+		map.AlignViewPos(e.button.x, e.button.y);
+
+}
+
 /* Render times:
 	1 desert diamond: 2-6ms (mainly around 2)
 */
@@ -69,15 +94,22 @@ void Game::Render(void){
 	auto start = common::Time();
 
 	//Render on temporary Sprite
-	Sprite s{ Rect{0, 0, 800, 600} };
+	Sprite s{ Rect{0, 0, map.GetDrawField().w, map.GetDrawField().h} };
 	renderer.SetTarget(s);
 	map.Render();
-	renderer.Show();
+
+	//renderer.Show();	MAYBE NEEDED
 
 	//Draw Sprite on Screen
 	renderer.SetStdTarget();
 	renderer.Clear();
 	s.Render(0, 0);
+
+	renderer.SetColor(RGBAColor{ 0xFF, 0, 0, 0xFF });
+	for (int y = 0; y < map.GetDrawField().h; y += 32)
+		for (int x = 0; x < map.GetDrawField().w; x += 64)
+			renderer.DrawRect(Rect{ x, y, 64, 32 });
+
 	renderer.Show();
 
 	lastRenderTime = common::TimeDiff(start);

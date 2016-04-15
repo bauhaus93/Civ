@@ -99,6 +99,15 @@ Node* Grid::LinkRows(vector<Node*>& top, vector<Node*>& bot){
 	return bot.front();
 }
 
+void Grid::AlignViewPos(int x, int y){
+	int squareX = x / 64;
+	int squareY = y / 32;
+
+	cout << "Square(" << squareX << ", " << squareY << ")" << endl;
+
+
+}
+
 
 GridTraversal::GridTraversal(Grid& grid) :
 	curr{ grid.root },

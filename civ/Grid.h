@@ -26,6 +26,8 @@ public:
 	Node* CreateBlock(int sizeX, int sizeY);
 	Node* LinkRows(std::vector<Node*>& top, std::vector<Node*>& bot);
 	void LinkBlock(Node* root, Node* newBlock);
+
+	void AlignViewPos(int x, int y);
 	
 };
 
