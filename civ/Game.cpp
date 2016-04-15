@@ -4,9 +4,10 @@
 
 using namespace std;
 
-Game::Game(void):
-	map{},
+Game::Game(void) :
+	map{ Rect{0, 0, SDL::Instance().GetScreenX(), SDL::Instance().GetScreenY() } },
 	fps{ 30 },
+	renderer{ Renderer::Instance() },
 	ticks{ 0 },
 	fpsCheckInterval{ 20 }{
 }
@@ -37,7 +38,7 @@ void Game::Tick(void){
 				throw CivException("Tick", "SDL_QUIT invoked");
 				break;
 			case SDL_KEYUP:
-				if(e.key.keysym.sym == SDLK_q)
+				if (e.key.keysym.sym == SDLK_q)
 					throw CivException("Tick", "Q pressed");
 				break;
 			default:
@@ -51,8 +52,8 @@ void Game::Tick(void){
 	if (ticks % fpsCheckInterval == 0){
 		fps.Align(fpsCheckInterval);
 		stringstream s;
-		s << "fps: " << fps.GetFPS() << " | delay: " << fps.GetDelay() << " ms" << endl;
-		SDL_SetWindowTitle(SDL::GetWindow(), s.str().c_str());
+		s << "fps: " << fps.GetFPS() << " | render time: " << lastRenderTime << " ms | delay: " << fps.GetDelay() << " ms" << endl;
+		SDL_SetWindowTitle(SDL::Instance().GetWindow(), s.str().c_str());
 	}
 
 	fps.Delay();
@@ -65,8 +66,10 @@ void Game::Tick(void){
 */
 
 void Game::Render(void){
-	SDL_RenderClear(SDL::GetRenderer());
+	auto start = common::Time();
+	renderer.Clear();
 	map.Render();
-	SDL_RenderPresent(SDL::GetRenderer());
+	renderer.Show();
+	lastRenderTime = common::TimeDiff(start);
 }
 

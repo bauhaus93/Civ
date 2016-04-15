@@ -2,13 +2,14 @@
 
 using namespace std;
 
-Map::Map(void){
+Map::Map(const Rect& field) :
+	drawField{ field.x, field.y, field.w, field.h }{
 
 	spriteFactory.AddImage("bmp/TERRAIN1.bmp", "terrain1");
 	spriteFactory.AddImage("bmp/TERRAIN2.bmp", "terrain2");
 	spriteFactory.AddTransparent(0x87, 0x87, 0x87);
 	spriteFactory.AddTransparent(0xFF, 0x00, 0xFF);
-	
+
 	LoadTilesets();
 
 	grid.Create(64, 64);
@@ -44,7 +45,7 @@ void Map::LoadTilesets(){
 	y += 33;
 	ts = make_unique<TilesetSimple>("prairie", 1, 10);
 	ts->AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
-	x += 65*2;
+	x += 65 * 2;
 	ts->AddResource(spriteFactory.CreateDiamondSprite("terrain1", x, y));
 	x += 65;
 	ts->AddResource(spriteFactory.CreateDiamondSprite("terrain1", x, y));
@@ -58,7 +59,7 @@ void Map::LoadTilesets(){
 	tileset.insert(make_pair(2, move(ts)));
 
 	x = 1;
-	y += 33*4;
+	y += 33 * 4;
 	ts = make_unique<TilesetSimple>("tundra", 3, 10);
 	ts->AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
 	x += 65 * 2;
@@ -101,8 +102,6 @@ void Map::LoadTilesets(){
 
 }
 
-
-
 void Map::Render(void){
-	grid.Render(1024, 768);
+	grid.Render(drawField);
 }

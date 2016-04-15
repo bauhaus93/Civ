@@ -21,7 +21,7 @@ public:
 	~Grid();
 
 	void Create(int sizeX, int sizeY);
-	void Render(int screenX, int screenY);
+	void Render(const Rect& field);
 
 	Node* CreateBlock(int sizeX, int sizeY);
 	Node* LinkRows(std::vector<Node*>& top, std::vector<Node*>& bot);

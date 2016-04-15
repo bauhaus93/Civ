@@ -13,41 +13,56 @@
 
 #include "Common.h"
 #include "CivExceptions.h"
+#include "Sprite.h"
+
+struct Rect{
+	int x;
+	int y;
+	int w;
+	int h;
+};
+
+struct RGBColor{
+	uint8_t r;
+	uint8_t g;
+	uint8_t b;
+};
+
+struct RGBAColor{
+	uint8_t r;
+	uint8_t g;
+	uint8_t b;
+	uint8_t a;
+};
 
 class SDL{
 	
 	static SDL*	instance;
 
-	static void Init(void){ Init("LEL", 0, 0, 1024, 768); };
+	static void Init(void){ Init("LEL", Rect{ 0, 0, 1024, 768 }); };
 
 	SDL_Window		*window;
 	SDL_Renderer	*renderer;
 	const int		sizeX;
 	const int		sizeY;
 
-	SDL(const std::string& windowName, int x, int y, int width, int height);
+	SDL(const std::string& windowName, const Rect& screen);
 	~SDL(void);
 
 public:
-	
-	static void Init(const std::string& windowName, int x, int y, int width, int height);
-	static void Release(void);
+	SDL_Renderer*	GetRenderer(void);
+	SDL_Window*		GetWindow(void);
+	int				GetScreenX(void){ return sizeX; }
+	int				GetScreenY(void){ return sizeY; }
+			
+	static void Init(const std::string& windowName, const Rect& screen);
 	static SDL& Instance(void);
-	static SDL_Renderer* GetRenderer(void);
-	static SDL_Window* GetWindow(void);
 };
 
-inline void SDL::Init(const std::string& windowName, int x, int y, int width, int height){
+inline void SDL::Init(const std::string& windowName, const Rect& screen){
 	if (instance == nullptr){
-		instance = new SDL(windowName, x, y, width, height);
-		atexit(SDL::Release);
-	}
-}
-
-inline void SDL::Release(void){
-	if (instance != nullptr){
-		delete instance;
-		instance = nullptr;
+		instance = new SDL(windowName, screen);
+		atexit([](){delete instance; });
 	}
 }
 

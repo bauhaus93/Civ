@@ -4,23 +4,19 @@
 #include <string>
 #include <sstream>
 
-#ifdef _WIN32
-	#include <sdl/SDL.h>
-#endif
-#ifdef __linux__
-	#include <SDL2/SDL.h>
-#endif
-
 #include "Common.h"
 #include "Map.h"
 #include "FPSHandler.h"
+#include "Renderer.h"
 
 class Game{
 
 	Map							map;
 	FPSHandler					fps;
+	Renderer&					renderer;
 	uint64_t					ticks;
-	uint32_t					fpsCheckInterval;
+	unsigned int				fpsCheckInterval;
+	unsigned int				lastRenderTime;
 
 public:
 				Game(void);

@@ -27,21 +27,21 @@ void Grid::Create(int sizeX, int sizeY){
 	view = root;
 }
 
-void Grid::Render(int screenX, int screenY){
+void Grid::Render(const Rect& field){
 
-	int drawX = 0;
-	int drawY = 0;
+	int drawX = field.x;
+	int drawY = field.y;
 	bool advanced = false;
 
 	GridTraversalRow g{ *this };
 
-	while (drawY < screenY){
+	while (drawY < field.h){
 		if (advanced)
-			drawX = 32;
+			drawX = field.x + 32;
 		else
-			drawX = 0;
+			drawX = field.x;
 
-		while (drawX < screenX && g.HasNext()){
+		while (drawX < field.w && g.HasNext()){
 			auto node = g.Next();
 			node->Render(drawX, drawY);
 			drawX += 64;
@@ -53,7 +53,6 @@ void Grid::Render(int screenX, int screenY){
 		drawY += 16;
 	}
 }
-
 
 Node* Grid::CreateBlock(int sizeX, int sizeY){
 	Node* myRoot = nullptr;

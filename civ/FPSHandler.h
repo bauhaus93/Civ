@@ -1,13 +1,7 @@
 #pragma once
 
 #include <chrono>
-
-#ifdef _WIN32
-	#include <sdl/SDL.h>
-#endif
-#ifdef __linux__
-	#include <SDL2/SDL.h>
-#endif
+#include <thread>
 
 typedef std::chrono::time_point<std::chrono::steady_clock> timepoint;
 typedef std::chrono::duration<float> duration;
@@ -31,5 +25,5 @@ public:
 };
 
 inline void FPSHandler::Delay(void){
-	SDL_Delay(static_cast<Uint32>(delay));
+	std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(delay)));
 }

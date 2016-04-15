@@ -13,6 +13,7 @@
 
 class Map{
 
+	Rect											drawField;
 	SpriteFactory									spriteFactory;
 	std::map<TileType, std::unique_ptr<Tileset>>	tileset;
 	Grid											grid;
@@ -20,7 +21,7 @@ class Map{
 	void LoadTilesets();
 
 public:
-	Map(void);
+	Map(const Rect& screen);
 	~Map(void);
 
 	void Render(void);

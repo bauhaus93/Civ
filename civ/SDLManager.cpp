@@ -4,18 +4,16 @@ using namespace std;
 
 SDL* SDL::instance = nullptr;
 
-SDL::SDL(const string& windowName, int x, int y, int width, int height):
-	sizeX{ width },
-	sizeY{ height }{
-
-	atexit(SDL::Release);
+SDL::SDL(const string& windowName, const Rect& screen):
+	sizeX{ screen.w },
+	sizeY{ screen.h }{
 
 	if (SDL_Init(SDL_INIT_VIDEO) != 0){
 		throw SDLException("SDL_Init");
 	}
 	common::Log("SDL initialized!");
 
-	window = SDL_CreateWindow(windowName.c_str(), x, y, width, height, SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow(windowName.c_str(), screen.x, screen.y, screen.w, screen.h, SDL_WINDOW_SHOWN);
 	if (window == nullptr)
 		throw SDLException("SDL_CreateWindow");
 

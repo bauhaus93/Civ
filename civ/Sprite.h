@@ -18,6 +18,7 @@
 //static void TextureOnTexture(SDL_Texture *src, const SDL_Rect& srcRect, SDL_Texture *dest, const SDL_Rect& destRect);
 
 class Sprite{
+	friend class	Renderer;
 
 	SDL_Texture*	texture;
 	SDL_Rect		rect;

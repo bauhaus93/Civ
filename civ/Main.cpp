@@ -4,19 +4,14 @@
 #include <string>
 #include <memory>
 
-#ifdef _WIN32
-#include <sdl\SDL.h>
-#undef main
-#endif
-
-#ifdef __linux__
-#include <SDL2/SDL.h>
-#endif
-
 #include "SDLManager.h"
 #include "Game.h"
 
 using namespace std;
+
+#ifdef _WIN32
+#undef main
+#endif
 
 int main(int argc, char **argv){
 	unique_ptr<Game> game = nullptr;
@@ -24,7 +19,7 @@ int main(int argc, char **argv){
 	common::Seed();
 
 	try{
-		SDL::Init("Civ", 50, 50, 1024, 768);
+		SDL::Init("Civ", Rect{ 50, 50, 1024, 768 });
 	}
 	catch (const SDLException& e){
 		common::Log(e);
