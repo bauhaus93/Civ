@@ -34,5 +34,6 @@ public:
 	void			Render(int x, int y);
 	Uint32			GetFormat(void) const;
 	const SDL_Rect&	GetRect() const;
+	RGBAColor		PixelAt(int x, int y);
 };
 

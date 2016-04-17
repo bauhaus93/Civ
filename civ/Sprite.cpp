@@ -98,6 +98,21 @@ const SDL_Rect& Sprite::GetRect() const{
 	return rect;
 }
 
+RGBAColor Sprite::PixelAt(int x, int y){
+	uint32_t pixels = 0;
+	SDL_Rect r{ x, y, 1, 1 };
+
+	if (SDL_SetRenderTarget(SDL::Instance().GetRenderer(), texture) == -1)
+		throw SDLException("SDL_SetRenderTarget");
+
+	if (SDL_RenderReadPixels(SDL::Instance().GetRenderer(), &r, SDL_PIXELFORMAT_RGBA8888, &pixels, 4*rect.w) < 0)	//FUCK YOU
+		throw SDLException("SDL_RenderReadPixels");
+
+	if (SDL_SetRenderTarget(SDL::Instance().GetRenderer(), nullptr) == -1)
+		throw SDLException("SDL_SetRenderTarget");
+
+	return move(RGBAColor{ (pixels >> 24) & 0xFF, (pixels >> 16) & 0xFF, (pixels >> 8) && 0xFF, pixels & 0xFF });
+}
 
 static void TextureOnTexture(SDL_Texture *src, const SDL_Rect& srcRect, SDL_Texture *dest, const SDL_Rect& destRect){
 	if (SDL_SetTextureBlendMode(dest, SDL_BLENDMODE_BLEND) == -1)

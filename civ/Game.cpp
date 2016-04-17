@@ -96,6 +96,8 @@ void Game::Render(void){
 	//Render on temporary Sprite
 	Sprite s{ Rect{0, 0, map.GetDrawField().w, map.GetDrawField().h} };
 	renderer.SetTarget(s);
+	renderer.SetColor(RGBAColor{ 0, 0, 0, 0xFF });
+	renderer.Clear();
 	map.Render();
 
 	//renderer.Show();	MAYBE NEEDED
@@ -109,6 +111,8 @@ void Game::Render(void){
 	for (int y = 0; y < map.GetDrawField().h; y += 32)
 		for (int x = 0; x < map.GetDrawField().w; x += 64)
 			renderer.DrawRect(Rect{ x, y, 64, 32 });
+	renderer.DrawLine(0, 0, SDL::Instance().GetScreenX(), SDL::Instance().GetScreenY());
+	renderer.DrawLine(0, SDL::Instance().GetScreenY(), SDL::Instance().GetScreenX(), 0);
 
 	renderer.Show();
 

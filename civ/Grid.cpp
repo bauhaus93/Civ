@@ -86,26 +86,78 @@ Node* Grid::LinkRows(vector<Node*>& top, vector<Node*>& bot){
 		if (advanced){
 			top[n]->LinkWithSouthwest(bot[n]);
 			if (n + 1 < bot.size())
-				top[n]->LinkWithSoutheast(bot[n+1]);
+				top[n]->LinkWithSoutheast(bot[n + 1]);
 
 		}
 		else{
 			top[n]->LinkWithSoutheast(bot[n]);
 			if (n >= 1)
-				top[n]->LinkWithSouthwest(bot[n-1]);
+				top[n]->LinkWithSouthwest(bot[n - 1]);
 		}
 		n++;
 	}
 	return bot.front();
 }
 
-void Grid::AlignViewPos(int x, int y){
-	int squareX = x / 64;
-	int squareY = y / 32;
 
-	cout << "Square(" << squareX << ", " << squareY << ")" << endl;
+void Grid::MoveView(int x, int y){
+
+	center = GetCenterNode(Rect{ 0, 0, 1024, 768 });
+
+	int diffX = x - center->GetX() - view->GetX();
+	int diffY = y - center->GetY() - view->GetY();
+	cout << "x = " << x << ", y = " << y << ", diff: " << diffX << ", " << diffY << endl;
+
+}
+
+Node* Grid::GetCenterNode(const Rect& field){
+	int x = 0;
+	int y = 0;
+	int centerX = field.w / 2;
+	int centerY = field.h / 2;
+	auto node = view;
 
 
+	static Sprite s{ Sprite(Rect{ 0, 0, 64, 32 }) };
+
+
+	while (x + 64 < centerX && y + 32 < centerY){
+		node = node->GetSoutheast()->GetSoutheast();
+		auto dummy = make_unique<Tile>(0, s);
+		dummy->InitializeSprite();
+		node->SetTile(move(dummy));
+		x += 64;
+		y += 32;
+	}
+
+	while (x + 64 < centerX){
+		node = node->GetEast();
+		auto dummy = make_unique<Tile>(0, s);
+		dummy->InitializeSprite();
+		node->SetTile(move(dummy));
+		x += 64;
+	}
+
+	while (y + 32 < centerY){
+		node = node->GetSouth();
+		auto dummy = make_unique<Tile>(0, s);
+		dummy->InitializeSprite();
+		node->SetTile(move(dummy));
+		y += 32;
+	}
+
+	x = centerX - x;
+	y = centerY - y;
+	//cout << x << ", " << y << endl;
+
+	if (x == 64 && y == 32)
+		node = node->GetSoutheast();
+
+	auto dummy = make_unique<Tile>(0, s);
+	dummy->InitializeSprite();
+	node->SetTile(move(dummy));
+
+	return node;
 }
 
 

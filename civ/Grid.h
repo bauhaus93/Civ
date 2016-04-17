@@ -14,6 +14,7 @@ class Grid{
 private:
 	Node* root;
 	Node* view;
+	Node* center;
 	
 public:
 	
@@ -27,7 +28,9 @@ public:
 	Node* LinkRows(std::vector<Node*>& top, std::vector<Node*>& bot);
 	void LinkBlock(Node* root, Node* newBlock);
 
-	void AlignViewPos(int x, int y);
+	void MoveView(int x, int y);
+
+	Node* GetCenterNode(const Rect& field);
 	
 };
 

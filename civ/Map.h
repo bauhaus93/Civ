@@ -17,6 +17,7 @@ class Map{
 	SpriteFactory									spriteFactory;
 	std::map<TileType, std::unique_ptr<Tileset>>	tileset;
 	Grid											grid;
+	std::unique_ptr<Sprite>							mouseClickComparator;
 
 	void LoadTilesets();
 

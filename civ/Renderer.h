@@ -9,10 +9,13 @@ class Renderer{
 	static Renderer* instance;
 public:
 	static Renderer& Instance(void);
+
+	
 				
 				~Renderer();
 
 	void		DrawRect(const Rect& rect);
+	void		DrawLine(int startX, int startY, int stopX, int stopY);
 	RGBAColor	SetColor(const RGBAColor& col);
 
 	void		SetTarget(Sprite& sprite);
@@ -28,6 +31,12 @@ inline Renderer& Renderer::Instance(void){
 		atexit([](){delete instance; });
 	}
 	return *instance;
+}
+
+inline void Renderer::DrawLine(int startX, int startY, int stopX, int stopY){
+
+	if (SDL_RenderDrawLine(SDL::Instance().GetRenderer(), startX, startY, stopX, stopY) < 0)
+		throw SDLException("SDL_RenderDrawLine");
 }
 
 inline void Renderer::DrawRect(const Rect& rect){
