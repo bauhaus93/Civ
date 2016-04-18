@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "Node.h"
-#include "Tileset.h"
+#include "Sprite.h"
 
 class Grid{
 
@@ -16,9 +16,12 @@ private:
 	Node* view;
 	Node* center;
 
+	std::unique_ptr<Sprite> mouseClickComparator;
+
+
 public:
 	
-	Grid();
+	Grid(std::unique_ptr<Sprite> mouseClickComparator_);
 	~Grid();
 
 	void Create(int sizeX, int sizeY);
@@ -28,7 +31,7 @@ public:
 	Node* LinkRows(std::vector<Node*>& top, std::vector<Node*>& bot);
 	void LinkBlock(Node* root, Node* newBlock);
 
-	void MoveView(int x, int y);
+	void CenterToScreen(int screenX, int screenY, const Rect& boundaries);
 
 	Node* GoRelative(Node* node, int x, int y);
 

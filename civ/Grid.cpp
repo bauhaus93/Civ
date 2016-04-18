@@ -2,10 +2,10 @@
 
 using namespace std;
 
-Grid::Grid(){
+Grid::Grid(unique_ptr<Sprite> mouseClickComparator_) :
+	mouseClickComparator{ move(mouseClickComparator_) }{
 
 }
-
 
 Grid::~Grid(){
 	vector<Node*> nodes;
@@ -24,34 +24,59 @@ Grid::~Grid(){
 void Grid::Create(int sizeX, int sizeY){
 
 	root = CreateBlock(sizeX, sizeY);
-	center = root;
+	center = root;// ->GetSoutheast();
 
 }
 
 void Grid::Render(const Rect& field){
 
-	int drawX = field.x;
-	int drawY = field.y;
-	bool advanced = false;
+	int drawX = 0;
+	int drawY = 0;
+	int startX = field.x;
+	int startY = field.y;
+	bool advanced = view->GetY() % 2 != 0;
 
+	if (view->GetY() % 2 != 0){
+		startX += 32;
+		startY -= 16;
+	}
+	
 	GridTraversalRow g{ *this };
 
+	drawY = startY;
 	while (drawY < field.h){
 		if (advanced)
-			drawX = field.x + 32;
+			drawX = startX + 32;
 		else
-			drawX = field.x;
+			drawX = startX;
 
 		while (drawX < field.w && g.HasNext()){
 			auto node = g.Next();
+
+			/*if (drawY == 0){
+				if (node->GetNorthwest() != nullptr)
+					node->GetNorthwest()->Render(drawX - 32, drawY - 16);
+			}
+
+			if (drawX <= 32){
+				if (node->GetNorthwest() != nullptr)
+					node->GetNorthwest()->Render(drawX - 32, drawY - 16);
+			}*/
+
 			static int blink = 10;
-			if(node != center)
+			if (node != center)
 				node->Render(drawX, drawY);
 			else if (blink-- < 0){
 				node->Render(drawX, drawY);
-				if(blink == -10)
+				if (blink == -10)
 					blink = 10;
 			}
+
+			/*if (drawY == 0){
+				if (node->GetNortheast() != nullptr)
+					node->GetNortheast()->Render(drawX + 32, drawY - 16);
+
+			}*/
 
 			drawX += 64;
 		}
@@ -108,11 +133,37 @@ Node* Grid::LinkRows(vector<Node*>& top, vector<Node*>& bot){
 	return bot.front();
 }
 
-void Grid::MoveView(int x, int y){
+void Grid::CenterToScreen(int screenX, int screenY, const Rect& boundaries){
 
-	int diffX = x - center->GetX() + view->GetX();
-	int diffY = y - center->GetY() + view->GetY();
-	cout << "x = " << x << ", y = " << y << ", diff: " << diffX << ", " << diffY << endl;
+	RGBAColor col = mouseClickComparator->PixelAt(screenX % 64, screenY % 32);
+
+	int relX = screenX / 64;
+	int relY = 2 * (screenY / 32);
+
+	switch (col.r){
+		case 107:
+			relX--;
+			relY--;
+			break;
+		case 159:
+			relY--;
+			break;
+		case 71:
+			relY++;
+			break;
+		case 167:
+			relX--;
+			relY++;
+		case 27:
+			break;
+		default:
+			cout << "DEFAULT SHOULD NOT HAPPEN LEL: " << (int)col.r << ", " << (int)col.g << ", " << (int)col.b << ", " << (int)col.a << endl;
+			break;
+	}
+
+	int diffX = relX - center->GetX() + view->GetX();
+	int diffY = relY - center->GetY() + view->GetY();
+	cout << "x = " << relX << ", y = " << relY << ", diff: " << diffX << ", " << diffY << endl;
 	center = GoRelative(center, diffX, diffY);
 	AlignView(center, Rect{ 0, 0, 1024, 768 });
 
@@ -180,25 +231,11 @@ Node* Grid::GoRelative(Node* node, int x, int y){
 void Grid::AlignView(Node* node, const Rect& field){
 	int x = field.w / 2;
 	int y = field.h / 2;
-	bool advanced = node->GetY() % 2 != 0;
 
 	while (y > 0){
-		if (advanced){
-			if (node->GetNorthwest() != nullptr)
-				node = node->GetNorthwest();
-			else
-				break;
-			x -= 32;
-		}
-		else{
-			if (node->GetNortheast() != nullptr)
-				node = node->GetNortheast();
-			else
-				break;
-			x += 32;
-		}
-		advanced = !advanced;
-		y -= 16;
+		if (node->GetNorth() != nullptr)
+			node = node->GetNorth();
+		y -= 32;
 	}
 
 	while (x > 0){

@@ -16,16 +16,15 @@ class Map{
 	Rect											drawField;
 	SpriteFactory									spriteFactory;
 	std::map<TileType, std::unique_ptr<Tileset>>	tileset;
-	Grid											grid;
-	std::unique_ptr<Sprite>							mouseClickComparator;
+	std::unique_ptr<Grid>							grid;
 
-	void LoadTilesets();
+	void		LoadTilesets();
 
 public:
 				Map(const Rect& screen);
 				~Map(void);
 
-	void		AlignViewPos(int x, int y);
+	void		Clicked(int screenX, int screenY);
 	const Rect&	GetDrawField() const{ return drawField; }
 
 	void		Render(void);
