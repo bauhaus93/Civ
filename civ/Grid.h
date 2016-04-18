@@ -15,7 +15,7 @@ private:
 	Node* root;
 	Node* view;
 	Node* center;
-	
+
 public:
 	
 	Grid();
@@ -29,6 +29,12 @@ public:
 	void LinkBlock(Node* root, Node* newBlock);
 
 	void MoveView(int x, int y);
+
+	Node* GoRelative(Node* node, int x, int y);
+
+	void AlignView(Node* node, const Rect & field);
+
+	void AlignViewToCenter(const Rect & field);
 
 	Node* GetCenterNode(const Rect& field);
 	

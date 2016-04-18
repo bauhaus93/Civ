@@ -3,7 +3,7 @@
 using namespace std;
 
 Map::Map(const Rect& field) :
-	drawField{ field.x, field.y, field.w, field.h }{
+	drawField{ field }{
 
 	spriteFactory.AddImage("bmp/TERRAIN1.bmp", "terrain1");
 	spriteFactory.AddImage("bmp/TERRAIN2.bmp", "terrain2");
@@ -17,6 +17,7 @@ Map::Map(const Rect& field) :
 	LoadTilesets();
 
 	grid.Create(64, 64);
+	grid.AlignViewToCenter(field);
 
 	GridTraversal g{ grid };
 
@@ -38,8 +39,6 @@ void Map::AlignViewPos(int x, int y){
 
 	RGBAColor col = mouseClickComparator->PixelAt(63, 31);
 	cout << (int)col.r << ", " << (int)col.g << ", " << (int)col.b << ", " << (int)col.a << endl;
-
-	//cout << "square: " << (x / 64) << ", " << (y / 32) << endl;
 
 	if (x >= 0 && x < drawField.w && y >= 0 && y < drawField.h){
 		RGBAColor col = mouseClickComparator->PixelAt(x % 64, y % 32);
@@ -66,11 +65,6 @@ void Map::AlignViewPos(int x, int y){
 				cout << "DEFAULT SHOULD NOT HAPPEN LEL: " << (int)col.r << ", " << (int)col.g << ", " << (int)col.b << ", " << (int)col.a << endl;
 				break;
 		}
-
-		//cout << "square: " << (x % 64) << ", " << (y % 32) << endl;
-		
-		//cout << (int)col.r << ", " << (int)col.g << ", " << (int)col.b << ", " << (int)col.a << endl;
-		
 		grid.MoveView(relX, relY);
 	}
 }

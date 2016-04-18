@@ -109,8 +109,10 @@ void Game::Render(void){
 
 	renderer.SetColor(RGBAColor{ 0xFF, 0, 0, 0xFF });
 	for (int y = 0; y < map.GetDrawField().h; y += 32)
-		for (int x = 0; x < map.GetDrawField().w; x += 64)
-			renderer.DrawRect(Rect{ x, y, 64, 32 });
+		renderer.DrawLine(0, y, map.GetDrawField().w, y);
+	for (int x = 0; x < map.GetDrawField().w; x += 64)
+		renderer.DrawLine(x, 0, x, map.GetDrawField().h);
+
 	renderer.DrawLine(0, 0, SDL::Instance().GetScreenX(), SDL::Instance().GetScreenY());
 	renderer.DrawLine(0, SDL::Instance().GetScreenY(), SDL::Instance().GetScreenX(), 0);
 
