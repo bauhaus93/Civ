@@ -11,7 +11,7 @@ namespace common{
 	extern std::mt19937 generator;
 	extern std::uniform_int_distribution<> distributionStd;
 	extern std::uniform_int_distribution<> distribution100;
-	extern std::chrono::high_resolution_clock timer;
+	extern std::chrono::steady_clock timer;
 
 	void Log(const std::string& msg);
 	void Log(const std::exception& e);

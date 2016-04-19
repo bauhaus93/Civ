@@ -111,7 +111,7 @@ RGBAColor Sprite::PixelAt(int x, int y){
 	if (SDL_SetRenderTarget(SDL::Instance().GetRenderer(), nullptr) == -1)
 		throw SDLException("SDL_SetRenderTarget");
 
-	return move(RGBAColor{ (pixels >> 24) & 0xFF, (pixels >> 16) & 0xFF, (pixels >> 8) && 0xFF, pixels & 0xFF });
+	return move(RGBAColor{ static_cast<uint8_t>((pixels >> 24) & 0xFF), static_cast<uint8_t>((pixels >> 16) & 0xFF), static_cast<uint8_t>((pixels >> 8) && 0xFF), static_cast<uint8_t>(pixels & 0xFF) });
 }
 
 static void TextureOnTexture(SDL_Texture *src, const SDL_Rect& srcRect, SDL_Texture *dest, const SDL_Rect& destRect){
