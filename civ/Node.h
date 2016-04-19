@@ -7,8 +7,6 @@
 #define GET_NEIGHBOUR(a, b) {if(a() != nullptr) return a()->b();\
 							else if(b() != nullptr) return b()->a();\
 							return nullptr;}
-
-
 class Node{
 
 	std::unique_ptr<Tile> tile;

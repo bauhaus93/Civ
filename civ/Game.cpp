@@ -50,7 +50,6 @@ void Game::Tick(void){
 			default:
 				break;
 		}
-		//TODO: Process Events
 	}
 
 	Render();
@@ -83,7 +82,6 @@ void Game::WindowEvent(SDL_Event& e){
 void Game::MouseEvent(SDL_Event& e){
 	if (e.button.button == SDL_BUTTON_LEFT)
 		map.Clicked(e.button.x, e.button.y);
-
 }
 
 /* Render times:

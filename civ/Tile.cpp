@@ -9,7 +9,6 @@ Tile::Tile(TileType type_, Sprite& floor_) :
 	resource{ -1 }{
 }
 
-
 Tile::~Tile(){
 }
 

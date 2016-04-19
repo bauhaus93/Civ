@@ -59,16 +59,3 @@ public:
 	virtual Node* Next(void);
 	bool HasNext(void) const{ return curr != nullptr; }
 };
-
-class GridTraversalRow: public GridTraversal{
-
-public:
-	GridTraversalRow(Grid& grid);
-	virtual ~GridTraversalRow(void);
-	virtual Node* Next(void) override;
-	void NextRow(void);
-	bool HasNextRow(void){ return rowFirst != nullptr; }
-};
-
-
-

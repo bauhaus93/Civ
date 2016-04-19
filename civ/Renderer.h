@@ -15,6 +15,7 @@ public:
 				~Renderer();
 
 	void		DrawRect(const Rect& rect);
+	void		DrawFillRect(const Rect & rect);
 	void		DrawLine(int startX, int startY, int stopX, int stopY);
 	RGBAColor	SetColor(const RGBAColor& col);
 
@@ -43,6 +44,13 @@ inline void Renderer::DrawRect(const Rect& rect){
 	const SDL_Rect sdlRect{ rect.x, rect.y, rect.w, rect.h };
 
 	if (SDL_RenderDrawRect(SDL::Instance().GetRenderer(), &sdlRect) < 0)
+		throw SDLException("SDL_RenderDrawRect");
+}
+
+inline void Renderer::DrawFillRect(const Rect& rect){
+	const SDL_Rect sdlRect{ rect.x, rect.y, rect.w, rect.h };
+
+	if (SDL_RenderFillRect(SDL::Instance().GetRenderer(), &sdlRect) < 0)
 		throw SDLException("SDL_RenderDrawRect");
 }
 

@@ -24,21 +24,23 @@ Grid::~Grid(){
 void Grid::Create(int sizeX, int sizeY){
 
 	root = CreateBlock(sizeX, sizeY);
-	center = root;// ->GetSoutheast();
-
+	center = root;
+	view = root;
 }
 
 void Grid::Render(const Rect& field){
 
-	int drawX = 0;
-	int drawY = 0;
-
-	bool advanced = view->GetY() % 2 != 0;
-	bool advancedView = advanced;
 	Node* curr = view;
+	bool advanced = curr->GetY() % 2 != 0;
+	bool advancedView = advanced;
+	int drawX = field.x;
+	int drawY = field.y;
 
+	if (advanced)
+		drawX += 64;
+	
 	if (curr->GetNorthwest() != nullptr)
-		curr->GetNorthwest()->Render(field.x - 32, field.y - 16);
+		curr->GetNorthwest()->Render(drawX - 32, field.y - 16);
 
 	if (curr->GetNortheast() != nullptr){
 		curr->GetNortheast()->RenderRow(drawX + 32, drawY - 16, field.w);
@@ -49,7 +51,6 @@ void Grid::Render(const Rect& field){
 			drawX = field.x + 32;
 		else
 			drawX = field.x;
-	
 
 		if (advanced){
 			drawX += 32;
@@ -59,19 +60,21 @@ void Grid::Render(const Rect& field){
 					curr->GetWest()->GetNorthwest()->Render(drawX - 96, drawY - 16);
 			}
 		}
-				
 
 		curr->RenderRow(drawX, drawY, field.w);
 
 		if (curr == view){
 			Renderer::Instance().SetColor(RGBAColor{ 0xFF, 0, 0, 0xFF });
-			Renderer::Instance().DrawRect(Rect{ drawX + 32 - 5, drawY + 16 - 5, 10, 10 });
+			Renderer::Instance().DrawFillRect(Rect{ drawX + 32 - 5, drawY + 16 - 5, 10, 10 });
 		}
 
 		if (advanced)
 			curr = curr->GetSouthwest();
 		else
 			curr = curr->GetSoutheast();
+
+		if (curr == nullptr)
+			break;
 
 		advanced = !advanced;
 		drawY += 16;
@@ -264,61 +267,9 @@ void Grid::AlignViewToCenter(const Rect& field){
 	AlignView(center, field);
 }
 
-Node* Grid::GetCenterNode(const Rect& field){
-	int x = 0;
-	int y = 0;
-	int centerX = field.w / 2;
-	int centerY = field.h / 2;
-	auto node = view;
-
-	//static Sprite s{ Sprite(Rect{ 0, 0, 64, 32 }) };
-
-
-	while (x + 64 < centerX && y + 32 < centerY){
-		node = node->GetSoutheast()->GetSoutheast();
-		/*auto dummy = make_unique<Tile>(0, s);
-		dummy->InitializeSprite();
-		node->SetTile(move(dummy));*/
-		x += 64;
-		y += 32;
-	}
-
-	while (x + 64 < centerX){
-		node = node->GetEast();
-		/*auto dummy = make_unique<Tile>(0, s);
-		dummy->InitializeSprite();
-		node->SetTile(move(dummy));*/
-		x += 64;
-	}
-
-	while (y + 32 < centerY){
-		node = node->GetSouth();
-		/*auto dummy = make_unique<Tile>(0, s);
-		dummy->InitializeSprite();
-		node->SetTile(move(dummy));*/
-		y += 32;
-	}
-
-	x = centerX - x;
-	y = centerY - y;
-	//cout << x << ", " << y << endl;
-
-	if (x == 64 && y == 32)
-		node = node->GetSoutheast();
-
-	/*auto dummy = make_unique<Tile>(0, s);
-	dummy->InitializeSprite();
-	node->SetTile(move(dummy));*/
-
-	return node;
-}
-
-
-
-
 GridTraversal::GridTraversal(Grid& grid) :
-	curr{ grid.view },
-	rowFirst{ grid.view }{
+	curr{ grid.root },
+	rowFirst{ grid.root }{
 
 	if (curr->GetY() % 2 != 0)
 		advanced = true;
@@ -343,27 +294,4 @@ Node* GridTraversal::Next(void){
 		advanced = !advanced;
 	}
 	return currReturn;
-}
-
-GridTraversalRow::GridTraversalRow(Grid & grid) :
-	GridTraversal{ grid }{
-}
-
-GridTraversalRow::~GridTraversalRow(void){
-}
-
-Node * GridTraversalRow::Next(void){
-	auto currReturn = curr;
-	curr = curr->GetEast();
-
-	return currReturn;
-}
-
-void GridTraversalRow::NextRow(void){
-	if (advanced)
-		curr = rowFirst->GetSouthwest();
-	else
-		curr = rowFirst->GetSoutheast();
-	rowFirst = curr;
-	advanced = !advanced;
 }
