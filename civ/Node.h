@@ -24,8 +24,10 @@ class Node{
 public:
 					Node(int x_, int y_);
 					~Node();
+					
 	inline void		SetTile(std::unique_ptr<Tile> tile_);
 	inline void		Render(int x, int y);
+	void			RenderRow(int startX, int startY, int maxX);
 	int				GetX(void) const{ return x; };
 	int				GetY(void) const{ return y; }
 

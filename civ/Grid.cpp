@@ -32,58 +32,48 @@ void Grid::Render(const Rect& field){
 
 	int drawX = 0;
 	int drawY = 0;
-	int startX = field.x;
-	int startY = field.y;
+
 	bool advanced = view->GetY() % 2 != 0;
+	bool advancedView = advanced;
+	Node* curr = view;
 
-	if (view->GetY() % 2 != 0){
-		startX += 32;
-		startY -= 16;
+	if (curr->GetNorthwest() != nullptr)
+		curr->GetNorthwest()->Render(field.x - 32, field.y - 16);
+
+	if (curr->GetNortheast() != nullptr){
+		curr->GetNortheast()->RenderRow(drawX + 32, drawY - 16, field.w);
 	}
-	
-	GridTraversalRow g{ *this };
 
-	drawY = startY;
 	while (drawY < field.h){
-		if (advanced)
-			drawX = startX + 32;
+		if (advancedView)
+			drawX = field.x + 32;
 		else
-			drawX = startX;
+			drawX = field.x;
+	
 
-		while (drawX < field.w && g.HasNext()){
-			auto node = g.Next();
-
-			/*if (drawY == 0){
-				if (node->GetNorthwest() != nullptr)
-					node->GetNorthwest()->Render(drawX - 32, drawY - 16);
+		if (advanced){
+			drawX += 32;
+			if (curr->GetWest() != nullptr){
+				curr->GetWest()->Render(drawX - 64, drawY);
+				if (advancedView && curr->GetWest()->GetNorthwest() != nullptr)
+					curr->GetWest()->GetNorthwest()->Render(drawX - 96, drawY - 16);
 			}
-
-			if (drawX <= 32){
-				if (node->GetNorthwest() != nullptr)
-					node->GetNorthwest()->Render(drawX - 32, drawY - 16);
-			}*/
-
-			static int blink = 10;
-			if (node != center)
-				node->Render(drawX, drawY);
-			else if (blink-- < 0){
-				node->Render(drawX, drawY);
-				if (blink == -10)
-					blink = 10;
-			}
-
-			/*if (drawY == 0){
-				if (node->GetNortheast() != nullptr)
-					node->GetNortheast()->Render(drawX + 32, drawY - 16);
-
-			}*/
-
-			drawX += 64;
 		}
+				
+
+		curr->RenderRow(drawX, drawY, field.w);
+
+		if (curr == view){
+			Renderer::Instance().SetColor(RGBAColor{ 0xFF, 0, 0, 0xFF });
+			Renderer::Instance().DrawRect(Rect{ drawX + 32 - 5, drawY + 16 - 5, 10, 10 });
+		}
+
+		if (advanced)
+			curr = curr->GetSouthwest();
+		else
+			curr = curr->GetSoutheast();
+
 		advanced = !advanced;
-		if (!g.HasNextRow())
-			break;
-		g.NextRow();
 		drawY += 16;
 	}
 }
@@ -135,6 +125,9 @@ Node* Grid::LinkRows(vector<Node*>& top, vector<Node*>& bot){
 
 void Grid::CenterToScreen(int screenX, int screenY, const Rect& boundaries){
 
+	if (view->GetY() % 2 != 0)
+		screenX += 32;
+
 	RGBAColor col = mouseClickComparator->PixelAt(screenX % 64, screenY % 32);
 
 	int relX = screenX / 64;
@@ -165,7 +158,7 @@ void Grid::CenterToScreen(int screenX, int screenY, const Rect& boundaries){
 	int diffY = relY - center->GetY() + view->GetY();
 	cout << "x = " << relX << ", y = " << relY << ", diff: " << diffX << ", " << diffY << endl;
 	center = GoRelative(center, diffX, diffY);
-	AlignView(center, Rect{ 0, 0, 1024, 768 });
+	AlignView(center, boundaries);
 
 	cout << "center @ " << center->GetX() << ", " << center->GetY() << endl;
 	cout << "view @ " << view->GetX() << ", " << view->GetY() << endl;
@@ -232,19 +225,38 @@ void Grid::AlignView(Node* node, const Rect& field){
 	int x = field.w / 2;
 	int y = field.h / 2;
 
-	while (y > 0){
-		if (node->GetNorth() != nullptr)
-			node = node->GetNorth();
-		y -= 32;
+	static Sprite s{ Sprite(Rect{ 0, 0, 64, 32 }) };
+
+	cout << x << ", " << y << endl;
+
+	while (x - 16 >= 0 && y - 8 >= 0){
+		if (node->GetNorthwest() != nullptr)
+			node = node->GetNorthwest();
+		else
+			break;
+		x -= 32;
+		y -= 16;
+		cout << "go NW" << endl;
 	}
 
-	while (x > 0){
+	while (x - 32 >= 0){
 		if (node->GetWest() != nullptr)
 			node = node->GetWest();
 		else
 			break;
 		x -= 64;
+		cout << "go W" << endl;
 	}
+
+	while (y - 16 >= 0){
+		if (node->GetNorth() != nullptr)
+			node = node->GetNorth();
+		else
+			break;
+		y -= 32;
+		cout << "go N" << endl;
+	}
+	cout << "left: " << x << ", " << y << endl;
 	view = node;
 }
 
@@ -308,7 +320,7 @@ GridTraversal::GridTraversal(Grid& grid) :
 	curr{ grid.view },
 	rowFirst{ grid.view }{
 
-	if (curr->GetSouthwest() != nullptr)
+	if (curr->GetY() % 2 != 0)
 		advanced = true;
 	else
 		advanced = false;

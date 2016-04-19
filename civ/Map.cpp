@@ -13,7 +13,7 @@ Map::Map(const Rect& field) :
 	LoadTilesets();
 
 	grid = make_unique<Grid>(spriteFactory.CreateDiamondSprite("terrain1", 66, 447));
-	grid->Create(64, 64);
+	grid->Create(100, 200);
 	grid->AlignViewToCenter(field);
 
 	GridTraversal g{ *grid };

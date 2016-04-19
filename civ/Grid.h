@@ -5,6 +5,7 @@
 
 #include "Node.h"
 #include "Sprite.h"
+#include "Renderer.h"
 
 class Grid{
 
@@ -41,6 +42,8 @@ public:
 
 	Node* GetCenterNode(const Rect& field);
 	
+	
+
 };
 
 class GridTraversal{
