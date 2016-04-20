@@ -1,8 +1,8 @@
 #include "Grid.h"
 
-#define SET_DUMMY(tile) {	auto dummyTile = make_unique<Tile>(0, *dummySprite); \
+#define SET_DUMMY(node) {	auto dummyTile = make_unique<Tile>(0, *dummySprite); \
 							dummyTile->InitializeSprite();\
-							tile->SetTile(move(dummyTile)); }
+							node->SetTile(move(dummyTile)); }
 
 using namespace std;
 
@@ -61,7 +61,6 @@ void Grid::Render(const Rect& field){
 			Renderer::Instance().SetColor(RGBAColor{ 0xFF, 0, 0, 0xFF });
 			Renderer::Instance().DrawFillRect(Rect{ drawX + 32 - 5, drawY + 16 - 5, 10, 10 });
 		}
-
 
 		if (fullFirst){
 			curr = curr->GetSouthwest();
@@ -131,9 +130,6 @@ Node* Grid::LinkRows(vector<Node*>& top, vector<Node*>& bot){
 }
 
 void Grid::CenterToScreen(int screenX, int screenY, const Rect& boundaries){
-
-	//if (view->GetY() % 2 != 0)
-	//	screenX += 32;
 
 	RGBAColor col = mouseClickComparator->PixelAt(screenX % 64, screenY % 32);
 
@@ -237,7 +233,7 @@ void Grid::AlignView(Node* node, const Rect& field){
 	int x = field.w / 2;
 	int y = field.h / 2;
 
-	while (x >= 32){
+	while (x >= 64){
 		if (node->GetWest() != nullptr)
 			node = node->GetWest();
 		else
@@ -245,7 +241,8 @@ void Grid::AlignView(Node* node, const Rect& field){
 		x -= 64;
 	}
 
-	while (y >= 16){
+
+	while (y >= 32){
 		if (node->GetNorth() != nullptr)
 			node = node->GetNorth();
 		else
@@ -253,15 +250,18 @@ void Grid::AlignView(Node* node, const Rect& field){
 		y -= 32;
 	}
 
-	if (x >= 32 && y >= 8){
+	//if view is on top boundary try to get the NW node as view
+	if (node->GetNorth() == nullptr){
 		if (node->GetNorthwest() != nullptr)
 			node = node->GetNorthwest();
-		x -= 32;
-		y -= 16;
+	}
+	else if (node->GetWest() != nullptr){		//if view is not on any boundary, get SE node as view
+		node = node->GetSoutheast();
 	}
 
-	if (node->IsOdd() && x > 0)
+	if (node->IsOdd() && node->GetWest() == nullptr){
 		advanceAll = true;
+	}
 	else
 		advanceAll = false;
 
