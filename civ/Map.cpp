@@ -23,6 +23,8 @@ Map::Map(const Rect& field) :
 		node->SetTile(move(tileset.at(static_cast<TileType>(common::Random(0, 6)))->CreateTile()));
 	}
 
+	
+
 }
 
 

@@ -16,7 +16,6 @@ Node::~Node(){
 
 }
 
-
 void Node::RenderRow(int screenX, int screenY, int maxX){
 	Node* curr = this;
 

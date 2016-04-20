@@ -30,7 +30,6 @@ public:
 
 	Node* CreateBlock(int sizeX, int sizeY);
 	Node* LinkRows(std::vector<Node*>& top, std::vector<Node*>& bot);
-	void LinkBlock(Node* root, Node* newBlock);
 
 	void CenterToScreen(int screenX, int screenY, const Rect& boundaries);
 
@@ -39,10 +38,6 @@ public:
 	void AlignView(Node* node, const Rect & field);
 
 	void AlignViewToCenter(const Rect & field);
-
-	Node* GetCenterNode(const Rect& field);
-	
-	
 
 };
 

@@ -1,10 +1,17 @@
 #include "Grid.h"
 
+#define SET_DUMMY(tile) {	auto dummyTile = make_unique<Tile>(0, *dummySprite); \
+							dummyTile->InitializeSprite();\
+							tile->SetTile(move(dummyTile)); }
+
 using namespace std;
+
+static unique_ptr<Sprite> dummySprite = nullptr;
 
 Grid::Grid(unique_ptr<Sprite> mouseClickComparator_) :
 	mouseClickComparator{ move(mouseClickComparator_) }{
-
+	if (dummySprite == nullptr)
+		dummySprite = make_unique<Sprite>(Rect{ 0, 0, 64, 32 });
 }
 
 Grid::~Grid(){
@@ -38,7 +45,7 @@ void Grid::Render(const Rect& field){
 
 	if (advanced)
 		drawX += 64;
-	
+
 	if (curr->GetNorthwest() != nullptr)
 		curr->GetNorthwest()->Render(drawX - 32, field.y - 16);
 
@@ -157,10 +164,15 @@ void Grid::CenterToScreen(int screenX, int screenY, const Rect& boundaries){
 			break;
 	}
 
+	//cout << "SQUARE: " << (screenX / 64) << ", " << (screenY / 32) << endl;
+
 	int diffX = relX - center->GetX() + view->GetX();
 	int diffY = relY - center->GetY() + view->GetY();
-	cout << "x = " << relX << ", y = " << relY << ", diff: " << diffX << ", " << diffY << endl;
+	//cout << "x = " << relX << ", y = " << relY << ", diff: " << diffX << ", " << diffY << endl;
 	center = GoRelative(center, diffX, diffY);
+
+
+	SET_DUMMY(center);
 	AlignView(center, boundaries);
 
 	cout << "center @ " << center->GetX() << ", " << center->GetY() << endl;
@@ -228,38 +240,36 @@ void Grid::AlignView(Node* node, const Rect& field){
 	int x = field.w / 2;
 	int y = field.h / 2;
 
-	static Sprite s{ Sprite(Rect{ 0, 0, 64, 32 }) };
-
-	cout << x << ", " << y << endl;
-
-	while (x - 16 >= 0 && y - 8 >= 0){
-		if (node->GetNorthwest() != nullptr)
-			node = node->GetNorthwest();
-		else
-			break;
-		x -= 32;
-		y -= 16;
-		cout << "go NW" << endl;
-	}
-
-	while (x - 32 >= 0){
+	while (x >= 64+32){
 		if (node->GetWest() != nullptr)
 			node = node->GetWest();
 		else
 			break;
 		x -= 64;
-		cout << "go W" << endl;
+		//SET_DUMMY(node);
 	}
 
-	while (y - 16 >= 0){
+	while (y >= 32+16){
 		if (node->GetNorth() != nullptr)
 			node = node->GetNorth();
 		else
 			break;
 		y -= 32;
-		cout << "go N" << endl;
+		//SET_DUMMY(node);
 	}
-	cout << "left: " << x << ", " << y << endl;
+
+	if (x >= 32+32 && y >= 16+8){
+		if (node->GetNorthwest() != nullptr)
+			node = node->GetNorthwest();
+		x -= 32;
+		y -= 16;
+		//SET_DUMMY(node);
+	}
+
+	if (node->GetY() % 2 != 0)
+		node = node->GetEast();
+
+	//cout << "left: " << x << ", " << y << endl;
 	view = node;
 }
 
