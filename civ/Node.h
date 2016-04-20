@@ -28,6 +28,7 @@ public:
 	void			RenderRow(int startX, int startY, int maxX);
 	int				GetX(void) const{ return x; };
 	int				GetY(void) const{ return y; }
+	bool			IsOdd(void) const{ return GetY() % 2 == 1; }
 
 	inline void		LinkWithNortheast(Node* ne);
 	inline void		LinkWithNorthwest(Node* nw);

@@ -38,54 +38,51 @@ void Grid::Create(int sizeX, int sizeY){
 void Grid::Render(const Rect& field){
 
 	Node* curr = view;
-	bool advanced = curr->GetY() % 2 != 0;
-	bool advancedView = advanced;
 	int drawX = field.x;
 	int drawY = field.y;
+	bool fullFirst = false;
 
-	if (advanced)
+	if (advanceAll)
 		drawX += 64;
 
-	if (curr->GetNorthwest() != nullptr)
-		curr->GetNorthwest()->Render(drawX - 32, field.y - 16);
-
-	if (curr->GetNortheast() != nullptr){
+	//special case row over view node
+	if (curr->GetNortheast() != nullptr)
 		curr->GetNortheast()->RenderRow(drawX + 32, drawY - 16, field.w);
-	}
 
 	while (drawY < field.h){
-		if (advancedView)
-			drawX = field.x + 32;
-		else
-			drawX = field.x;
 
-		if (advanced){
-			drawX += 32;
-			if (curr->GetWest() != nullptr){
-				curr->GetWest()->Render(drawX - 64, drawY);
-				if (advancedView && curr->GetWest()->GetNorthwest() != nullptr)
-					curr->GetWest()->GetNorthwest()->Render(drawX - 96, drawY - 16);
-			}
-		}
+		//special case node left to first, with avoidance of overwriting first node of  preceding row
+		if (!fullFirst && curr->GetNorthwest() != nullptr)
+			curr->GetNorthwest()->Render(drawX - 32, drawY - 16);
 
 		curr->RenderRow(drawX, drawY, field.w);
 
-		if (curr == view){
+		if (curr == view || drawY + 16 >= field.h){
 			Renderer::Instance().SetColor(RGBAColor{ 0xFF, 0, 0, 0xFF });
 			Renderer::Instance().DrawFillRect(Rect{ drawX + 32 - 5, drawY + 16 - 5, 10, 10 });
 		}
 
-		if (advanced)
+
+		if (fullFirst){
 			curr = curr->GetSouthwest();
-		else
+			drawX -= 32;
+		}
+		else{
 			curr = curr->GetSoutheast();
+			drawX += 32;
+		}
 
 		if (curr == nullptr)
 			break;
 
-		advanced = !advanced;
+		fullFirst = !fullFirst;
 		drawY += 16;
 	}
+
+	//special case Node in bottom left corner (take NW of the first row out of bounds, equals to W of first node in last drawn row, but without repetitive checks in loop
+	if (curr != nullptr && curr->GetNorthwest() != nullptr)
+		curr->GetNorthwest()->Render(drawX - 32, drawY - 16);
+
 }
 
 Node* Grid::CreateBlock(int sizeX, int sizeY){
@@ -135,8 +132,8 @@ Node* Grid::LinkRows(vector<Node*>& top, vector<Node*>& bot){
 
 void Grid::CenterToScreen(int screenX, int screenY, const Rect& boundaries){
 
-	if (view->GetY() % 2 != 0)
-		screenX += 32;
+	//if (view->GetY() % 2 != 0)
+	//	screenX += 32;
 
 	RGBAColor col = mouseClickComparator->PixelAt(screenX % 64, screenY % 32);
 
@@ -240,36 +237,35 @@ void Grid::AlignView(Node* node, const Rect& field){
 	int x = field.w / 2;
 	int y = field.h / 2;
 
-	while (x >= 64+32){
+	while (x >= 32){
 		if (node->GetWest() != nullptr)
 			node = node->GetWest();
 		else
 			break;
 		x -= 64;
-		//SET_DUMMY(node);
 	}
 
-	while (y >= 32+16){
+	while (y >= 16){
 		if (node->GetNorth() != nullptr)
 			node = node->GetNorth();
 		else
 			break;
 		y -= 32;
-		//SET_DUMMY(node);
 	}
 
-	if (x >= 32+32 && y >= 16+8){
+	if (x >= 32 && y >= 8){
 		if (node->GetNorthwest() != nullptr)
 			node = node->GetNorthwest();
 		x -= 32;
 		y -= 16;
-		//SET_DUMMY(node);
 	}
 
-	if (node->GetY() % 2 != 0)
-		node = node->GetEast();
+	if (node->IsOdd() && x > 0)
+		advanceAll = true;
+	else
+		advanceAll = false;
 
-	//cout << "left: " << x << ", " << y << endl;
+	cout << "left: " << x << ", " << y << endl;
 	view = node;
 }
 

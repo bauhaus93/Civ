@@ -16,6 +16,7 @@ private:
 	Node* root;
 	Node* view;
 	Node* center;
+	bool advanceAll;
 
 	std::unique_ptr<Sprite> mouseClickComparator;
 

@@ -13,7 +13,7 @@ Map::Map(const Rect& field) :
 	LoadTilesets();
 
 	grid = make_unique<Grid>(spriteFactory.CreateDiamondSprite("terrain1", 66, 447));
-	grid->Create(100, 200);
+	grid->Create(75, 120);
 	grid->AlignViewToCenter(field);
 
 	GridTraversal g{ *grid };
@@ -22,7 +22,6 @@ Map::Map(const Rect& field) :
 		auto node = g.Next();
 		node->SetTile(move(tileset.at(static_cast<TileType>(common::Random(0, 6)))->CreateTile()));
 	}
-
 	
 
 }
