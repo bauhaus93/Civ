@@ -32,13 +32,13 @@ public:
 	Node* CreateBlock(int sizeX, int sizeY);
 	Node* LinkRows(std::vector<Node*>& top, std::vector<Node*>& bot);
 
-	void CenterToScreen(int screenX, int screenY, const Rect& boundaries);
+	void CenterToScreen(int screenX, int screenY, int maxX, int maxY);
 
 	Node* GoRelative(Node* node, int x, int y);
 
-	void AlignView(Node* node, const Rect & field);
+	void AlignView(Node* node, int screenSizeX, int screenSizeY);
 
-	void AlignViewToCenter(const Rect & field);
+	void AlignViewToCenter(int screenSizeX, int screenSizeY);
 
 };
 

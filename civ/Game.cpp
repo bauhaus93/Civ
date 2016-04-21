@@ -92,27 +92,7 @@ void Game::Render(void){
 	auto start = common::Time();
 
 	//Render on temporary Sprite
-	Sprite s{ Rect{0, 0, map.GetDrawField().w, map.GetDrawField().h} };
-	renderer.SetTarget(s);
-	renderer.SetColor(RGBAColor{ 0, 0, 0, 0xFF });
-	renderer.Clear();
 	map.Render();
-
-	//renderer.Show();	MAYBE NEEDED
-
-	//Draw Sprite on Screen
-	renderer.SetStdTarget();
-	renderer.Clear();
-	s.Render(0, 0);
-
-	renderer.SetColor(RGBAColor{ 0xFF, 0, 0, 0xFF });
-	for (int y = 0; y < map.GetDrawField().h; y += 32)
-		renderer.DrawLine(0, y, map.GetDrawField().w, y);
-	for (int x = 0; x < map.GetDrawField().w; x += 64)
-		renderer.DrawLine(x, 0, x, map.GetDrawField().h);
-
-	renderer.DrawLine(0, 0, SDL::Instance().GetScreenX(), SDL::Instance().GetScreenY());
-	renderer.DrawLine(0, SDL::Instance().GetScreenY(), SDL::Instance().GetScreenX(), 0);
 
 	renderer.Show();
 

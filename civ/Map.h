@@ -9,6 +9,7 @@
 #include "Tile.h"
 #include "Grid.h"
 #include "Node.h"
+#include "Renderer.h"
 
 
 class Map{
@@ -17,15 +18,15 @@ class Map{
 	SpriteFactory									spriteFactory;
 	std::map<TileType, std::unique_ptr<Tileset>>	tileset;
 	std::unique_ptr<Grid>							grid;
+	bool change;
 
 	void		LoadTilesets();
 
 public:
-				Map(const Rect& screen);
+				Map(const Rect& drawField_);
 				~Map(void);
 
 	void		Clicked(int screenX, int screenY);
-	const Rect&	GetDrawField() const{ return drawField; }
 
 	void		Render(void);
 };

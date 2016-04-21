@@ -2,8 +2,8 @@
 
 using namespace std;
 
-Map::Map(const Rect& field) :
-	drawField{ field }{
+Map::Map(const Rect& drawField_) :
+	drawField{ drawField_ }{
 
 	spriteFactory.AddImage("bmp/TERRAIN1.bmp", "terrain1");
 	spriteFactory.AddImage("bmp/TERRAIN2.bmp", "terrain2");
@@ -14,7 +14,7 @@ Map::Map(const Rect& field) :
 
 	grid = make_unique<Grid>(spriteFactory.CreateDiamondSprite("terrain1", 66, 447));
 	grid->Create(75, 120);
-	grid->AlignViewToCenter(field);
+	grid->AlignViewToCenter(drawField.w, drawField.h);
 
 	GridTraversal g{ *grid };
 
@@ -22,7 +22,7 @@ Map::Map(const Rect& field) :
 		auto node = g.Next();
 		node->SetTile(move(tileset.at(static_cast<TileType>(common::Random(0, 6)))->CreateTile()));
 	}
-	
+	change = true;
 
 }
 
@@ -34,11 +34,11 @@ Map::~Map(void){
 void Map::Clicked(int screenX, int screenY){
 	screenX -= drawField.x;
 	screenY -= drawField.y;
-	const Rect boundaries{ 0, 0, drawField.w, drawField.h };
 
 	if (screenX >= 0 && screenX < drawField.w && screenY >= 0 && screenY < drawField.h){
-		grid->CenterToScreen(screenX, screenY, boundaries);
+		grid->CenterToScreen(screenX, screenY, drawField.w, drawField.h);
 	}
+	change = true;
 }
 
 void Map::LoadTilesets(){
@@ -116,5 +116,17 @@ void Map::LoadTilesets(){
 }
 
 void Map::Render(void){
-	grid->Render(drawField);
+	static Sprite s{ Rect{ 0, 0, drawField.w, drawField.h } };
+
+	if (change){
+		Renderer::Instance().SetTarget(s);
+		Renderer::Instance().SetColor(RGBAColor{ 0, 0, 0, 0xFF });
+		Renderer::Instance().Clear();
+		grid->Render(drawField);
+		Renderer::Instance().SetStdTarget();
+		//change = false;
+	}
+
+	s.Render(drawField.x, drawField.y);
+
 }

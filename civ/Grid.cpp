@@ -57,7 +57,7 @@ void Grid::Render(const Rect& field){
 
 		curr->RenderRow(drawX, drawY, field.w);
 
-		if (curr == view || drawY + 16 >= field.h){
+		if (curr == view){
 			Renderer::Instance().SetColor(RGBAColor{ 0xFF, 0, 0, 0xFF });
 			Renderer::Instance().DrawFillRect(Rect{ drawX + 32 - 5, drawY + 16 - 5, 10, 10 });
 		}
@@ -81,6 +81,16 @@ void Grid::Render(const Rect& field){
 	//special case Node in bottom left corner (take NW of the first row out of bounds, equals to W of first node in last drawn row, but without repetitive checks in loop
 	if (curr != nullptr && curr->GetNorthwest() != nullptr)
 		curr->GetNorthwest()->Render(drawX - 32, drawY - 16);
+
+
+	Renderer::Instance().SetColor(RGBAColor{ 0xFF, 0, 0, 0xFF });
+	for (int y = field.y; y < field.h; y += 32)
+		Renderer::Instance().DrawLine(field.x, y, field.w, y);
+	for (int x = field.y; x < field.w; x += 64)
+		Renderer::Instance().DrawLine(x, field.y, x, field.h);
+
+	Renderer::Instance().DrawLine(field.x, field.y, field.w, field.h);
+	Renderer::Instance().DrawLine(field.x, field.h, field.w, field.y);
 
 }
 
@@ -129,7 +139,10 @@ Node* Grid::LinkRows(vector<Node*>& top, vector<Node*>& bot){
 	return bot.front();
 }
 
-void Grid::CenterToScreen(int screenX, int screenY, const Rect& boundaries){
+void Grid::CenterToScreen(int screenX, int screenY, int maxX, int maxY){
+
+	/*if (advanceAll)
+		screenX += 64;*/
 
 	RGBAColor col = mouseClickComparator->PixelAt(screenX % 64, screenY % 32);
 
@@ -138,19 +151,24 @@ void Grid::CenterToScreen(int screenX, int screenY, const Rect& boundaries){
 
 	switch (col.r){
 		case 107:
+			cout << "TOP LEFT of " << (screenX / 64) << ", " << (screenY / 32) << endl;
 			relX--;
 			relY--;
 			break;
 		case 159:
+			cout << "TOP of " << (screenX / 64) << ", " << (screenY / 32) << endl;
 			relY--;
 			break;
 		case 71:
+			cout << "BOT of " << (screenX / 64) << ", " << (screenY / 32) << endl;
 			relY++;
 			break;
 		case 167:
+			cout << "BOT LEFT of " << (screenX / 64) << ", " << (screenY / 32) << endl;
 			relX--;
 			relY++;
 		case 27:
+			cout << "EXACT of " << (screenX / 64) << ", " << (screenY / 32) << endl;
 			break;
 		default:
 			cout << "DEFAULT SHOULD NOT HAPPEN LEL: " << (int)col.r << ", " << (int)col.g << ", " << (int)col.b << ", " << (int)col.a << endl;
@@ -161,12 +179,12 @@ void Grid::CenterToScreen(int screenX, int screenY, const Rect& boundaries){
 
 	int diffX = relX - center->GetX() + view->GetX();
 	int diffY = relY - center->GetY() + view->GetY();
-	//cout << "x = " << relX << ", y = " << relY << ", diff: " << diffX << ", " << diffY << endl;
+	cout << " diff: " << diffX << ", " << diffY << endl;
 	center = GoRelative(center, diffX, diffY);
 
 
 	SET_DUMMY(center);
-	AlignView(center, boundaries);
+	AlignView(center, maxX, maxY);
 
 	cout << "center @ " << center->GetX() << ", " << center->GetY() << endl;
 	cout << "view @ " << view->GetX() << ", " << view->GetY() << endl;
@@ -174,7 +192,6 @@ void Grid::CenterToScreen(int screenX, int screenY, const Rect& boundaries){
 
 Node* Grid::GoRelative(Node* node, int x, int y){
 
-	static Sprite s{ Sprite(Rect{ 0, 0, 64, 32 }) };
 
 	while (x > 0){
 		if (node->GetEast() != nullptr)
@@ -229,9 +246,9 @@ Node* Grid::GoRelative(Node* node, int x, int y){
 	return node;
 }
 
-void Grid::AlignView(Node* node, const Rect& field){
-	int x = field.w / 2;
-	int y = field.h / 2;
+void Grid::AlignView(Node* node, int screenSizeX, int screenSizeY){
+	int x = screenSizeX / 2;
+	int y = screenSizeY / 2;
 
 	while (x >= 64){
 		if (node->GetWest() != nullptr)
@@ -265,12 +282,12 @@ void Grid::AlignView(Node* node, const Rect& field){
 	else
 		advanceAll = false;
 
-	cout << "left: " << x << ", " << y << endl;
+	//cout << "left: " << x << ", " << y << endl;
 	view = node;
 }
 
-void Grid::AlignViewToCenter(const Rect& field){
-	AlignView(center, field);
+void Grid::AlignViewToCenter(int screenSizeX, int screenSizeY){
+	AlignView(center, screenSizeX, screenSizeY);
 }
 
 GridTraversal::GridTraversal(Grid& grid) :
