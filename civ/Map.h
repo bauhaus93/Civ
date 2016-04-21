@@ -27,7 +27,6 @@ public:
 				~Map(void);
 
 	void		Clicked(int screenX, int screenY);
-
 	void		Render(void);
 };
 

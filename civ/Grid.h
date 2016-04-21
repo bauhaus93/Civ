@@ -11,7 +11,6 @@ class Grid{
 
 	friend class GridTraversal;
 
-
 private:
 	Node* root;
 	Node* view;
@@ -20,6 +19,9 @@ private:
 
 	std::unique_ptr<Sprite> mouseClickComparator;
 
+	Node* CreateBlock(int sizeX, int sizeY);
+	Node* LinkRows(std::vector<Node*>& top, std::vector<Node*>& bot);
+	Node* GoRelative(Node* node, int x, int y);
 
 public:
 	
@@ -29,15 +31,9 @@ public:
 	void Create(int sizeX, int sizeY);
 	void Render(const Rect& field);
 
-	Node* CreateBlock(int sizeX, int sizeY);
-	Node* LinkRows(std::vector<Node*>& top, std::vector<Node*>& bot);
-
 	void CenterToScreen(int screenX, int screenY, int maxX, int maxY);
 
-	Node* GoRelative(Node* node, int x, int y);
-
 	void AlignView(Node* node, int screenSizeX, int screenSizeY);
-
 	void AlignViewToCenter(int screenSizeX, int screenSizeY);
 
 };
