@@ -36,7 +36,7 @@ void Map::Clicked(int screenX, int screenY){
 	screenY -= drawField.y;
 
 	if (screenX >= 0 && screenX < drawField.w && screenY >= 0 && screenY < drawField.h){
-		grid->CenterToScreen(screenX, screenY, drawField.w, drawField.h);
+		grid->CenterToClick(screenX, screenY, drawField.w, drawField.h);
 	}
 	change = true;
 }

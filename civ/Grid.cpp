@@ -139,10 +139,10 @@ Node* Grid::LinkRows(vector<Node*>& top, vector<Node*>& bot){
 	return bot.front();
 }
 
-void Grid::CenterToScreen(int screenX, int screenY, int maxX, int maxY){
+void Grid::CenterToClick(int screenX, int screenY, int maxX, int maxY){
 
-	/*if (advanceAll)
-		screenX += 64;*/
+	if (advanceAll)
+		screenX -= 64;
 
 	RGBAColor col = mouseClickComparator->PixelAt(screenX % 64, screenY % 32);
 

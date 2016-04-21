@@ -31,7 +31,7 @@ public:
 	void Create(int sizeX, int sizeY);
 	void Render(const Rect& field);
 
-	void CenterToScreen(int screenX, int screenY, int maxX, int maxY);
+	void CenterToClick(int screenX, int screenY, int maxX, int maxY);
 
 	void AlignView(Node* node, int screenSizeX, int screenSizeY);
 	void AlignViewToCenter(int screenSizeX, int screenSizeY);

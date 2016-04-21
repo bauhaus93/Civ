@@ -15,6 +15,7 @@
 class Map{
 
 	Rect											drawField;
+	int												drawSizeY;
 	SpriteFactory									spriteFactory;
 	std::map<TileType, std::unique_ptr<Tileset>>	tileset;
 	std::unique_ptr<Grid>							grid;

@@ -88,12 +88,11 @@ void Game::MouseEvent(SDL_Event& e){
 	1 desert diamond: 2-6ms (mainly around 2)
 */
 
+
 void Game::Render(void){
 	auto start = common::Time();
 
-	//Render on temporary Sprite
 	map.Render();
-
 	renderer.Show();
 
 	lastRenderTime = common::TimeDiff(start);
