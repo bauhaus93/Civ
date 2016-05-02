@@ -205,7 +205,6 @@ Node* Grid::GoRelative(Node* node, int x, int y){
 	return node;
 }
 
-
 Node* Grid::NodeAtScreenPos(int x, int y){
 	auto node = view;
 
@@ -227,7 +226,7 @@ Node* Grid::NodeAtScreenPos(int x, int y){
 		y -= 32;
 	}
 
-	if (x < 64 && y < 32){
+	if (x >= 0 && y>= 0 && x < 64 && y < 32){
 		RGBAColor col = mouseClickComparator->PixelAt(x, y);
 
 		switch (col.r){
