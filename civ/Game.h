@@ -7,7 +7,6 @@
 #include "Common.h"
 #include "Map.h"
 #include "FPSHandler.h"
-#include "Renderer.h"
 
 class Game{
 

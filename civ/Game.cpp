@@ -56,7 +56,7 @@ void Game::Tick(void){
 	if (ticks % fpsCheckInterval == 0){
 		fps.Align(fpsCheckInterval);
 		stringstream s;
-		s << "fps: " << fps.GetFPS() << " | render time: " << lastRenderTime << " ms | delay: " << fps.GetDelay() << " ms" << endl;
+		s << "fps: " << fps.GetFPS() << " | render time: " << lastRenderTime << " ms | delay: " << fps.GetDelay() << " ms " << endl;
 		SDL_SetWindowTitle(SDL::Instance().GetWindow(), s.str().c_str());
 	}
 
@@ -82,11 +82,6 @@ void Game::MouseEvent(SDL_Event& e){
 	if (e.button.button == SDL_BUTTON_LEFT)
 		map.Clicked(e.button.x, e.button.y);
 }
-
-/* Render times:
-	1 desert diamond: 2-6ms (mainly around 2)
-*/
-
 
 void Game::Render(void){
 	auto start = common::Time();

@@ -143,50 +143,10 @@ void Grid::CenterToClick(int screenX, int screenY, int maxX, int maxY){
 	if (advanceAll)
 		screenX -= 64;
 
-	RGBAColor col = mouseClickComparator->PixelAt(screenX % 64, screenY % 32);
-
-	int relX = screenX / 64;
-	int relY = 2 * (screenY / 32);
-
-	switch (col.r){
-		case 107:
-			cout << "TOP LEFT of " << (screenX / 64) << ", " << (screenY / 32) << endl;
-			relX--;
-			relY--;
-			break;
-		case 159:
-			cout << "TOP of " << (screenX / 64) << ", " << (screenY / 32) << endl;
-			relY--;
-			break;
-		case 71:
-			cout << "BOT of " << (screenX / 64) << ", " << (screenY / 32) << endl;
-			relY++;
-			break;
-		case 167:
-			cout << "BOT LEFT of " << (screenX / 64) << ", " << (screenY / 32) << endl;
-			relX--;
-			relY++;
-		case 27:
-			cout << "EXACT of " << (screenX / 64) << ", " << (screenY / 32) << endl;
-			break;
-		default:
-			cout << "DEFAULT SHOULD NOT HAPPEN LEL: " << (int)col.r << ", " << (int)col.g << ", " << (int)col.b << ", " << (int)col.a << endl;
-			break;
-	}
-
-	//cout << "SQUARE: " << (screenX / 64) << ", " << (screenY / 32) << endl;
-
-	int diffX = relX - center->GetX() + view->GetX();
-	int diffY = relY - center->GetY() + view->GetY();
-	cout << " diff: " << diffX << ", " << diffY << endl;
-	center = GoRelative(center, diffX, diffY);
-
+	center = NodeAtScreenPos(screenX, screenY);
+	AlignViewToCenter(maxX, maxY);
 
 	SET_DUMMY(center);
-	AlignView(center, maxX, maxY);
-
-	cout << "center @ " << center->GetX() << ", " << center->GetY() << endl;
-	cout << "view @ " << view->GetX() << ", " << view->GetY() << endl;
 }
 
 Node* Grid::GoRelative(Node* node, int x, int y){
@@ -245,11 +205,64 @@ Node* Grid::GoRelative(Node* node, int x, int y){
 	return node;
 }
 
+
+Node* Grid::NodeAtScreenPos(int x, int y){
+	auto node = view;
+
+	while (x >= 64){
+
+		if (node->GetEast() != nullptr)
+			node = node->GetEast();
+		else
+			break;
+		x -= 64;
+	}
+
+	while (y >= 32){
+
+		if (node->GetSouth() != nullptr)
+			node = node->GetSouth();
+		else
+			break;
+		y -= 32;
+	}
+
+	if (x < 64 && y < 32){
+		RGBAColor col = mouseClickComparator->PixelAt(x, y);
+
+		switch (col.r){
+			case 107:
+				if (node->GetNorthwest() != nullptr)
+					node = node->GetNorthwest();
+				break;
+			case 159:
+				if (node->GetNortheast() != nullptr)
+					node = node->GetNortheast();
+				break;
+			case 71:
+				if (node->GetSoutheast() != nullptr)
+					node = node->GetSoutheast();
+				break;
+			case 167:
+				if (node->GetSouthwest() != nullptr)
+					node = node->GetSouthwest();
+			case 27:
+				break;
+			default:
+				throw CivException("switch(mouseClickComparator->PixelAt)", "Unknown case");
+		}
+	}
+	//cout << "node is @ " << node->GetX() << ", " << node->GetY() << endl;
+
+	return node;
+}
+
 void Grid::AlignView(Node* node, int screenSizeX, int screenSizeY){
 	int x = screenSizeX / 2;
 	int y = screenSizeY / 2;
 
 	while (x >= 64){
+
 		if (node->GetWest() != nullptr)
 			node = node->GetWest();
 		else
@@ -257,8 +270,8 @@ void Grid::AlignView(Node* node, int screenSizeX, int screenSizeY){
 		x -= 64;
 	}
 
-
 	while (y >= 32){
+
 		if (node->GetNorth() != nullptr)
 			node = node->GetNorth();
 		else

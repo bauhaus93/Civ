@@ -9,7 +9,6 @@
 #include "Tile.h"
 #include "Grid.h"
 #include "Node.h"
-#include "Renderer.h"
 
 
 class Map{
