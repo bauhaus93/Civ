@@ -119,11 +119,11 @@ void Map::Render(void){
 	static Sprite s{ Rect{ 0, 0, drawField.w, drawField.h } };
 
 	if (change){
-		Renderer::Instance().SetTarget(s);
-		Renderer::Instance().SetColor(RGBAColor{ 0, 0, 0, 0xFF });
-		Renderer::Instance().Clear();
+		s.SetAsRenderTarget();
+		SDL::Instance().SetColor(RGBAColor{ 0, 0, 0, 0xFF });
+		SDL::Instance().ClearScene();
 		grid->Render(drawField);
-		Renderer::Instance().SetStdTarget();
+		SDL::Instance().ClearRenderTarget();
 		//change = false;
 	}
 

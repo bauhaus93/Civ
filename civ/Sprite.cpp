@@ -80,6 +80,11 @@ void Sprite::Add(const Sprite& sprite){
 	Add(sprite, ToRect(sprite.GetRect()));
 }
 
+void Sprite::SetAsRenderTarget(){
+	if (SDL_SetRenderTarget(SDL::Instance().GetRenderer(), texture) == -1)
+		throw SDLException("SDL_SetRenderTarget");
+}
+
 void Sprite::Render(int x, int y){
 	rect.x = x;
 	rect.y = y;

@@ -5,23 +5,21 @@
 #include <memory>
 
 #ifdef _WIN32
-	#include <sdl/SDL.h>
+#include <sdl/SDL.h>
 #endif
 #ifdef __linux__
-	#include <SDL2/SDL.h>
+#include <SDL2/SDL.h>
 #endif
 
 #include "Common.h"
 #include "CivExceptions.h"
-#include "Sprite.h"
 #include "Definitions.h"
 
-
 class SDL{
-	
+
 	static SDL*	instance;
 
-	static void Init(void){ Init("LEL", Rect{ 0, 0, 1024, 768 }); };
+
 
 	SDL_Window		*window;
 	SDL_Renderer	*renderer;
@@ -36,8 +34,20 @@ public:
 	SDL_Window*		GetWindow(void);
 	int				GetScreenX(void){ return sizeX; }
 	int				GetScreenY(void){ return sizeY; }
-			
+
+	void		DrawRect(const Rect& rect);
+	void		DrawFillRect(const Rect & rect);
+	void		DrawLine(int startX, int startY, int stopX, int stopY);
+	RGBAColor	SetColor(const RGBAColor& col);
+
+	void		ClearRenderTarget();
+	void		ClearScene(void);
+
+	void		ShowScene();
+	
 	static void Init(const std::string& windowName, const Rect& screen);
+	static void Init(void);
+
 	static SDL& Instance(void);
 };
 
@@ -48,6 +58,10 @@ inline void SDL::Init(const std::string& windowName, const Rect& screen){
 	}
 }
 
+inline void SDL::Init(void){
+	Init("LEL", Rect{ 0, 0, 1024, 768 });
+};
+
 inline SDL& SDL::Instance(void){
 	if (instance == nullptr)
 		Init();
@@ -55,13 +69,9 @@ inline SDL& SDL::Instance(void){
 }
 
 inline SDL_Renderer* SDL::GetRenderer(void){
-	if (instance == nullptr)
-		Init();
-	return instance->renderer;
+	return renderer;
 }
 
 inline SDL_Window* SDL::GetWindow(void){
-	if (instance == nullptr)
-		Init();
-	return instance->window;
+	return window;
 }

@@ -13,7 +13,6 @@ class Game{
 
 	Map				map;
 	FPSHandler		fps;
-	Renderer&		renderer;
 	uint64_t		ticks;
 	unsigned int	fpsCheckInterval;
 	unsigned int	lastRenderTime;

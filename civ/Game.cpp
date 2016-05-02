@@ -7,7 +7,6 @@ using namespace std;
 Game::Game(void) :
 	map{ Rect{0, 0, SDL::Instance().GetScreenX(), SDL::Instance().GetScreenY() } },
 	fps{ 30 },
-	renderer{ Renderer::Instance() },
 	ticks{ 0 },
 	fpsCheckInterval{ 20 }{
 }
@@ -93,7 +92,7 @@ void Game::Render(void){
 	auto start = common::Time();
 
 	map.Render();
-	renderer.Show();
+	SDL::Instance().ShowScene();
 
 	lastRenderTime = common::TimeDiff(start);
 }

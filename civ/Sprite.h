@@ -31,6 +31,7 @@ public:
 					~Sprite(void);
 	void			Add(const Sprite& sprite, const Rect& dim);
 	void			Add(const Sprite& sprite);
+	void			SetAsRenderTarget();
 	void			Render(int x, int y);
 	Uint32			GetFormat(void) const;
 	const SDL_Rect&	GetRect() const;
