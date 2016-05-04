@@ -41,9 +41,6 @@ void Grid::Render(const Rect& field){
 	int drawY = field.y;
 	bool fullFirst = false;
 
-	//mouseClickComparator.Render(0, 0);
-	//return;
-
 	if (advanceAll)
 		drawX += 64;
 

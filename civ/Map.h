@@ -19,7 +19,6 @@ class Map{
 	SpriteFactory									spriteFactory;
 	Grid											grid;
 	std::vector<Tileset>							tileset;
-	Sprite											test;
 	
 	bool change;
 

@@ -18,8 +18,9 @@ Tile::~Tile(){
 
 void Tile::InitializeSprite(void){
 	sprite = make_unique<Sprite>(floor);
-	if (resource > 0)
+	if (resource > -1){
 		AddSprite(tileset.GetResource(resource).GetSprite());
+	}
 }
 
 void Tile::AddSprite(const Sprite& add){

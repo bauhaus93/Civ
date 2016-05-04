@@ -4,7 +4,7 @@ using namespace std;
 
 
 Resource::Resource(Sprite&& sprite_) noexcept:
-	sprite{ sprite_ }{
+	sprite{ move(sprite_) }{
 }
 
 Resource::Resource(Resource&& other) noexcept{
