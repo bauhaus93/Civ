@@ -9,6 +9,6 @@ public:
 	TileExtended(const Tileset& tileset_);
 	~TileExtended();
 
-	void CreateTileSprite(uint8_t neighbourMask);
+	void CreateTileSprite(uint8_t neighbourMask) override;
 };
 

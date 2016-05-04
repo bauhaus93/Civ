@@ -2,6 +2,8 @@
 
 using namespace std;
 
+static unique_ptr<Tile> CreateTile(const Tileset& tileset);
+
 WorldGenerator::WorldGenerator(){
 }
 
@@ -15,12 +17,13 @@ void WorldGenerator::Generate(Grid & grid, std::vector<Tileset>& tilesets){
 	while (g.HasNext()){
 		auto node = g.Next();
 		node->SetTile(CreateTile(tilesets.at(common::Random(tilesets.size()))));
+		
 	}
 
-	g = GridTraversal(grid);
+	GridTraversal g2{ grid };
 
-	while (g.HasNext()){
-		auto node = g.Next();
+	while (g2.HasNext()){
+		auto node = g2.Next();
 		node->GetTile().CreateTileSprite(CreateSimpleNeighbourMask(node));
 	}
 }

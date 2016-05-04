@@ -20,7 +20,6 @@ Map::Map(const Rect& drawField_) :
 	WorldGenerator wg;
 	wg.Generate(grid, tilesets);
 		
-
 	change = true;
 	
 }
@@ -44,7 +43,7 @@ void Map::LoadTilesets(void){
 	int x = 1, y = 1;
 
 	//Simple Tiles with only floor and resource
-	tilesets.push_back(Tileset("desert", RESOURCE_CHANCE));
+	tilesets.push_back(Tileset("desert", RESOURCE_CHANCE, true));
 	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
 	x += 65;
 	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
@@ -55,7 +54,7 @@ void Map::LoadTilesets(void){
 
 	x = 1;
 	y += 33;
-	tilesets.push_back(Tileset("prairie", RESOURCE_CHANCE));
+	tilesets.push_back(Tileset("prairie", RESOURCE_CHANCE, true));
 	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
 	x += 65 * 2;
 	tilesets.back().AddResource(Resource{ spriteFactory.CreateDiamondSprite("terrain1", x, y) });
@@ -64,13 +63,13 @@ void Map::LoadTilesets(void){
 		
 	x = 1;
 	y += 33;
-	tilesets.push_back(Tileset("grasslands", RESOURCE_CHANCE));
+	tilesets.push_back(Tileset("grasslands", RESOURCE_CHANCE, true));
 	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
 	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", 456, 232)));
 
 	x = 1;
 	y += 33 * 4;
-	tilesets.push_back(Tileset("tundra", RESOURCE_CHANCE));
+	tilesets.push_back(Tileset("tundra", RESOURCE_CHANCE, true));
 	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
 	x += 65 * 2;
 	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
@@ -79,7 +78,7 @@ void Map::LoadTilesets(void){
 
 	x = 1;
 	y += 33;
-	tilesets.push_back(Tileset("arctic", RESOURCE_CHANCE));
+	tilesets.push_back(Tileset("arctic", RESOURCE_CHANCE, true));
 	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
 	x += 65 * 2;
 	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
@@ -88,7 +87,7 @@ void Map::LoadTilesets(void){
 
 	x = 1;
 	y += 33;
-	tilesets.push_back(Tileset("swamp", RESOURCE_CHANCE));
+	tilesets.push_back(Tileset("swamp", RESOURCE_CHANCE, true));
 	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
 	x += 65 * 2;
 	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
@@ -97,7 +96,7 @@ void Map::LoadTilesets(void){
 
 	x = 1;
 	y += 33;
-	tilesets.push_back(Tileset("jungle", RESOURCE_CHANCE));
+	tilesets.push_back(Tileset("jungle", RESOURCE_CHANCE, true));
 	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
 	x += 65;
 	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
