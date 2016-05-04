@@ -3,31 +3,28 @@
 using namespace std;
 
 
-Tile::Tile(TileType type_, Sprite& floor_) :
-	type{ type_ },
-	floor{ floor_ },
-	resource{ -1 }{
+Tile::Tile(const Tileset& tileset_ ) :
+	tileset{ tileset_ },
+	floor{tileset.GetRandomFloor()},
+	resource{ tileset.GetRandomResource() }{
+
+	InitializeSprite();
+
 }
 
 Tile::~Tile(){
-}
 
-void Tile::SetResource(int newResource){
-	resource = newResource;
 }
 
 void Tile::InitializeSprite(void){
 	sprite = make_unique<Sprite>(floor);
+	if (resource > 0)
+		AddSprite(tileset.GetResource(resource).GetSprite());
 }
 
-void Tile::AddSprite(Sprite& add){
+void Tile::AddSprite(const Sprite& add){
 	sprite->Add(add);
 }
-
-int Tile::GetResource(void) const{
-	return resource;
-}
-
 
 void Tile::Render(int x, int y){
 	sprite->Render(x, y);

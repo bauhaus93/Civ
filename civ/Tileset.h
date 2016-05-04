@@ -5,8 +5,8 @@
 #include <memory>
 
 
-#include "Tile.h"
 #include "Sprite.h"
+#include "Resource.h"
 
 
 enum class NeighbourInfo{
@@ -29,17 +29,23 @@ enum class NeighbourDiamond{
 
 class Tileset{
 
-protected:
+private:
 	std::string		name;
-	TileType		type;
 	unsigned int	resourceChance;
 
+	std::vector<Sprite>		floor;
+	std::vector<Resource>	resource;
+
 public:
-	Tileset(const std::string& name_, TileType type_, unsigned int resourceChance_);
+	Tileset(const std::string& name_, unsigned int resourceChance_);
+	Tileset(Tileset&& other) noexcept;
 
-	virtual ~Tileset() = default;
+	~Tileset(void) = default;
 
-	virtual std::unique_ptr<Tile> CreateTile(void) = 0;
-	virtual void CreateTileSprite(Tile& tile) = 0;
+	void AddFloor(Sprite&& sprite);
+	void AddResource(Resource&& res);
 
+	const Sprite& GetRandomFloor(void) const;
+	const Resource& GetResource(int id) const;
+	int GetRandomResource(void) const ;
 };

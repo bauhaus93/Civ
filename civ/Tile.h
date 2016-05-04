@@ -3,9 +3,8 @@
 #include <memory>
 #include <vector>
 
+#include "Tileset.h"
 #include "Sprite.h"
-
-typedef uint8_t TileType;
 
 enum class TileExtensions{
 	RIVER,
@@ -17,8 +16,8 @@ enum class TileExtensions{
 
 class Tile{
 
-	TileType type;
-	Sprite& floor;
+	const Tileset& tileset;
+	const Sprite& floor;
 	int resource;
 
 	std::unique_ptr<Sprite> sprite;
@@ -26,15 +25,12 @@ class Tile{
 
 public:
 
-				Tile(TileType type_, Sprite& floor_);
+				Tile(const Tileset& tileset_);
 				Tile(const Tile& other) = delete;
 				~Tile(void);
 
-	void		SetResource(int newResource);
 	void		InitializeSprite(void);
-	void		AddSprite(Sprite& add);
-
-	int			GetResource(void) const;
+	void		AddSprite(const Sprite& add);
 
 	void		Render(int x, int y);
 };

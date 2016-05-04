@@ -11,12 +11,16 @@ inline Rect ToRect(const SDL_Rect& rect){
 
 inline SDL_Rect ToSDLRect(const Rect& rect){
 	SDL_Rect r{ rect.x, rect.y, rect.w, rect.h };
-	return std::move(r);
+	return r;
+}
+
+Sprite::Sprite(void) :
+	texture{ nullptr },
+	rect{ 0, 0, 0, 0 }{
 }
 
 Sprite::Sprite(SDL_Surface* src, const Rect& dim_) :
-	texture{ nullptr },
-	rect{ 0, 0, 0, 0 }{
+	Sprite{}{
 	SDL_Rect dim = ToSDLRect(dim_);
 
 	SDL_Surface *surf = SDL_CreateRGBSurface(0, dim.w, dim.h, (Uint32)32, (Uint32)0xFF, (Uint32)0xFF << 8, (Uint32)0xFF << 16, (Uint32)0xFF << 24);
@@ -63,13 +67,28 @@ Sprite::Sprite(const Sprite& src, const Rect& dim) :
 
 Sprite::Sprite(const Sprite& src) :
 	Sprite{ src, ToRect(src.GetRect()) }{
+}
 
+Sprite::Sprite(Sprite&& other) noexcept:
+	texture{ other.texture },
+	rect{ other.rect.x, other.rect.y, other.rect.w, other.rect.h }{
+	other.texture = nullptr;
+}
+
+Sprite& Sprite::operator=(Sprite&& other) noexcept{
+	texture = other.texture;
+	rect.x = other.rect.x;
+	rect.y = other.rect.y;
+	rect.w = other.rect.w;
+	rect.h = other.rect.h;
+	other.texture = nullptr;	//FUCK YOU
+	return *this;
 }
 
 
 Sprite::~Sprite(void){
 	if (texture != nullptr)
-		SDL_DestroyTexture(texture);
+		SDL_DestroyTexture(texture);	//FUCK YOU TOO
 }
 
 void Sprite::Add(const Sprite& sprite, const Rect& dim){

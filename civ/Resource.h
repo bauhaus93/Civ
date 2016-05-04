@@ -1,13 +1,20 @@
 #pragma once
 
+#include <memory>
+
 #include "Sprite.h"
 
 class Resource{
 
-	Sprite& sprite;
+	Sprite sprite;
 public:
-	Resource(Sprite& sprite_);
+	Resource(Sprite&& sprite_) noexcept;
+	Resource(Resource&& other) noexcept;
+	Resource(const Resource& other);
+
 	~Resource();
-	Sprite& GetSprite(void) const;
+	const Sprite& GetSprite(void) const;
+
+	Resource& operator=(Resource&& other) noexcept;
 };
 

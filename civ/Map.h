@@ -5,10 +5,11 @@
 
 #include "SpriteFactory.h"
 #include "Tileset.h"
-#include "TilesetSimple.h"
 #include "Tile.h"
 #include "Grid.h"
 #include "Node.h"
+
+#define RESOURCE_CHANCE (10)
 
 
 class Map{
@@ -16,11 +17,13 @@ class Map{
 	Rect											drawField;
 	int												drawSizeY;
 	SpriteFactory									spriteFactory;
-	std::map<TileType, std::unique_ptr<Tileset>>	tileset;
-	std::unique_ptr<Grid>							grid;
+	Grid											grid;
+	std::vector<Tileset>							tileset;
+	Sprite											test;
+	
 	bool change;
 
-	void		LoadTilesets();
+	void		LoadTilesets(void);
 
 public:
 				Map(const Rect& drawField_);

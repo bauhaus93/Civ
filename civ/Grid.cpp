@@ -1,20 +1,15 @@
 #include "Grid.h"
 
-#define SET_DUMMY(node) {	auto dummyTile = make_unique<Tile>(0, *dummySprite); \
-							dummyTile->InitializeSprite();\
-							node->SetTile(move(dummyTile)); }
 
 using namespace std;
 
-static unique_ptr<Sprite> dummySprite = nullptr;
 
-Grid::Grid(unique_ptr<Sprite> mouseClickComparator_) :
-	mouseClickComparator{ move(mouseClickComparator_) }{
-	if (dummySprite == nullptr)
-		dummySprite = make_unique<Sprite>(Rect{ 0, 0, 64, 32 });
+Grid::Grid(void):
+	mouseClickComparator{}{
+
 }
 
-Grid::~Grid(){
+Grid::~Grid(void){
 	vector<Node*> nodes;
 	GridTraversal g{ *this };
 
@@ -26,6 +21,10 @@ Grid::~Grid(){
 		delete nodes.back();
 		nodes.pop_back();
 	}
+}
+
+void Grid::SetMouseClickComparator(Sprite mouseClickComparator_){
+	mouseClickComparator = move(mouseClickComparator_);
 }
 
 void Grid::Create(int sizeX, int sizeY){
@@ -41,6 +40,9 @@ void Grid::Render(const Rect& field){
 	int drawX = field.x;
 	int drawY = field.y;
 	bool fullFirst = false;
+
+	//mouseClickComparator.Render(0, 0);
+	//return;
 
 	if (advanceAll)
 		drawX += 64;
@@ -145,8 +147,6 @@ void Grid::CenterToClick(int screenX, int screenY, int maxX, int maxY){
 
 	center = NodeAtScreenPos(screenX, screenY);
 	AlignViewToCenter(maxX, maxY);
-
-	SET_DUMMY(center);
 }
 
 Node* Grid::GoRelative(Node* node, int x, int y){
@@ -227,7 +227,7 @@ Node* Grid::NodeAtScreenPos(int x, int y){
 	}
 
 	if (x >= 0 && y>= 0 && x < 64 && y < 32){
-		RGBAColor col = mouseClickComparator->PixelAt(x, y);
+		RGBAColor col = mouseClickComparator.PixelAt(x, y);
 
 		switch (col.r){
 			case 107:
@@ -305,7 +305,7 @@ GridTraversal::GridTraversal(Grid& grid) :
 	curr{ grid.root },
 	rowFirst{ grid.root }{
 
-	if (curr->GetY() % 2 != 0)
+	if (curr->IsOdd())
 		advanced = true;
 	else
 		advanced = false;

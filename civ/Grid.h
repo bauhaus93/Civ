@@ -16,7 +16,7 @@ private:
 	Node* center;
 	bool advanceAll;
 
-	std::unique_ptr<Sprite> mouseClickComparator;
+	Sprite mouseClickComparator;
 
 	Node* CreateBlock(int sizeX, int sizeY);
 	Node* LinkRows(std::vector<Node*>& top, std::vector<Node*>& bot);
@@ -24,8 +24,10 @@ private:
 
 public:
 	
-	Grid(std::unique_ptr<Sprite> mouseClickComparator_);
+	Grid();
 	~Grid();
+
+	void SetMouseClickComparator(Sprite mouseClickComparator_);
 
 	void Create(int sizeX, int sizeY);
 	void Render(const Rect& field);

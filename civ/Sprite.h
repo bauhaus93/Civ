@@ -23,10 +23,14 @@ class Sprite{
 	SDL_Rect		rect;
 
 public:
+					Sprite(void);
 					Sprite(const Rect& dim);
 					Sprite(const Sprite& src, const Rect& dim_);
 					Sprite(SDL_Surface* src, const Rect& dim_);
 					Sprite(const Sprite& s);
+
+					Sprite(Sprite&& other) noexcept;
+	Sprite&			operator=(Sprite&& other) noexcept;
 		
 					~Sprite(void);
 	void			Add(const Sprite& sprite, const Rect& dim);

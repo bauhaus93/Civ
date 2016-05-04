@@ -3,27 +3,31 @@
 using namespace std;
 
 Map::Map(const Rect& drawField_) :
-	drawField{ drawField_ }{
+	drawField{ drawField_ },
+	grid{}{
 
 	spriteFactory.AddImage("bmp/TERRAIN1.bmp", "terrain1");
 	spriteFactory.AddImage("bmp/TERRAIN2.bmp", "terrain2");
 	spriteFactory.AddTransparent(0x87, 0x87, 0x87);
 	spriteFactory.AddTransparent(0xFF, 0x00, 0xFF);
 
+	test = spriteFactory.CreateDiamondSprite("terrain1", 1, 1);
+
 	LoadTilesets();
 
-	grid = make_unique<Grid>(spriteFactory.CreateDiamondSprite("terrain1", 66, 447));
-	grid->Create(75, 120);
-	grid->AlignViewToCenter(drawField.w, drawField.h);
+	
+	grid.SetMouseClickComparator(spriteFactory.CreateDiamondSprite("terrain1", 66, 447));
+	grid.Create(75, 120);
+	grid.AlignViewToCenter(drawField.w, drawField.h);
 
-	GridTraversal g{ *grid };
+	GridTraversal g{ grid };
 
 	while (g.HasNext()){
 		auto node = g.Next();
-		node->SetTile(move(tileset.at(static_cast<TileType>(common::Random(0, 6)))->CreateTile()));
+		node->SetTile(make_unique<Tile>(tileset.at(common::Random(tileset.size()))));
 	}
 	change = true;
-
+	
 }
 
 
@@ -36,82 +40,84 @@ void Map::Clicked(int screenX, int screenY){
 	screenY -= drawField.y;
 
 	if (screenX >= 0 && screenX < drawField.w && screenY >= 0 && screenY < drawField.h){
-		grid->CenterToClick(screenX, screenY, drawField.w, drawField.h);
+		grid.CenterToClick(screenX, screenY, drawField.w, drawField.h);
 	}
 	change = true;
 }
 
-void Map::LoadTilesets(){
+void Map::LoadTilesets(void){
 	int x = 1, y = 1;
 
-	auto ts = make_unique<TilesetSimple>("desert", 0, 10);
-	ts->AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
+	tileset.push_back(move(Tileset("desert", RESOURCE_CHANCE)));
+	auto& ts = tileset.back();
+	ts.AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
 	x += 65;
-	ts->AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
+	ts.AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
 	x += 65;
-	ts->AddResource(spriteFactory.CreateDiamondSprite("terrain1", x, y));
+	ts.AddResource(Resource{ spriteFactory.CreateDiamondSprite("terrain1", x, y) });
 	x += 65;
-	ts->AddResource(spriteFactory.CreateDiamondSprite("terrain1", x, y));
-	tileset.insert(make_pair(0, move(ts)));
+	ts.AddResource(Resource{ spriteFactory.CreateDiamondSprite("terrain1", x, y) });
+	
 
-	x = 1;
+	/*x = 1;
 	y += 33;
-	ts = make_unique<TilesetSimple>("prairie", 1, 10);
-	ts->AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
+	tileset.push_back(move(Tileset("prairie", RESOURCE_CHANCE)));
+	tileset.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
 	x += 65 * 2;
-	ts->AddResource(spriteFactory.CreateDiamondSprite("terrain1", x, y));
+	tileset.back().AddResource(Resource{ spriteFactory.CreateDiamondSprite("terrain1", x, y) });
 	x += 65;
-	ts->AddResource(spriteFactory.CreateDiamondSprite("terrain1", x, y));
-	tileset.insert(make_pair(1, move(ts)));
+	tileset.back().AddResource(Resource{ spriteFactory.CreateDiamondSprite("terrain1", x, y) });*/
+	//tileset.push_back(move(ts));
 
+	/*
 	x = 1;
 	y += 33;
-	ts = make_unique<TilesetSimple>("grasslands", 2, 10);
-	ts->AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
-	ts->AddResource(spriteFactory.CreateDiamondSprite("terrain1", 456, 232));
-	tileset.insert(make_pair(2, move(ts)));
+	ts = Tileset("grasslands", RESOURCE_CHANCE);
+	ts.AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
+	ts.AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", 456, 232)));
+	tileset.push_back(move(ts));
 
 	x = 1;
 	y += 33 * 4;
-	ts = make_unique<TilesetSimple>("tundra", 3, 10);
-	ts->AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
+	ts = Tileset("tundra", RESOURCE_CHANCE);
+	ts.AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
 	x += 65 * 2;
-	ts->AddResource(spriteFactory.CreateDiamondSprite("terrain1", x, y));
+	ts.AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
 	x += 65;
-	ts->AddResource(spriteFactory.CreateDiamondSprite("terrain1", x, y));
-	tileset.insert(make_pair(3, move(ts)));
+	ts.AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
+	tileset.push_back(move(ts));
 
 	x = 1;
 	y += 33;
-	ts = make_unique<TilesetSimple>("arctic", 4, 10);
-	ts->AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
+	ts = Tileset("arctic", RESOURCE_CHANCE);
+	ts.AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
 	x += 65 * 2;
-	ts->AddResource(spriteFactory.CreateDiamondSprite("terrain1", x, y));
+	ts.AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
 	x += 65;
-	ts->AddResource(spriteFactory.CreateDiamondSprite("terrain1", x, y));
-	tileset.insert(make_pair(4, move(ts)));
+	ts.AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
+	tileset.push_back(move(ts));
 
 	x = 1;
 	y += 33;
-	ts = make_unique<TilesetSimple>("swamp", 5, 10);
-	ts->AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
+	ts = Tileset("swamp", RESOURCE_CHANCE);
+	ts.AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
 	x += 65 * 2;
-	ts->AddResource(spriteFactory.CreateDiamondSprite("terrain1", x, y));
+	ts.AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
 	x += 65;
-	ts->AddResource(spriteFactory.CreateDiamondSprite("terrain1", x, y));
-	tileset.insert(make_pair(5, move(ts)));
+	ts.AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
+	tileset.push_back(move(ts));
 
 	x = 1;
 	y += 33;
-	ts = make_unique<TilesetSimple>("jungle", 6, 10);
-	ts->AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
+	ts = Tileset("jungle", RESOURCE_CHANCE);
+	ts.AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
 	x += 65;
-	ts->AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
+	ts.AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
 	x += 65;
-	ts->AddResource(spriteFactory.CreateDiamondSprite("terrain1", x, y));
+	ts.AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
 	x += 65;
-	ts->AddResource(spriteFactory.CreateDiamondSprite("terrain1", x, y));
-	tileset.insert(make_pair(6, move(ts)));
+	ts.AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
+	tileset.push_back(move(ts));*/
 
 }
 
@@ -122,11 +128,14 @@ void Map::Render(void){
 		s.SetAsRenderTarget();
 		SDL::Instance().SetColor(RGBAColor{ 0, 0, 0, 0xFF });
 		SDL::Instance().ClearScene();
-		grid->Render(drawField);
+		grid.Render(drawField);
 		SDL::Instance().ClearRenderTarget();
+		
 		//change = false;
 	}
 
 	s.Render(drawField.x, drawField.y);
 
+	//test.Render(0, 0);
+	
 }

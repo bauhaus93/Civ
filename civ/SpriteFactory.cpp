@@ -63,31 +63,12 @@ void SpriteFactory::AddTransparent(uint8_t rT, uint8_t gT, uint8_t bT){
 	
 }
 
-unique_ptr<Sprite> SpriteFactory::CreateSprite(const string& name, const Rect& dim){
-	unique_ptr<Sprite> sprite = nullptr;
-	SDL_Surface *s = nullptr;
-	
+Sprite SpriteFactory::CreateSprite(const string& name, const Rect& dim){
 
-	try{
-		 s = baseImgs.at(name);
-	}
-	catch (const out_of_range& e){
-		common::Log(e);
-		return nullptr;
-	}
-
-	try{
-		sprite = make_unique<Sprite>(s, dim);
-	}
-	catch (const SDLException& e){
-		common::Log(e);
-		return nullptr;
-	}
-
-	return move(sprite);
+	return Sprite(baseImgs.at(name), dim);
 }
 
-unique_ptr<Sprite> SpriteFactory::CreateDiamondSprite(const string& name, int x, int y){
+Sprite SpriteFactory::CreateDiamondSprite(const string& name, int x, int y){
 	const Rect rect = { x, y, 64, 32 };
-	return move(CreateSprite(name, rect));
+	return CreateSprite(name, rect);
 }
