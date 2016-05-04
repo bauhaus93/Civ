@@ -24,6 +24,7 @@ public:
 					~Node();
 					
 	inline void		SetTile(std::unique_ptr<Tile> tile_);
+	inline Tile&	GetTile(void){ return *tile; }
 	inline void		Render(int x, int y);
 	void			RenderRow(int startX, int startY, int maxX);
 	int				GetX(void) const{ return x; };

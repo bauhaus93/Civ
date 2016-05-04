@@ -34,7 +34,7 @@ public:
 
 	void CenterToClick(int screenX, int screenY, int maxX, int maxY);
 
-	Node * NodeAtScreenPos(int x, int y);
+	Node* NodeAtScreenPos(int x, int y);
 
 	void AlignView(Node* node, int screenSizeX, int screenSizeY);
 	void AlignViewToCenter(int screenSizeX, int screenSizeY);

@@ -8,7 +8,6 @@ Tile::Tile(const Tileset& tileset_ ) :
 	floor{tileset.GetRandomFloor()},
 	resource{ tileset.GetRandomResource() }{
 
-	InitializeSprite();
 
 }
 
@@ -16,7 +15,7 @@ Tile::~Tile(){
 
 }
 
-void Tile::InitializeSprite(void){
+void Tile::InitializeSprite(uint8_t neighbourMask){
 	sprite = make_unique<Sprite>(floor);
 	if (resource > -1){
 		AddSprite(tileset.GetResource(resource).GetSprite());

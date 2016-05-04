@@ -7,7 +7,7 @@
 #include "Tileset.h"
 #include "Tile.h"
 #include "Grid.h"
-#include "Node.h"
+#include "WorldGenerator.h"
 
 #define RESOURCE_CHANCE (10)
 
@@ -18,7 +18,7 @@ class Map{
 	int												drawSizeY;
 	SpriteFactory									spriteFactory;
 	Grid											grid;
-	std::vector<Tileset>							tileset;
+	std::vector<Tileset>							tilesets;
 	
 	bool change;
 

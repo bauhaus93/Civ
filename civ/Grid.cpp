@@ -326,3 +326,4 @@ Node* GridTraversal::Next(void){
 	}
 	return currReturn;
 }
+

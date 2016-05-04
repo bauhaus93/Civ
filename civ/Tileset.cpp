@@ -8,12 +8,10 @@ Tileset::Tileset(const string& name_, unsigned int resourceChance_) :
 }
 
 Tileset::Tileset(Tileset&& other) noexcept{
-	cout << "Tileset move c'tor start" << endl;
 	name = other.name;
 	resourceChance = other.resourceChance;
 	floor = move(other.floor);
 	resource = move(other.resource);
-	cout << "Tileset move c'tor end" << endl;
 }
 
 void Tileset::AddFloor(Sprite&& sprite){

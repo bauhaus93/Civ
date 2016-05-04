@@ -29,7 +29,7 @@ public:
 				Tile(const Tile& other) = delete;
 				~Tile(void);
 
-	void		InitializeSprite(void);
+	void		InitializeSprite(uint8_t neighbourMask);
 	void		AddSprite(const Sprite& add);
 
 	void		Render(int x, int y);

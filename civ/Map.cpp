@@ -12,18 +12,15 @@ Map::Map(const Rect& drawField_) :
 	spriteFactory.AddTransparent(0xFF, 0x00, 0xFF);
 
 	LoadTilesets();
-
-	
+		
 	grid.SetMouseClickComparator(spriteFactory.CreateDiamondSprite("terrain1", 66, 447));
 	grid.Create(75, 120);
 	grid.AlignViewToCenter(drawField.w, drawField.h);
 
-	GridTraversal g{ grid };
+	WorldGenerator wg;
+	wg.Generate(grid, tilesets);
+		
 
-	while (g.HasNext()){
-		auto node = g.Next();
-		node->SetTile(make_unique<Tile>(tileset.at(common::Random(tileset.size()))));
-	}
 	change = true;
 	
 }
@@ -46,68 +43,74 @@ void Map::Clicked(int screenX, int screenY){
 void Map::LoadTilesets(void){
 	int x = 1, y = 1;
 
-	tileset.push_back(Tileset("desert", RESOURCE_CHANCE));
-	tileset.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
+	//Simple Tiles with only floor and resource
+	tilesets.push_back(Tileset("desert", RESOURCE_CHANCE));
+	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
 	x += 65;
-	tileset.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
+	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
 	x += 65;
-	tileset.back().AddResource(Resource{ spriteFactory.CreateDiamondSprite("terrain1", x, y) });
+	tilesets.back().AddResource(Resource{ spriteFactory.CreateDiamondSprite("terrain1", x, y) });
 	x += 65;
-	tileset.back().AddResource(Resource{ spriteFactory.CreateDiamondSprite("terrain1", x, y) });
+	tilesets.back().AddResource(Resource{ spriteFactory.CreateDiamondSprite("terrain1", x, y) });
 
 	x = 1;
 	y += 33;
-	tileset.push_back(Tileset("prairie", RESOURCE_CHANCE));
-	tileset.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
+	tilesets.push_back(Tileset("prairie", RESOURCE_CHANCE));
+	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
 	x += 65 * 2;
-	tileset.back().AddResource(Resource{ spriteFactory.CreateDiamondSprite("terrain1", x, y) });
+	tilesets.back().AddResource(Resource{ spriteFactory.CreateDiamondSprite("terrain1", x, y) });
 	x += 65;
-	tileset.back().AddResource(Resource{ spriteFactory.CreateDiamondSprite("terrain1", x, y) });
-
-	
+	tilesets.back().AddResource(Resource{ spriteFactory.CreateDiamondSprite("terrain1", x, y) });
+		
 	x = 1;
 	y += 33;
-	tileset.push_back(Tileset("grasslands", RESOURCE_CHANCE));
-	tileset.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
-	tileset.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", 456, 232)));
+	tilesets.push_back(Tileset("grasslands", RESOURCE_CHANCE));
+	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
+	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", 456, 232)));
 
 	x = 1;
 	y += 33 * 4;
-	tileset.push_back(Tileset("tundra", RESOURCE_CHANCE));
-	tileset.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
+	tilesets.push_back(Tileset("tundra", RESOURCE_CHANCE));
+	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
 	x += 65 * 2;
-	tileset.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
+	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
 	x += 65;
-	tileset.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
+	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
 
 	x = 1;
 	y += 33;
-	tileset.push_back(Tileset("arctic", RESOURCE_CHANCE));
-	tileset.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
+	tilesets.push_back(Tileset("arctic", RESOURCE_CHANCE));
+	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
 	x += 65 * 2;
-	tileset.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
+	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
 	x += 65;
-	tileset.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
+	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
 
 	x = 1;
 	y += 33;
-	tileset.push_back(Tileset("swamp", RESOURCE_CHANCE));
-	tileset.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
+	tilesets.push_back(Tileset("swamp", RESOURCE_CHANCE));
+	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
 	x += 65 * 2;
-	tileset.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
+	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
 	x += 65;
-	tileset.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
+	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
 
 	x = 1;
 	y += 33;
-	tileset.push_back(Tileset("jungle", RESOURCE_CHANCE));
-	tileset.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
+	tilesets.push_back(Tileset("jungle", RESOURCE_CHANCE));
+	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
 	x += 65;
-	tileset.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
+	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
 	x += 65;
-	tileset.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
+	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
 	x += 65;
-	tileset.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
+	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
+
+
+	//Tiles which have floor, resource and onfloor a sprite depending on neighbours
+
+	
+
 
 }
 

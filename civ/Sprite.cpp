@@ -73,7 +73,6 @@ Sprite::Sprite(Sprite&& other) noexcept:
 	texture{ other.texture },
 	rect{ other.rect.x, other.rect.y, other.rect.w, other.rect.h }{
 	other.texture = nullptr;
-	cout << "move c'tor" << endl;
 }
 
 Sprite& Sprite::operator=(Sprite&& other) noexcept{
@@ -83,10 +82,8 @@ Sprite& Sprite::operator=(Sprite&& other) noexcept{
 	rect.w = other.rect.w;
 	rect.h = other.rect.h;
 	other.texture = nullptr;	//FUCK YOU
-	cout << "move assignment" << endl;
 	return *this;
 }
-
 
 Sprite::~Sprite(void){
 	if (texture != nullptr)
