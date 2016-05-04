@@ -5,6 +5,10 @@
 
 #include "Grid.h"
 #include "Tileset.h"
+#include "Node.h"
+#include "Tile.h"
+#include "TileSimple.h"
+#include "TileExtended.h"
 
 class WorldGenerator{
 public:

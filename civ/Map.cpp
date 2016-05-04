@@ -12,7 +12,7 @@ Map::Map(const Rect& drawField_) :
 	spriteFactory.AddTransparent(0xFF, 0x00, 0xFF);
 
 	LoadTilesets();
-		
+
 	grid.SetMouseClickComparator(spriteFactory.CreateDiamondSprite("terrain1", 66, 447));
 	grid.Create(75, 120);
 	grid.AlignViewToCenter(drawField.w, drawField.h);

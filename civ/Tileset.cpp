@@ -2,9 +2,10 @@
 
 using namespace std;
 
-Tileset::Tileset(const string& name_, unsigned int resourceChance_) :
+Tileset::Tileset(const string& name_, unsigned int resourceChance_, bool simple_) :
 	name{ name_ },
-	resourceChance{ resourceChance_ }{
+	resourceChance{ resourceChance_ },
+	simple{ simple_ }{
 }
 
 Tileset::Tileset(Tileset&& other) noexcept{
@@ -33,3 +34,4 @@ const Resource& Tileset::GetResource(int id) const{
 int Tileset::GetRandomResource(void) const{
 	return common::Random() < resourceChance ? common::Random(resource.size()) : -1;
 }
+

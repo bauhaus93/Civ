@@ -14,13 +14,19 @@ void WorldGenerator::Generate(Grid & grid, std::vector<Tileset>& tilesets){
 
 	while (g.HasNext()){
 		auto node = g.Next();
-		node->SetTile(make_unique<Tile>(tilesets.at(common::Random(tilesets.size()))));
+		node->SetTile(CreateTile(tilesets.at(common::Random(tilesets.size()))));
 	}
 
 	g = GridTraversal(grid);
 
 	while (g.HasNext()){
 		auto node = g.Next();
-		node->GetTile().InitializeSprite(0);
+		node->GetTile().CreateTileSprite(CreateSimpleNeighbourMask(node));
 	}
+}
+
+static unique_ptr<Tile> CreateTile(const Tileset& tileset){
+	if (tileset.IsSimple())
+		return make_unique<TileSimple>(tileset);
+	return make_unique<TileExtended>(tileset);
 }

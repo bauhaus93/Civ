@@ -16,6 +16,7 @@ enum class TileExtensions{
 
 class Tile{
 
+protected:
 	const Tileset& tileset;
 	const Sprite& floor;
 	int resource;
@@ -25,14 +26,15 @@ class Tile{
 
 public:
 
-				Tile(const Tileset& tileset_);
-				Tile(const Tile& other) = delete;
-				~Tile(void);
+					Tile(const Tileset& tileset_);
+					Tile(const Tile& other) = delete;
+	virtual			~Tile(void);
 
-	void		InitializeSprite(uint8_t neighbourMask);
-	void		AddSprite(const Sprite& add);
+	virtual void	CreateTileSprite(uint8_t neighbourMask) = 0;
+	void			AddSprite(const Sprite& add);
+	const Tileset&	GetTileset(void){ return tileset; }
 
-	void		Render(int x, int y);
+	void			Render(int x, int y);
 };
 
 

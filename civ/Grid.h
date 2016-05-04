@@ -6,6 +6,7 @@
 #include "Node.h"
 #include "Sprite.h"
 
+
 class Grid{
 
 	friend class GridTraversal;

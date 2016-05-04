@@ -7,6 +7,11 @@
 #define GET_NEIGHBOUR(a, b) {if(a() != nullptr) return a()->b();\
 							else if(b() != nullptr) return b()->a();\
 							return nullptr;}
+
+#define SAME_NEIGHBOUR(node, tileset, neighbour) ( node->neighbour() != nullptr && tileset == node->neighbour()->GetTile().GetTileset() )
+
+
+
 class Node{
 
 	std::unique_ptr<Tile> tile;
@@ -52,6 +57,8 @@ public:
 	inline Node*	GetEast(void);
 
 };
+
+uint8_t CreateSimpleNeighbourMask(Node* node);
 
 void Node::SetTile(std::unique_ptr<Tile> tile_){
 	tile = move(tile_);
