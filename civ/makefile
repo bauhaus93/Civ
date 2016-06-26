@@ -4,14 +4,11 @@ LDFLAGS = -Wall -lSDL2
 
 SRC := $(wildcard *.cpp)
 OBJ := $(SRC:.cpp=.o)
-DEP = $(OBJ:.o=.d)
+DEP := $(OBJ:.o=.d)
 BIN = civ
 
 all: $(OBJ)
 	$(CC) $(CFLAGS) -o $(BIN) $(OBJ) $(LDFLAGS)
-
-exec: $(BIN)
-	./$(BIN)
 
 -include $(DEP)
 
