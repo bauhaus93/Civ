@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "Tile.h"
 #include "Tileset.h"
 #include "Sprite.h"
