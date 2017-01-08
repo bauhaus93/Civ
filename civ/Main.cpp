@@ -1,8 +1,8 @@
 
-#include <memory>
-
-#include "SDLManager.h"
+#include "Log.h"
 #include "Game.h"
+#include "Engine.h"
+#include "AllegroEngine.h"
 
 using namespace std;
 
@@ -11,25 +11,11 @@ using namespace std;
 #endif
 
 int main(int argc, char **argv){
-	unique_ptr<Game> game = nullptr;
+	Log::CreateStd();
+	AllegroEngine::Start(1024, 768);
+	
 
-	common::Seed();
 
-	try{
-		SDL::Init("Civ", Rect{ 50, 50, 1024, 768 });
-	}
-	catch (const SDLException& e){
-		common::Log(e);
-		return 1;
-	}
-
-	try{
-		game = make_unique<Game>();
-	}
-	catch (const GameException& e){
-		common::Log(e);
-		return 1;
-	}
-
-	return game->Mainloop();
+	Engine::Stop();
+	Log::CloseStd();
 }

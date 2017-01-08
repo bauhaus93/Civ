@@ -13,9 +13,6 @@ namespace common{
 	extern std::uniform_int_distribution<> distribution100;
 	extern std::chrono::steady_clock timer;
 
-	void Log(const std::string& msg);
-	void Log(const std::exception& e);
-
 	void Seed();
 	void Seed(unsigned int seed);
 	unsigned int Random();
@@ -34,7 +31,7 @@ inline void common::Seed(){
 
 inline void common::Seed(unsigned int seed){
 	generator.seed(seed);
-	std::cout << "seed = " << seed << std::endl;
+	//std::cout << "seed = " << seed << std::endl;
 }
 
 inline unsigned int common::Random(){
