@@ -6,14 +6,14 @@ Map::Map(const Rect& drawField_) :
 	drawField{ drawField_ },
 	grid{}{
 
-	spriteFactory.AddImage("bmp/TERRAIN1.bmp", "terrain1");
-	spriteFactory.AddImage("bmp/TERRAIN2.bmp", "terrain2");
-	spriteFactory.AddTransparent(0x87, 0x87, 0x87);
-	spriteFactory.AddTransparent(0xFF, 0x00, 0xFF);
+	spriteFactory.AddSpriteSheet("bmp/TERRAIN1.bmp", "terrain1");
+	spriteFactory.AddSpriteSheet("bmp/TERRAIN2.bmp", "terrain2");
+	spriteFactory.MakeTransparent(RGBColor{ 0x87, 0x87, 0x87 });
+	spriteFactory.MakeTransparent(RGBColor{ 0xFF, 0x00, 0xFF });
 
 	LoadTilesets();
 
-	grid.SetMouseClickComparator(spriteFactory.CreateDiamondSprite("terrain1", 66, 447));
+	grid.SetMouseClickComparator(spriteFactory.CreateDiamondSprite("terrain1", Point{ 66, 447 }));
 	grid.Create(75, 120);
 	grid.AlignViewToCenter(drawField.w, drawField.h);
 
@@ -40,70 +40,70 @@ void Map::Clicked(int screenX, int screenY){
 }
 
 void Map::LoadTilesets(void){
-	int x = 1, y = 1;
+	Point pos{ 1, 1 };
 
 	//Simple Tiles with only floor and resource
 	tilesets.push_back(Tileset("desert", RESOURCE_CHANCE, true));
-	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
-	x += 65;
-	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
-	x += 65;
-	tilesets.back().AddResource(Resource{ spriteFactory.CreateDiamondSprite("terrain1", x, y) });
-	x += 65;
-	tilesets.back().AddResource(Resource{ spriteFactory.CreateDiamondSprite("terrain1", x, y) });
+	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", pos));
+	pos.x += 65;
+	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", pos));
+	pos.x += 65;
+	tilesets.back().AddResource(Resource{ spriteFactory.CreateDiamondSprite("terrain1", pos) });
+	pos.x += 65;
+	tilesets.back().AddResource(Resource{ spriteFactory.CreateDiamondSprite("terrain1", pos) });
 
-	x = 1;
-	y += 33;
+	pos.x = 1;
+	pos.y += 33;
 	tilesets.push_back(Tileset("prairie", RESOURCE_CHANCE, true));
-	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
-	x += 65 * 2;
-	tilesets.back().AddResource(Resource{ spriteFactory.CreateDiamondSprite("terrain1", x, y) });
-	x += 65;
-	tilesets.back().AddResource(Resource{ spriteFactory.CreateDiamondSprite("terrain1", x, y) });
+	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", pos));
+	pos.x += 65 * 2;
+	tilesets.back().AddResource(Resource{ spriteFactory.CreateDiamondSprite("terrain1", pos) });
+	pos.x += 65;
+	tilesets.back().AddResource(Resource{ spriteFactory.CreateDiamondSprite("terrain1", pos) });
 		
-	x = 1;
-	y += 33;
+	pos.x = 1;
+	pos.y += 33;
 	tilesets.push_back(Tileset("grasslands", RESOURCE_CHANCE, true));
-	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
-	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", 456, 232)));
+	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", pos));
+	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", Point{ 456, 232 })));
 
-	x = 1;
-	y += 33 * 4;
+	pos.x = 1;
+	pos.y += 33 * 4;
 	tilesets.push_back(Tileset("tundra", RESOURCE_CHANCE, true));
-	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
-	x += 65 * 2;
-	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
-	x += 65;
-	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
+	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", pos));
+	pos.x += 65 * 2;
+	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", pos)));
+	pos.x += 65;
+	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", pos)));
 
-	x = 1;
-	y += 33;
+	pos.x = 1;
+	pos.y += 33;
 	tilesets.push_back(Tileset("arctic", RESOURCE_CHANCE, true));
-	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
-	x += 65 * 2;
-	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
-	x += 65;
-	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
+	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", pos));
+	pos.x += 65 * 2;
+	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", pos)));
+	pos.x += 65;
+	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", pos)));
 
-	x = 1;
-	y += 33;
+	pos.x = 1;
+	pos.y += 33;
 	tilesets.push_back(Tileset("swamp", RESOURCE_CHANCE, true));
-	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
-	x += 65 * 2;
-	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
-	x += 65;
-	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
+	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", pos));
+	pos.x += 65 * 2;
+	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", pos)));
+	pos.x += 65;
+	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", pos)));
 
-	x = 1;
-	y += 33;
+	pos.x = 1;
+	pos.y += 33;
 	tilesets.push_back(Tileset("jungle", RESOURCE_CHANCE, true));
-	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
-	x += 65;
-	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", x, y));
-	x += 65;
-	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
-	x += 65;
-	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", x, y)));
+	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", pos));
+	pos.x += 65;
+	tilesets.back().AddFloor(spriteFactory.CreateDiamondSprite("terrain1", pos));
+	pos.x += 65;
+	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", pos)));
+	pos.x += 65;
+	tilesets.back().AddResource(Resource(spriteFactory.CreateDiamondSprite("terrain1", pos)));
 
 
 	//Tiles which have floor, resource and onfloor a sprite depending on neighbours
@@ -118,10 +118,10 @@ void Map::Render(void){
 
 	if (change){
 		s.SetAsRenderTarget();
-		SDL::Instance().SetColor(RGBAColor{ 0, 0, 0, 0xFF });
-		SDL::Instance().ClearScene();
+		Engine::Instance().SetColor(RGBAColor{ 0, 0, 0, 0xFF });
+		Engine::Instance().ClearScene();
 		grid.Render(drawField);
-		SDL::Instance().ClearRenderTarget();
+		Engine::Instance().ClearRenderTarget();
 		
 		//change = false;
 	}

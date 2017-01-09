@@ -57,8 +57,8 @@ void Grid::Render(const Rect& field){
 		curr->RenderRow(drawX, drawY, field.w);
 
 		if (curr == view){
-			SDL::Instance().SetColor(RGBAColor{ 0xFF, 0, 0, 0xFF });
-			SDL::Instance().DrawFillRect(Rect{ drawX + 32 - 5, drawY + 16 - 5, 10, 10 });
+			Engine::Instance().SetColor(RGBAColor{ 0xFF, 0, 0, 0xFF });
+			Engine::Instance().DrawFillRect(Rect{ drawX + 32 - 5, drawY + 16 - 5, 10, 10 });
 		}
 
 		if (fullFirst){
@@ -81,14 +81,14 @@ void Grid::Render(const Rect& field){
 	if (curr != nullptr && curr->GetNorthwest() != nullptr)
 		curr->GetNorthwest()->Render(drawX - 32, drawY - 16);
 
-	SDL::Instance().SetColor(RGBAColor{ 0xFF, 0, 0, 0xFF });
+	Engine::Instance().SetColor(RGBAColor{ 0xFF, 0, 0, 0xFF });
 	for (int y = field.y; y < field.h; y += 32)
-		SDL::Instance().DrawLine(field.x, y, field.w, y);
+		Engine::Instance().DrawLine(field.x, y, field.w, y);
 	for (int x = field.y; x < field.w; x += 64)
-		SDL::Instance().DrawLine(x, field.y, x, field.h);
+		Engine::Instance().DrawLine(x, field.y, x, field.h);
 
-	SDL::Instance().DrawLine(field.x, field.y, field.w, field.h);
-	SDL::Instance().DrawLine(field.x, field.h, field.w, field.y);
+	Engine::Instance().DrawLine(field.x, field.y, field.w, field.h);
+	Engine::Instance().DrawLine(field.x, field.h, field.w, field.y);
 
 }
 

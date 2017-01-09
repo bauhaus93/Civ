@@ -5,7 +5,7 @@
 using namespace std;
 
 Game::Game(void) :
-	map{ Rect{0, 0, SDL::Instance().GetScreenX(), SDL::Instance().GetScreenY() } },
+	map{ Rect{0, 0, Engine::Instance().GetScreenX(), Engine::Instance().GetScreenY() } },
 	fps{ 30 },
 	ticks{ 0 },
 	fpsCheckInterval{ 20 }{
@@ -21,7 +21,7 @@ int Game::Mainloop(void){
 			Tick();
 		}
 		catch (const GameException& e){
-			common::Log(e);
+			Logger::Write(e);
 			return 0;
 		}
 	}
@@ -57,7 +57,7 @@ void Game::Tick(void){
 		fps.Align(fpsCheckInterval);
 		stringstream s;
 		s << "fps: " << fps.GetFPS() << " | render time: " << lastRenderTime << " ms | delay: " << fps.GetDelay() << " ms " << endl;
-		SDL_SetWindowTitle(SDL::Instance().GetWindow(), s.str().c_str());
+		SDL_SetWindowTitle(Engine::Instance().GetWindow(), s.str().c_str());
 	}
 
 	fps.Delay();
@@ -68,10 +68,10 @@ void Game::Tick(void){
 void Game::WindowEvent(SDL_Event& e){
 	switch (e.window.event){
 		case SDL_WINDOWEVENT_MINIMIZED:
-			common::Log("MINIMIZED!");
+			Logger::Write("MINIMIZED!");
 			break;
 		case SDL_WINDOWEVENT_RESTORED:
-			common::Log("RESTORED!");
+			Logger::Write("RESTORED!");
 			break;
 		default:
 			break;
@@ -87,7 +87,7 @@ void Game::Render(void){
 	auto start = common::Time();
 
 	map.Render();
-	SDL::Instance().ShowScene();
+	Engine::Instance().ShowScene();
 
 	lastRenderTime = common::TimeDiff(start);
 }

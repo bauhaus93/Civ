@@ -2,6 +2,7 @@
 
 using namespace std;
 
+AllegroEngine* AllegroEngine::instance = nullptr;
 
 AllegroEngine::AllegroEngine(const Rect& screen, string& windowName){
 
@@ -35,9 +36,15 @@ AllegroEngine::~AllegroEngine(void){
 	Logger::Write("Allegro shut down");
 }
 
-void AllegroEngine::Start(int screenW, int screenH, string& windowName){
+void AllegroEngine::Start(const Rect& screen, string& windowName){
 	if (instance == nullptr)
-		instance = new AllegroEngine(Rect{ 0, 0, screenW, screenH }, windowName);
+		instance = new AllegroEngine(screen, windowName);
 	else
 		throw CivException("AllegroEngine::Start", "Engine already started!");
+}
+
+void AllegroEngine::Stop(){
+	if (instance != nullptr)
+		delete instance;
+	instance = nullptr;
 }

@@ -14,10 +14,11 @@
 #include "Common.h"
 #include "SDLException.h"
 #include "Definitions.h"
-#include "Engine.h"
 #include "Log.h"
 
-class SDLEngine: public Engine{
+class SDLEngine{
+
+	static SDLEngine* instance;
 
 
 	SDL_Window		*window;
@@ -44,7 +45,9 @@ public:
 
 	void		ShowScene();
 
-	static void Start(int screenW, int screenH, std::string& windowName);
+	static				void Start(const Rect& screen, std::string& windowName);
+	static				void Stop();
+	static SDLEngine&	Instance(void);
 
 };
 
@@ -54,4 +57,8 @@ inline SDL_Renderer* SDLEngine::GetRenderer(void){
 
 inline SDL_Window* SDLEngine::GetWindow(void){
 	return window;
+}
+
+inline SDLEngine& SDLEngine::Instance(void){
+	return *instance;
 }

@@ -1,44 +1,21 @@
 #pragma once
 
-#include <string>
-#include <iostream>
+#include "Engine.h"
 
+#ifdef ENGINE_SDL
 
-#ifdef _WIN32
-	#include <sdl/SDL.h>
+#include "SDLSprite.h"
+
+typedef SDLSprite Sprite;
+
 #endif
-#ifdef __linux__
-	#include <SDL2/SDL.h>
+
+#ifdef ENGINE_ALLEGRO
+
+#include "AllegroSprite.h"
+
+typedef AllegroSprite Sprite;
+
 #endif
 
-#include "Common.h"
-#include "SDLManager.h"
-#include "CivExceptions.h"
-#include "Definitions.h"
-
-class Sprite{
-	friend class	Renderer;
-
-	SDL_Texture*	texture;
-	SDL_Rect		rect;
-
-public:
-					Sprite(void);
-					Sprite(const Rect& dim);
-					Sprite(const Sprite& src, const Rect& dim_);
-					Sprite(SDL_Surface* src, const Rect& dim_);
-					Sprite(const Sprite& s);
-
-					Sprite(Sprite&& other) noexcept;
-	Sprite&			operator=(Sprite&& other) noexcept;
-		
-					~Sprite(void);
-	void			Add(const Sprite& sprite, const Rect& dim);
-	void			Add(const Sprite& sprite);
-	void			SetAsRenderTarget();
-	void			Render(int x, int y);
-	Uint32			GetFormat(void) const;
-	const SDL_Rect&	GetRect() const;
-	RGBAColor		PixelAt(int x, int y);
-};
 

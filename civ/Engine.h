@@ -1,20 +1,27 @@
 #pragma once
 
-#include "Definitions.h"
+#define ENGINE_SDL
+//#define ENGINE_ALLEGRO
 
-class Engine{
 
-protected:
+#ifdef ENGINE_SDL
+	#ifdef ENGINE_ALLEGRO
+		#error Can use only one engine!
+	#endif
+#endif
 
-	static Engine* Engine::instance;
-	virtual ~Engine() = 0;
-public:
+#ifdef ENGINE_SDL
 
-	static void		Stop();
-	static Engine&	Instance(void);
+#include "SDLEngine.h"
 
-};
+typedef SDLEngine Engine;
 
-inline Engine& Engine::Instance(void){
-	return *instance;
-}
+#endif
+
+#ifdef ENGINE_ALLEGRO
+
+#include "AllegroEngine.h"
+
+typedef AllegroEngine Engine;
+
+#endif

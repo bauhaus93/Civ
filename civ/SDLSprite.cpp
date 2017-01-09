@@ -1,4 +1,4 @@
-#include "Sprite.h"
+#include "SDLSprite.h"
 
 using namespace std;
 
@@ -14,13 +14,13 @@ inline SDL_Rect ToSDLRect(const Rect& rect){
 	return r;
 }
 
-Sprite::Sprite(void) :
+SDLSprite::SDLSprite(void) :
 	texture{ nullptr },
 	rect{ 0, 0, 0, 0 }{
 }
 
-Sprite::Sprite(SDL_Surface* src, const Rect& dim_) :
-	Sprite{}{
+SDLSprite::SDLSprite(SDL_Surface* src, const Rect& dim_) :
+	SDLSprite{}{
 	SDL_Rect dim = ToSDLRect(dim_);
 
 	SDL_Surface *surf = SDL_CreateRGBSurface(0, dim.w, dim.h, (Uint32)32, (Uint32)0xFF, (Uint32)0xFF << 8, (Uint32)0xFF << 16, (Uint32)0xFF << 24);
@@ -32,10 +32,10 @@ Sprite::Sprite(SDL_Surface* src, const Rect& dim_) :
 		throw SDLException("SDL_BlitSurface");
 
 	//make texture SDL_TEXTUREACCESS_TARGET
-	SDL_Texture *tmp = SDL_CreateTextureFromSurface(SDL::Instance().GetRenderer(), surf);
+	SDL_Texture *tmp = SDL_CreateTextureFromSurface(Engine::Instance().GetRenderer(), surf);
 	SDL_FreeSurface(surf);
 
-	texture = SDL_CreateTexture(SDL::Instance().GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, dim.w, dim.h);
+	texture = SDL_CreateTexture(Engine::Instance().GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, dim.w, dim.h);
 	SDL_Rect tmpRect{ 0, 0, dim.w, dim.h };
 	TextureOnTexture(tmp, tmpRect, texture, tmpRect);
 	SDL_DestroyTexture(tmp);
@@ -50,32 +50,32 @@ Sprite::Sprite(SDL_Surface* src, const Rect& dim_) :
 		throw SDLException("SDL_QueryTexture");
 }
 
-Sprite::Sprite(const Rect& dim) :
+SDLSprite::SDLSprite(const Rect& dim) :
 	texture{ nullptr },
 	rect{ 0, 0, dim.w, dim.h }{
 
-	texture = SDL_CreateTexture(SDL::Instance().GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, dim.w, dim.h);
+	texture = SDL_CreateTexture(Engine::Instance().GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, dim.w, dim.h);
 
 	if (texture == nullptr)
 		throw SDLException("SDL_CreateTexture");
 }
 
-Sprite::Sprite(const Sprite& src, const Rect& dim) :
-	Sprite{ dim }{
+SDLSprite::SDLSprite(const SDLSprite& src, const Rect& dim) :
+	SDLSprite{ dim }{
 	Add(src, dim);
 }
 
-Sprite::Sprite(const Sprite& src) :
-	Sprite{ src, ToRect(src.GetRect()) }{
+SDLSprite::SDLSprite(const SDLSprite& src) :
+	SDLSprite{ src, ToRect(src.GetRect()) }{
 }
 
-Sprite::Sprite(Sprite&& other) noexcept:
+SDLSprite::SDLSprite(SDLSprite&& other) noexcept:
 	texture{ other.texture },
 	rect{ other.rect.x, other.rect.y, other.rect.w, other.rect.h }{
 	other.texture = nullptr;
 }
 
-Sprite& Sprite::operator=(Sprite&& other) noexcept{
+SDLSprite& SDLSprite::operator=(SDLSprite&& other) noexcept{
 	texture = other.texture;
 	rect.x = other.rect.x;
 	rect.y = other.rect.y;
@@ -85,53 +85,53 @@ Sprite& Sprite::operator=(Sprite&& other) noexcept{
 	return *this;
 }
 
-Sprite::~Sprite(void){
+SDLSprite::~SDLSprite(void){
 	if (texture != nullptr)
 		SDL_DestroyTexture(texture);	//FUCK YOU TOO
 }
 
-void Sprite::Add(const Sprite& sprite, const Rect& dim){
-	TextureOnTexture(sprite.texture, ToSDLRect(dim), texture, rect);
+void SDLSprite::Add(const SDLSprite& SDLSprite, const Rect& dim){
+	TextureOnTexture(SDLSprite.texture, ToSDLRect(dim), texture, rect);
 }
 
-void Sprite::Add(const Sprite& sprite){
-	Add(sprite, ToRect(sprite.GetRect()));
+void SDLSprite::Add(const SDLSprite& SDLSprite){
+	Add(SDLSprite, ToRect(SDLSprite.GetRect()));
 }
 
-void Sprite::SetAsRenderTarget(){
-	if (SDL_SetRenderTarget(SDL::Instance().GetRenderer(), texture) == -1)
+void SDLSprite::SetAsRenderTarget(){
+	if (SDL_SetRenderTarget(Engine::Instance().GetRenderer(), texture) == -1)
 		throw SDLException("SDL_SetRenderTarget");
 }
 
-void Sprite::Render(int x, int y){
+void SDLSprite::Render(int x, int y){
 	rect.x = x;
 	rect.y = y;
-	if (SDL_RenderCopy(SDL::Instance().GetRenderer(), texture, nullptr, &rect) == -1)
+	if (SDL_RenderCopy(Engine::Instance().GetRenderer(), texture, nullptr, &rect) == -1)
 		throw SDLException("SDL_RenderCopy");
 }
 
-Uint32 Sprite::GetFormat(void) const{
+Uint32 SDLSprite::GetFormat(void) const{
 	Uint32 format;
 	if (SDL_QueryTexture(texture, &format, nullptr, nullptr, nullptr) == -1)
 		throw SDLException("SDL_QueryTexture");
 	return format;
 }
 
-const SDL_Rect& Sprite::GetRect() const{
+const SDL_Rect& SDLSprite::GetRect() const{
 	return rect;
 }
 
-RGBAColor Sprite::PixelAt(int x, int y){
+RGBAColor SDLSprite::PixelAt(int x, int y){
 	uint32_t pixels = 0;
 	SDL_Rect r{ x, y, 1, 1 };
 
-	if (SDL_SetRenderTarget(SDL::Instance().GetRenderer(), texture) == -1)
+	if (SDL_SetRenderTarget(Engine::Instance().GetRenderer(), texture) == -1)
 		throw SDLException("SDL_SetRenderTarget");
 
-	if (SDL_RenderReadPixels(SDL::Instance().GetRenderer(), &r, SDL_PIXELFORMAT_RGBA8888, &pixels, 4*rect.w) < 0)	//FUCK YOU
+	if (SDL_RenderReadPixels(Engine::Instance().GetRenderer(), &r, SDL_PIXELFORMAT_RGBA8888, &pixels, 4*rect.w) < 0)	//FUCK YOU
 		throw SDLException("SDL_RenderReadPixels");
 
-	if (SDL_SetRenderTarget(SDL::Instance().GetRenderer(), nullptr) == -1)
+	if (SDL_SetRenderTarget(Engine::Instance().GetRenderer(), nullptr) == -1)
 		throw SDLException("SDL_SetRenderTarget");
 
 	return move(RGBAColor{ static_cast<uint8_t>((pixels >> 24) & 0xFF), static_cast<uint8_t>((pixels >> 16) & 0xFF), static_cast<uint8_t>((pixels >> 8) && 0xFF), static_cast<uint8_t>(pixels & 0xFF) });
@@ -141,12 +141,12 @@ static void TextureOnTexture(SDL_Texture *src, const SDL_Rect& srcRect, SDL_Text
 	if (SDL_SetTextureBlendMode(dest, SDL_BLENDMODE_BLEND) == -1)
 		throw SDLException("SDL_SetTextureBlendMode");
 
-	if (SDL_SetRenderTarget(SDL::Instance().GetRenderer(), dest) == -1)
+	if (SDL_SetRenderTarget(Engine::Instance().GetRenderer(), dest) == -1)
 		throw SDLException("SDL_SetRenderTarget");
 
-	if (SDL_RenderCopy(SDL::Instance().GetRenderer(), src, &srcRect, &destRect) == -1)
+	if (SDL_RenderCopy(Engine::Instance().GetRenderer(), src, &srcRect, &destRect) == -1)
 		throw SDLException("SDL_RenderCopy");
 
-	if (SDL_SetRenderTarget(SDL::Instance().GetRenderer(), nullptr) == -1)
+	if (SDL_SetRenderTarget(Engine::Instance().GetRenderer(), nullptr) == -1)
 		throw SDLException("SDL_SetRenderTarget");
 }

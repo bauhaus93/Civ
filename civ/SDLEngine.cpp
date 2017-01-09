@@ -2,6 +2,8 @@
 
 using namespace std;
 
+SDLEngine* SDLEngine::instance = nullptr;
+
 SDLEngine::SDLEngine(const Rect& screen, string& windowName):
 	sizeX{ screen.w },
 	sizeY{ screen.h }{
@@ -74,8 +76,6 @@ RGBAColor SDLEngine::SetColor(const RGBAColor& col){
 	return std::move(old);
 }
 
-
-
 void SDLEngine::ClearRenderTarget(void){
 	if (SDL_SetRenderTarget(renderer, nullptr) == -1)
 		throw SDLException("SDL_SetRenderTarget");
@@ -90,9 +90,15 @@ void SDLEngine::ShowScene(){
 	SDL_RenderPresent(renderer);
 }
 
-void SDLEngine::Start(int screenW, int screenH, string& windowName){
+void SDLEngine::Start(const Rect& screen, string& windowName){
 	if (instance == nullptr)
-		instance = new SDLEngine(Rect{ 0, 0, screenW, screenH }, windowName);
+		instance = new SDLEngine(screen, windowName);
 	else
 		throw CivException("SDLEngine::Start", "Engine already started!");
+}
+
+void SDLEngine::Stop(){
+	if (instance != nullptr)
+		delete instance;
+	instance = nullptr;
 }

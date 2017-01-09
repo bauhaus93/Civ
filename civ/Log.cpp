@@ -38,10 +38,12 @@ void Log::CloseStd(){
 		delete instance;
 }
 
+//TODO implement time safely
 void Log::Write(const string& msg){
-	time_t t = chrono::system_clock::to_time_t(chrono::system_clock::now());
+	//time_t t = chrono::system_clock::to_time_t(chrono::system_clock::now());
+	//out << "[" << put_time(localtime(&t), "%H:%M:%S") << "]" << msg << endl;
 
-	out << "[" << put_time(localtime(&t), "%H:%M:%S") << "]" << msg << endl;
+	out << msg << endl;
 }
 
 void Log::Write(const exception& e){

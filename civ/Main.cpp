@@ -2,7 +2,7 @@
 #include "Log.h"
 #include "Game.h"
 #include "Engine.h"
-#include "AllegroEngine.h"
+#include "Definitions.h"
 
 using namespace std;
 
@@ -12,9 +12,11 @@ using namespace std;
 
 int main(int argc, char **argv){
 	Log::CreateStd();
-	AllegroEngine::Start(1024, 768);
-	
+	Engine::Start(Rect{ 50, 50, 1024, 768 }, string("test"));
 
+	Game game{};
+
+	game.Mainloop();
 
 	Engine::Stop();
 	Log::CloseStd();

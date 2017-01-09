@@ -1,19 +1,19 @@
-#include "SpriteFactory.h"
+#include "SDLSpriteFactory.h"
 
 using namespace std;
 
-SpriteFactory::SpriteFactory(void){
+SDLSpriteFactory::SDLSpriteFactory(){
 }
 
 
-SpriteFactory::~SpriteFactory(void){
+SDLSpriteFactory::~SDLSpriteFactory(){
 	for (auto iter : baseImgs)
 		SDL_FreeSurface(iter.second);
 	baseImgs.clear();
 }
 
-void SpriteFactory::AddImage(const string& path, const string& name){
-	SDL_Surface *tmp = SDL_LoadBMP(path.c_str());
+void SDLSpriteFactory::AddSpriteSheet(const string& filename, const string& sheetname){
+	SDL_Surface *tmp = SDL_LoadBMP(filename.c_str());
 	SDL_Surface *img = nullptr;
 	SDL_Rect rect{ 0, 0, 0, 0 };
 	
@@ -36,10 +36,10 @@ void SpriteFactory::AddImage(const string& path, const string& name){
 		throw SDLException("SDL_BlitSurface");
 	}
 		
-	baseImgs.insert(make_pair(name, img));
+	baseImgs.insert(make_pair(sheetname, img));
 }
 
-void SpriteFactory::AddTransparent(uint8_t rT, uint8_t gT, uint8_t bT){
+void SDLSpriteFactory::MakeTransparent(const RGBColor& color){
 
 	for (auto iter : baseImgs){
 		SDL_Surface* surf = iter.second;
@@ -53,7 +53,7 @@ void SpriteFactory::AddTransparent(uint8_t rT, uint8_t gT, uint8_t bT){
 			uint8_t g = static_cast<uint8_t>((*ptr & surf->format->Gmask) >> surf->format->Gshift);
 			uint8_t b = static_cast<uint8_t>((*ptr & surf->format->Bmask) >> surf->format->Bshift);
 
-			if (r == rT && g == gT && b == bT){
+			if (r == color.r && g == color.g && b == color.b){
 				*ptr = ((r << surf->format->Rshift) + (g << surf->format->Gshift) + (b << surf->format->Bshift));
 			}
 			ptr++;
@@ -63,12 +63,16 @@ void SpriteFactory::AddTransparent(uint8_t rT, uint8_t gT, uint8_t bT){
 	
 }
 
-Sprite SpriteFactory::CreateSprite(const string& name, const Rect& dim){
-
-	return Sprite(baseImgs.at(name), dim);
+SDLSprite SDLSpriteFactory::CreateSprite(const string& name, const Rect& dim){
+	try{
+		return SDLSprite(baseImgs.at(name), dim);
+	}
+	catch (const out_of_range& e){
+		throw CivException("SDLSpriteFactory::CreateSprite", "Map element " + name + " not existing");
+	}
 }
 
-Sprite SpriteFactory::CreateDiamondSprite(const string& name, int x, int y){
-	const Rect rect = { x, y, 64, 32 };
+SDLSprite SDLSpriteFactory::CreateDiamondSprite(const string& name, const Point& pos){
+	const Rect rect = { pos.x, pos.y, 64, 32 };
 	return CreateSprite(name, rect);
 }

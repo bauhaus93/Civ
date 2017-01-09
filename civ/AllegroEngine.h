@@ -7,10 +7,11 @@
 #include "Definitions.h"
 #include "CivException.h"
 #include "AllegroException.h"
-#include "Engine.h"
 #include "Log.h"
 
-class AllegroEngine: public Engine{
+class AllegroEngine{
+
+	static AllegroEngine* instance;
 
 
 	ALLEGRO_DISPLAY* display;
@@ -20,9 +21,13 @@ class AllegroEngine: public Engine{
 
 public:
 
-	static void Start(int screenW, int screenH, std::string& windowName);
+	static					void Start(const Rect& screen, std::string& windowName);
+	static					void Stop(void);
+	static AllegroEngine&	Instance(void);
 
 };
 
-
+inline AllegroEngine& AllegroEngine::Instance(void){
+	return *instance;
+}
 

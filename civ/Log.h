@@ -13,15 +13,15 @@
 namespace Logger{
 	void Write(const std::string& msg);
 	void Write(const std::exception& e);
-}
+};
 
 
 class Log{
 
 	static Log* instance;
 
-	ofstream file;
-	ostream& out;
+	std::ofstream file;
+	std::ostream& out;
 
 public:
 	Log(std::string& name);
@@ -31,7 +31,7 @@ public:
 
 
 	void Write(const std::string& msg);
-	void Write(const exception& e);
+	void Write(const std::exception& e);
 
 	static void CreateStd(std::string& name);
 	static void CreateStd();
