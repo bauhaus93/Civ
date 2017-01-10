@@ -17,7 +17,4 @@ int main(int argc, char **argv){
 	Game game{};
 
 	game.Mainloop();
-
-	Engine::Stop();
-	Log::CloseStd();
 }

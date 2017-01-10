@@ -29,27 +29,8 @@ int Game::Mainloop(void){
 }
 
 void Game::Tick(void){
-	SDL_Event e;
 
-	while (SDL_PollEvent(&e) != 0){
-		switch (e.type){
-			case SDL_QUIT:
-				throw CivException("Tick", "SDL_QUIT invoked");
-				break;
-			case SDL_KEYUP:
-				if (e.key.keysym.sym == SDLK_q)
-					throw CivException("Tick", "Q pressed");
-				break;
-			case SDL_MOUSEBUTTONUP:
-				MouseEvent(e);
-				break;
-			case SDL_WINDOWEVENT:
-				WindowEvent(e);
-				break;
-			default:
-				break;
-		}
-	}
+	HandleEvents();
 
 	Render();
 
@@ -57,30 +38,44 @@ void Game::Tick(void){
 		fps.Align(fpsCheckInterval);
 		stringstream s;
 		s << "fps: " << fps.GetFPS() << " | render time: " << lastRenderTime << " ms | delay: " << fps.GetDelay() << " ms " << endl;
-		SDL_SetWindowTitle(Engine::Instance().GetWindow(), s.str().c_str());
+		Engine::Instance().SetWindowTitle(s.str());
 	}
 
 	fps.Delay();
-
 	ticks++;
 }
 
-void Game::WindowEvent(SDL_Event& e){
-	switch (e.window.event){
-		case SDL_WINDOWEVENT_MINIMIZED:
-			Logger::Write("MINIMIZED!");
-			break;
-		case SDL_WINDOWEVENT_RESTORED:
-			Logger::Write("RESTORED!");
-			break;
-		default:
-			break;
+void Game::HandleEvents(void){
+	auto q = Engine::Instance().PollEvents();
+
+	while (!q.empty()){
+		Event e = q.back();
+		q.pop();
+
+		switch (e.type){
+			case EventType::QUIT:
+				throw CivException("Tick", "Quit was invoked");
+				break;
+			case EventType::KEY_PRESSED:
+				if (e.flags == 'q')
+					throw CivException("Tick", "Q pressed");
+				break;
+			case EventType::MOUSE_PRESSED:
+				MouseEvent(e);
+				break;
+			default:
+				Logger::Write("Received unhandled event");
+				break;
+		}
+
 	}
 }
 
-void Game::MouseEvent(SDL_Event& e){
-	if (e.button.button == SDL_BUTTON_LEFT)
-		map.Clicked(e.button.x, e.button.y);
+void Game::MouseEvent(Event& e){
+	if (e.flags & 1)	//= left mouse click
+		map.Clicked(e.point.x, e.point.y);
+
+
 }
 
 void Game::Render(void){

@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <memory>
+#include "Definitions.h"
 
 #include "Node.h"
 #include "Sprite.h"

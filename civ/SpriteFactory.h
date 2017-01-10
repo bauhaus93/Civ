@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "Engine.h"
 
 #ifdef ENGINE_SDL
@@ -15,6 +14,6 @@ typedef SDLSpriteFactory SpriteFactory;
 
 #include "AllegroSpriteFactory.h"
 
-typedef AllegroSpriteFactory Sprite;
+typedef AllegroSpriteFactory SpriteFactory;
 
 #endif

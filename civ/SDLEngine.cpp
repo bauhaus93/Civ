@@ -90,9 +90,47 @@ void SDLEngine::ShowScene(){
 	SDL_RenderPresent(renderer);
 }
 
+void SDLEngine::SetWindowTitle(const std::string& title){
+	SDL_SetWindowTitle(GetWindow(), title.c_str());
+}
+
+std::queue<Event> SDLEngine::PollEvents(void){
+	queue<Event> events;
+
+	SDL_Event event;
+
+	while (SDL_PollEvent(&event) != 0){
+		switch (event.type){
+			case SDL_QUIT:
+				events.emplace(EventType::QUIT);
+				break;
+			case SDL_KEYUP:
+				events.emplace(EventType::KEY_PRESSED, event.key.keysym.sym);
+				break;
+			case SDL_MOUSEBUTTONUP:
+				{
+				Event e(EventType::MOUSE_PRESSED);
+				if (event.button.button == SDL_BUTTON_LEFT)
+					e.flags |= 1;
+				if (event.button.button == SDL_BUTTON_RIGHT)
+					e.flags |= 2;
+				e.point.x = event.button.x;
+				e.point.y = event.button.y;
+				events.push(e);
+				}
+				break;
+			default:
+				break;
+		}
+	}
+	return events;
+}
+
 void SDLEngine::Start(const Rect& screen, string& windowName){
-	if (instance == nullptr)
+	if (instance == nullptr){
 		instance = new SDLEngine(screen, windowName);
+		atexit([](){Stop(); });
+	}
 	else
 		throw CivException("SDLEngine::Start", "Engine already started!");
 }

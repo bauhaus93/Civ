@@ -9,6 +9,7 @@
 #include "Tile.h"
 #include "TileSimple.h"
 #include "TileExtended.h"
+#include "Common.h"
 
 class WorldGenerator{
 public:

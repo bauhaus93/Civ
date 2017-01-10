@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <memory>
+#include <queue>
 
 #ifdef _WIN32
 #include <SDL/SDL.h>
@@ -15,6 +16,7 @@
 #include "SDLException.h"
 #include "Definitions.h"
 #include "Log.h"
+#include "Event.h"
 
 class SDLEngine{
 
@@ -35,15 +37,18 @@ public:
 	int				GetScreenX(void){ return sizeX; }
 	int				GetScreenY(void){ return sizeY; }
 
-	void		DrawRect(const Rect& rect);
-	void		DrawFillRect(const Rect & rect);
-	void		DrawLine(int startX, int startY, int stopX, int stopY);
-	RGBAColor	SetColor(const RGBAColor& col);
+	void			DrawRect(const Rect& rect);
+	void			DrawFillRect(const Rect & rect);
+	void			DrawLine(int startX, int startY, int stopX, int stopY);
+	RGBAColor		SetColor(const RGBAColor& col);
 
-	void		ClearRenderTarget();
-	void		ClearScene(void);
+	void			ClearRenderTarget();
+	void			ClearScene(void);
 
-	void		ShowScene();
+	void			ShowScene();
+
+	void			SetWindowTitle(const std::string& title);
+	std::queue<Event> PollEvents(void);
 
 	static				void Start(const Rect& screen, std::string& windowName);
 	static				void Stop();

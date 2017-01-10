@@ -48,6 +48,12 @@ struct RGBColor{
 	uint8_t g;
 	uint8_t b;
 
+	RGBColor() :
+		r{ 0 },
+		g{ 0 },
+		b{ 0 }{
+	}
+
 	RGBColor(uint8_t r_, uint8_t g_, uint8_t b_) :
 		r{ r_ },
 		g{ g_ },
@@ -66,6 +72,13 @@ struct RGBAColor{
 	uint8_t g;
 	uint8_t b;
 	uint8_t a;
+
+	RGBAColor() :
+		r{ 0 },
+		g{ 0 },
+		b{ 0 },
+		a{ 0 }{
+	}
 
 	RGBAColor(uint8_t r_, uint8_t g_, uint8_t b_, uint8_t a_) :
 		r{ r_ },

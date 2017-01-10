@@ -20,8 +20,10 @@ Log::~Log(){
 }
 
 void Log::CreateStd(string& name){
-	if (instance == nullptr)
+	if (instance == nullptr){
 		instance = new Log(name);
+		atexit([](){CloseStd(); });
+	}
 	else
 		throw CivException("Log::CreateStd", "Standard-Log already existing!");
 }

@@ -3,6 +3,7 @@
 #include <chrono>
 #include <string>
 #include <sstream>
+#include <queue>
 
 #include "Common.h"
 #include "Map.h"
@@ -17,8 +18,8 @@ class Game{
 	unsigned int	lastRenderTime;
 
 	void		Tick(void);
-	void		WindowEvent(SDL_Event& e);
-	void		MouseEvent(SDL_Event & e);
+	void		HandleEvents(void);
+	void		MouseEvent(Event& e);
 	void		Render(void);
 
 public:

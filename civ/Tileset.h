@@ -7,6 +7,7 @@
 
 #include "Sprite.h"
 #include "Resource.h"
+#include "Common.h"
 
 
 class Tileset{

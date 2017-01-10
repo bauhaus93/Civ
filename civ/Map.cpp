@@ -114,18 +114,5 @@ void Map::LoadTilesets(void){
 }
 
 void Map::Render(void){
-	static Sprite s{ Rect{ 0, 0, drawField.w, drawField.h } };
-
-	if (change){
-		s.SetAsRenderTarget();
-		Engine::Instance().SetColor(RGBAColor{ 0, 0, 0, 0xFF });
-		Engine::Instance().ClearScene();
-		grid.Render(drawField);
-		Engine::Instance().ClearRenderTarget();
-		
-		//change = false;
-	}
-
-	s.Render(drawField.x, drawField.y);
-	
+	grid.Render(drawField);
 }

@@ -12,7 +12,7 @@
 #endif
 
 #include "Common.h"
-#include "Engine.h"
+#include "SDLEngine.h"
 #include "SDLException.h"
 #include "Definitions.h"
 
