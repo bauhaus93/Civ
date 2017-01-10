@@ -2,13 +2,11 @@
 #include "Log.h"
 #include "Game.h"
 #include "Engine.h"
-#include "Definitions.h"
+#include "Rect.h"
 
 using namespace std;
 
-#ifdef _WIN32
-#undef main
-#endif
+
 
 int main(int argc, char **argv){
 	Log::CreateStd();

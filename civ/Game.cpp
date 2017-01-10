@@ -74,13 +74,13 @@ void Game::HandleEvents(void){
 void Game::MouseEvent(Event& e){
 	if (e.flags & 1)	//= left mouse click
 		map.Clicked(e.point.x, e.point.y);
-
-
 }
 
 void Game::Render(void){
 	auto start = common::Time();
 
+	Engine::Instance().SetColor(RGBAColor{ 0, 0, 0, 0xFF });
+	Engine::Instance().ClearScene();
 	map.Render();
 	Engine::Instance().ShowScene();
 

@@ -8,7 +8,7 @@
 #include "Tile.h"
 #include "Grid.h"
 #include "WorldGenerator.h"
-#include "Definitions.h"
+#include "Rect.h"
 
 #define RESOURCE_CHANCE (10)
 

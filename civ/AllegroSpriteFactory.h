@@ -6,7 +6,8 @@
 #include <allegro5\allegro.h>
 
 #include "AllegroSprite.h"
-#include "Definitions.h"
+#include "Rect.h"
+#include "Color.h"
 #include "AllegroException.h"
 
 class AllegroSpriteFactory{

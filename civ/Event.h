@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Definitions.h"
+#include "Point.h"
 
 enum class EventType{
 	KEY_PRESSED,

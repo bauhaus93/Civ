@@ -14,9 +14,14 @@
 
 #include "Common.h"
 #include "SDLException.h"
-#include "Definitions.h"
+#include "Rect.h"
+#include "Color.h"
 #include "Log.h"
 #include "Event.h"
+
+#ifdef _WIN32
+#undef main
+#endif
 
 class SDLEngine{
 

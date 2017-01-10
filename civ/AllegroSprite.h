@@ -4,7 +4,7 @@
 
 #include <allegro5\allegro.h>
 
-#include "Definitions.h"
+#include "Rect.h"
 #include "AllegroEngine.h"
 #include "AllegroException.h"
 

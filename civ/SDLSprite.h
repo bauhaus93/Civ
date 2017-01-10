@@ -14,7 +14,8 @@
 #include "Common.h"
 #include "SDLEngine.h"
 #include "SDLException.h"
-#include "Definitions.h"
+#include "Color.h"
+#include "Rect.h"
 
 class SDLSprite{
 	friend class	Renderer;

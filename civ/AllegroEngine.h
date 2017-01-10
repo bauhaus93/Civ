@@ -7,7 +7,8 @@
 #include <allegro5\allegro_image.h>
 #include <allegro5\allegro_primitives.h>
 
-#include "Definitions.h"
+#include "Color.h"
+#include "Rect.h"
 #include "CivException.h"
 #include "AllegroException.h"
 #include "Log.h"
