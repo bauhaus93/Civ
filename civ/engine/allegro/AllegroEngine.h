@@ -7,9 +7,9 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
 
-#include "Color.h"
-#include "Rect.h"
-#include "Exception/CivException.h"
+#include "common/Color.h"
+#include "common/Rect.h"
+#include "exception/CivException.h"
 #include "AllegroException.h"
 #include "Log.h"
 #include "Event.h"
@@ -25,7 +25,7 @@ class AllegroEngine{
 
 
 
-							AllegroEngine(const Rect& screen, std::string& windowName);
+							AllegroEngine(const Rect& screen, const std::string& windowName);
 							~AllegroEngine(void);
 
 public:
@@ -43,7 +43,7 @@ public:
 	void					DrawFillRect(const Rect & rect);
 	void					DrawLine(int startX, int startY, int stopX, int stopY);
 
-	static					void Start(const Rect& screen, std::string& windowName);
+	static					void Start(const Rect& screen, const std::string& windowName);
 	static					void Stop(void);
 	static AllegroEngine&	Instance(void);
 

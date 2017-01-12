@@ -2,9 +2,9 @@
 
 #include <string>
 
-#include <allegro5\allegro.h>
+#include <allegro5/allegro.h>
 
-#include "Rect.h"
+#include "common/Rect.h"
 #include "AllegroEngine.h"
 #include "AllegroException.h"
 

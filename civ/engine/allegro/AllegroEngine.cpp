@@ -4,7 +4,7 @@ using namespace std;
 
 AllegroEngine* AllegroEngine::instance = nullptr;
 
-AllegroEngine::AllegroEngine(const Rect& screen, string& windowName){
+AllegroEngine::AllegroEngine(const Rect& screen, const string& windowName){
 
 	if (!al_install_system(ALLEGRO_VERSION_INT, nullptr))
 		throw AllegroException("al_install_system");
@@ -142,7 +142,7 @@ void AllegroEngine::DrawLine(int startX, int startY, int stopX, int stopY){
 	al_draw_line(startX, startY, stopX, stopY, al_map_rgb(0xFF, 0, 0xFF), 1.0f);
 }
 
-void AllegroEngine::Start(const Rect& screen, string& windowName){
+void AllegroEngine::Start(const Rect& screen, const string& windowName){
 	if (instance == nullptr){
 		instance = new AllegroEngine(screen, windowName);
 		atexit([](){Stop(); });

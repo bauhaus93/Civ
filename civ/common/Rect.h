@@ -6,7 +6,7 @@ struct Rect{
 	int w;
 	int h;
 
-	Rect::Rect(int x_, int y_, int w_, int h_);
-	Rect::Rect(const Rect& other);
+	Rect(int x_, int y_, int w_, int h_);
+	Rect(const Rect& other);
 
 };

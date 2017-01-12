@@ -29,7 +29,7 @@ class SDLEngine{
 	const int		sizeX;
 	const int		sizeY;
 
-	SDLEngine(const Rect& screen, std::string& windowName);
+	SDLEngine(const Rect& screen, const std::string& windowName);
 	~SDLEngine(void);
 
 public:
@@ -51,7 +51,7 @@ public:
 	void			SetWindowTitle(const std::string& title);
 	std::queue<Event> PollEvents(void);
 
-	static				void Start(const Rect& screen, std::string& windowName);
+	static				void Start(const Rect& screen, const std::string& windowName);
 	static				void Stop();
 	static SDLEngine&	Instance(void);
 

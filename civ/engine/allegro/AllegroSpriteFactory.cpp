@@ -16,8 +16,9 @@ void AllegroSpriteFactory::AddSpriteSheet(const std::string& filename, const std
 }
 
 void AllegroSpriteFactory::MakeTransparent(const RGBColor& color){
-	for (auto& iter : sprites)
+	for (auto& iter : sprites){
 		iter.second.MakeColorTransparent(color);
+	}
 }
 
 AllegroSprite AllegroSpriteFactory::CreateSprite(const std::string& sheetname, const Rect& dim){

@@ -58,6 +58,7 @@ void AllegroSprite::MakeColorTransparent(const RGBColor& color){
 	int bmpH = al_get_bitmap_height(bmp);
 	int bmpW = al_get_bitmap_width(bmp);
 
+
 	ALLEGRO_LOCKED_REGION* region = al_lock_bitmap(bmp, ALLEGRO_PIXEL_FORMAT_ARGB_8888, ALLEGRO_LOCK_READWRITE);
 	if (region == nullptr)
 		throw AllegroException("al_lock_bitmap");

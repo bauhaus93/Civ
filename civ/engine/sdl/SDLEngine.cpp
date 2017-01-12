@@ -4,7 +4,7 @@ using namespace std;
 
 SDLEngine* SDLEngine::instance = nullptr;
 
-SDLEngine::SDLEngine(const Rect& screen, string& windowName):
+SDLEngine::SDLEngine(const Rect& screen, const string& windowName):
 	sizeX{ screen.w },
 	sizeY{ screen.h }{
 
@@ -126,7 +126,7 @@ std::queue<Event> SDLEngine::PollEvents(void){
 	return events;
 }
 
-void SDLEngine::Start(const Rect& screen, string& windowName){
+void SDLEngine::Start(const Rect& screen, const string& windowName){
 	if (instance == nullptr){
 		instance = new SDLEngine(screen, windowName);
 		atexit([](){Stop(); });

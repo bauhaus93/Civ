@@ -12,7 +12,7 @@ using namespace std;
 
 int main(int argc, char **argv){
 	Log::CreateStd();
-	Engine::Start(Rect{ 50, 50, 1024, 768 }, string("test"));
+	Engine::Start(Rect{ 50, 50, 1024, 768 }, "test");
 
 	Game game{};
 

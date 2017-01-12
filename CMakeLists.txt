@@ -3,7 +3,7 @@ project(Civ)
 
 
 macro(add_sources)
-	file (RELATIVE_PATH _relPath "${CMAKE_SOURCE_DIR} "${CMAKE_CURRENT_SOURCE_DIR})
+	file (RELATIVE_PATH _relPath "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
 
 	foreach(_src ${ARGN})
 		if(_relPath)
@@ -17,7 +17,8 @@ endmacro()
 set(GCC_COMPILE_FLAGS "-std=c++14 -Wall")
 set(GCC_LINK_FLAGS "-std=c++14 -Wall")
 
-set(use_allegro 1)
+#set(use_allegro 1)
+set(use_sdl 1)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COMPILE_FLAGS}")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COMPILE_FLAGS}")
@@ -39,11 +40,11 @@ endif()
 
 message(STATUS "SOURCES: ${SOURCES}")
 
-add_executable(civ ${SOURCES})
+add_executable(civ2 ${SOURCES})
 
 if(${use_allegro})
-	target_link_libraries(civ ${ALLEGRO_LIB})
-	target_link_libraries(civ ${ALLEGRO_PRIMITIVES_LIB})
-	target_link_libraries(civ ${ALLEGRO_IMAGE_LIB})
-	target_link_libraries(civ ${ALLEGRO_MAIN_LIB})
+	target_link_libraries(civ2 ${ALLEGRO_LIB})
+	target_link_libraries(civ2 ${ALLEGRO_PRIMITIVES_LIB})
+	target_link_libraries(civ2 ${ALLEGRO_IMAGE_LIB})
+	target_link_libraries(civ2 ${ALLEGRO_MAIN_LIB})
 endif()

@@ -4,7 +4,7 @@
 
 #include <allegro5/allegro.h>
 
-#include "Exception/GameException.h"
+#include "exception/GameException.h"
 
 class AllegroException: public GameException{
 public:
