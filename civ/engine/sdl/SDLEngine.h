@@ -9,7 +9,7 @@
 #include <SDL/SDL.h>
 #endif
 #ifdef __linux__
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 #endif
 
 #include "common/Common.h"
