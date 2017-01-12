@@ -11,11 +11,11 @@
 	#include <SDL2/SDL.h>
 #endif
 
-#include "Common.h"
+#include "common/Common.h"
 #include "SDLEngine.h"
 #include "SDLException.h"
-#include "Color.h"
-#include "Rect.h"
+#include "common/Color.h"
+#include "common/Rect.h"
 
 class SDLSprite{
 	friend class	Renderer;

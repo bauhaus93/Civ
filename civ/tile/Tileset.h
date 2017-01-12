@@ -5,9 +5,9 @@
 #include <memory>
 
 
-#include "Engine/Sprite.h"
+#include "engine/Sprite.h"
 #include "Resource.h"
-#include "Common.h"
+#include "common/Common.h"
 
 
 class Tileset{

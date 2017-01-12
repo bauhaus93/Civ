@@ -4,7 +4,7 @@
 
 #include "Tile.h"
 #include "Tileset.h"
-#include "Engine/Sprite.h"
+#include "engine/Sprite.h"
 
 class TileExtended: public Tile{
 public:

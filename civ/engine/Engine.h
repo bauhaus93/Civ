@@ -12,7 +12,7 @@
 
 #ifdef ENGINE_SDL
 
-#include "Engine/SDL/SDLEngine.h"
+#include "sdl/SDLEngine.h"
 
 typedef SDLEngine Engine;
 
@@ -20,7 +20,7 @@ typedef SDLEngine Engine;
 
 #ifdef ENGINE_ALLEGRO
 
-#include "Engine/Allegro/AllegroEngine.h"
+#include "allegro/AllegroEngine.h"
 
 typedef AllegroEngine Engine;
 

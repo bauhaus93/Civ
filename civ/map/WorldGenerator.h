@@ -5,11 +5,11 @@
 
 #include "Grid.h"
 #include "Node.h"
-#include "Common.h"
-#include "Tile/Tileset.h"
-#include "Tile/Tile.h"
-#include "Tile/TileSimple.h"
-#include "Tile/TileExtended.h"
+#include "common/Common.h"
+#include "tile/Tileset.h"
+#include "tile/Tile.h"
+#include "tile/TileSimple.h"
+#include "tile/TileExtended.h"
 
 
 class WorldGenerator{

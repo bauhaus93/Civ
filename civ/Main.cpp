@@ -3,8 +3,8 @@
 
 #include "Log.h"
 #include "Game.h"
-#include "Engine/Engine.h"
-#include "Rect.h"
+#include "engine/Engine.h"
+#include "common/Rect.h"
 
 using namespace std;
 

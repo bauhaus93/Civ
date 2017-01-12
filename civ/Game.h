@@ -5,8 +5,8 @@
 #include <sstream>
 #include <queue>
 
-#include "Common.h"
-#include "Map/Map.h"
+#include "common/Common.h"
+#include "map/Map.h"
 #include "FPSHandler.h"
 
 class Game{

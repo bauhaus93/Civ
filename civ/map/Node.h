@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "Tile/Tile.h"
+#include "tile/Tile.h"
 
 #define GET_NEIGHBOUR(a, b) {if(a() != nullptr) return a()->b();\
 							else if(b() != nullptr) return b()->a();\

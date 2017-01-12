@@ -3,12 +3,12 @@
 #include <memory>
 #include <map>
 
-#include "Engine/SpriteFactory.h"
-#include "Tile/Tileset.h"
-#include "Tile/Tile.h"
+#include "engine/SpriteFactory.h"
+#include "tile/Tileset.h"
+#include "tile/Tile.h"
 #include "Grid.h"
 #include "WorldGenerator.h"
-#include "Rect.h"
+#include "common/Rect.h"
 
 #define RESOURCE_CHANCE (10)
 

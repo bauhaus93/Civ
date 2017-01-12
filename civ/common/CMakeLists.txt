@@ -1,4 +1,4 @@
-set(common_source_files
+add_sources(	
 	Color.cpp
 	Common.cpp
 	Point.cpp
