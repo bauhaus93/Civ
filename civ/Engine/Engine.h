@@ -6,13 +6,13 @@
 
 #ifdef ENGINE_SDL
 	#ifdef ENGINE_ALLEGRO
-		#error Can use only one engine!
+		#error Cannot use both SDL and Allegro!
 	#endif
 #endif
 
 #ifdef ENGINE_SDL
 
-#include "SDLEngine.h"
+#include "Engine/SDL/SDLEngine.h"
 
 typedef SDLEngine Engine;
 
@@ -20,7 +20,7 @@ typedef SDLEngine Engine;
 
 #ifdef ENGINE_ALLEGRO
 
-#include "AllegroEngine.h"
+#include "Engine/Allegro/AllegroEngine.h"
 
 typedef AllegroEngine Engine;
 

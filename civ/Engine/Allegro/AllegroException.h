@@ -2,9 +2,9 @@
 
 #include <string>
 
-#include <allegro5\allegro.h>
+#include <allegro5/allegro.h>
 
-#include "GameException.h"
+#include "Exception/GameException.h"
 
 class AllegroException: public GameException{
 public:

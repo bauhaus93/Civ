@@ -3,9 +3,9 @@
 #include <memory>
 #include <map>
 
-#include "SpriteFactory.h"
-#include "Tileset.h"
-#include "Tile.h"
+#include "Engine/SpriteFactory.h"
+#include "Tile/Tileset.h"
+#include "Tile/Tile.h"
 #include "Grid.h"
 #include "WorldGenerator.h"
 #include "Rect.h"

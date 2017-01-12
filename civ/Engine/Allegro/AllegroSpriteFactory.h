@@ -3,7 +3,7 @@
 #include <map>
 #include <string>
 
-#include <allegro5\allegro.h>
+#include <allegro5/allegro.h>
 
 #include "AllegroSprite.h"
 #include "Rect.h"

@@ -3,13 +3,13 @@
 #include <memory>
 #include <queue>
 
-#include <allegro5\allegro.h>
-#include <allegro5\allegro_image.h>
-#include <allegro5\allegro_primitives.h>
+#include <allegro5/allegro.h>
+#include <allegro5/allegro_image.h>
+#include <allegro5/allegro_primitives.h>
 
 #include "Color.h"
 #include "Rect.h"
-#include "CivException.h"
+#include "Exception/CivException.h"
 #include "AllegroException.h"
 #include "Log.h"
 #include "Event.h"

@@ -8,7 +8,7 @@
 #include <ctime>
 #include <iomanip>
 
-#include "CivException.h"
+#include "Exception/CivException.h"
 
 namespace Logger{
 	void Write(const std::string& msg);

@@ -4,7 +4,7 @@
 
 #ifdef ENGINE_SDL
 
-#include "SDLSprite.h"
+#include "SDL/SDLSprite.h"
 
 typedef SDLSprite Sprite;
 
@@ -12,7 +12,7 @@ typedef SDLSprite Sprite;
 
 #ifdef ENGINE_ALLEGRO
 
-#include "AllegroSprite.h"
+#include "Allegro/AllegroSprite.h"
 
 typedef AllegroSprite Sprite;
 

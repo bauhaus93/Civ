@@ -4,13 +4,13 @@
 
 #include "Tile.h"
 #include "Tileset.h"
-#include "Sprite.h"
+#include "Engine/Sprite.h"
 
-class TileExtended: public Tile{
+class TileSimple: public Tile{
+
 public:
-	TileExtended(const Tileset& tileset_);
-	~TileExtended();
-
+	TileSimple(const Tileset& tileset_);
+	~TileSimple();
 	void CreateTileSprite(uint8_t neighbourMask) override;
 };
 

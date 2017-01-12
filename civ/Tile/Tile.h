@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "Tileset.h"
-#include "Sprite.h"
+#include "Engine/Sprite.h"
 
 enum class TileExtensions{
 	RIVER,

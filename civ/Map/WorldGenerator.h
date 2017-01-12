@@ -4,12 +4,13 @@
 #include <memory>
 
 #include "Grid.h"
-#include "Tileset.h"
 #include "Node.h"
-#include "Tile.h"
-#include "TileSimple.h"
-#include "TileExtended.h"
 #include "Common.h"
+#include "Tile/Tileset.h"
+#include "Tile/Tile.h"
+#include "Tile/TileSimple.h"
+#include "Tile/TileExtended.h"
+
 
 class WorldGenerator{
 public:

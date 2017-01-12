@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "Node.h"
-#include "Sprite.h"
+#include "Engine/Sprite.h"
 
 class Grid{
 

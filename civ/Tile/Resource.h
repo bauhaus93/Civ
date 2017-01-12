@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "Sprite.h"
+#include "Engine/Sprite.h"
 
 class Resource{
 

@@ -1,7 +1,9 @@
 
+#include <string>
+
 #include "Log.h"
 #include "Game.h"
-#include "Engine.h"
+#include "Engine/Engine.h"
 #include "Rect.h"
 
 using namespace std;

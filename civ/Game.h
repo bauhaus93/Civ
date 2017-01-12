@@ -6,7 +6,7 @@
 #include <queue>
 
 #include "Common.h"
-#include "Map.h"
+#include "Map/Map.h"
 #include "FPSHandler.h"
 
 class Game{

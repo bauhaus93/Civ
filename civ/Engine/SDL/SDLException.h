@@ -9,7 +9,7 @@
 #include <SDL2/SDL.h>
 #endif
 
-#include "GameException.h"
+#include "Exception/GameException.h"
 
 
 class SDLException : public GameException{

@@ -4,8 +4,6 @@
 #include <string>
 #include <sstream>
 
-
-
 class GameException : public std::exception{
 
 	std::string msg;
