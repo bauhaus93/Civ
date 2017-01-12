@@ -1,50 +1,94 @@
 cmake_minimum_required(VERSION 3.4.3)
-project(Civ)
-
+project(Civ CXX)
 
 macro(add_sources)
 	file (RELATIVE_PATH _relPath "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
 
 	foreach(_src ${ARGN})
+
+
 		if(_relPath)
-			set_property(GLOBAL APPEND PROPERTY SRC_LIST "${_relPath}/${_src}")
+			if(ENABLE_SDL AND ${_relPath} MATCHES "/sdl$")
+				set_property(TARGET civ_sdl APPEND PROPERTY SRC_LIST "${_relPath}/${_src}")
+			elseif(ENABLE_ALLEGRO AND ${_relPath} MATCHES "/allegro$")
+				set_property(TARGET civ_allegro APPEND PROPERTY SRC_LIST "${_relPath}/${_src}")
+			else()
+
+				if(ENABLE_SDL)
+					set_property(TARGET civ_sdl APPEND PROPERTY SRC_LIST "${_relPath}/${_src}")
+				endif()
+
+				if(ENABLE_ALLEGRO)
+					set_property(TARGET civ_allegro APPEND PROPERTY SRC_LIST "${_relPath}/${_src}")
+				endif()
+
+			endif()
+
 		else()
 			set_property(GLOBAL APPEND PROPERTY SRC_LIST "${_src}")
 		endif()
 	endforeach()
 endmacro()
 
-set(GCC_COMPILE_FLAGS "-std=c++14 -Wall")
-set(GCC_LINK_FLAGS "-std=c++14 -Wall")
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+	set(COMPILE_FLAGS "-std=c++14 -Wall")
+	set(LINK_FLAGS "-std=c++14 -Wall")
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+	set(COMPILE_FLAGS "/W4")
+	#set(LINK_FLAGS "/NODEFAULTLIB:msvcrtd.lib")
+endif()
 
-#set(use_allegro 1)
-set(use_sdl 1)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COMPILE_FLAGS}")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LINK_FLAGS}")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COMPILE_FLAGS}")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COMPILE_FLAGS}")
+option(ENABLE_ALLEGRO ON)
+option(ENABLE_SDL ON)
+
+if(ENABLE_ALLEGRO)
+	add_executable(civ_allegro "")
+endif()
+
+if(ENABLE_SDL)
+	add_executable(civ_sdl "")
+endif()
 
 include_directories(/usr/include)
 include_directories(civ)
 
 add_subdirectory(civ)
 
-get_property(SOURCES GLOBAL PROPERTY SRC_LIST)
-#string(REPLACE ";" " " SOURCES "${_srcs}")
+if(ENABLE_ALLEGRO)
+	target_compile_definitions(civ_allegro PRIVATE ENGINE_ALLEGRO)
+	if(WIN32)
+		target_include_directories(civ_allegro PRIVATE C:/allegro/include)
+	endif()
 
-if(${use_allegro})
-	find_library(ALLEGRO_LIB NAMES allegro PATHS /usr/lib/ /usr/local/lib)
-	find_library(ALLEGRO_PRIMITIVES_LIB NAMES allegro_primitives PATHS /usr/lib/ /usr/local/lib)
-	find_library(ALLEGRO_IMAGE_LIB NAMES allegro_image PATHS /usr/lib /usr/local/lib)
-	find_library(ALLEGRO_MAIN_LIB NAMES allegro_main PATHS /usr/lib /usr/local/lib)
+	get_property(SRC_ALLEGRO TARGET civ_allegro PROPERTY SRC_LIST)
+	target_sources(civ_allegro PRIVATE ${SRC_ALLEGRO} PRIVATE ${SRC_ALLEGRO})
+
+	find_library(ALLEGRO_LIB NAMES allegro PATHS /usr/lib/ /usr/local/lib C:/allegro/lib)
+	find_library(ALLEGRO_PRIMITIVES_LIB NAMES allegro_primitives PATHS /usr/lib/ /usr/local/lib C:/allegro/lib)
+	find_library(ALLEGRO_IMAGE_LIB NAMES allegro_image PATHS /usr/lib /usr/local/lib C:/allegro/lib)
+	find_library(ALLEGRO_MAIN_LIB NAMES allegro_main PATHS /usr/lib /usr/local/lib C:/allegro/lib)
+
+	target_link_libraries(civ_allegro ${ALLEGRO_LIB})
+	target_link_libraries(civ_allegro ${ALLEGRO_PRIMITIVES_LIB})
+	target_link_libraries(civ_allegro ${ALLEGRO_IMAGE_LIB})
+	target_link_libraries(civ_allegro ${ALLEGRO_MAIN_LIB})
 endif()
 
-message(STATUS "SOURCES: ${SOURCES}")
+if(ENABLE_SDL)
+	target_compile_definitions(civ_sdl PRIVATE ENGINE_SDL)
+	if(WIN32)
+		target_include_directories(civ_sdl PRIVATE C:/SDL2/include)
+	endif()
 
-add_executable(civ2 ${SOURCES})
+	get_property(SRC_SDL TARGET civ_sdl PROPERTY SRC_LIST)
+	target_sources(civ_sdl PRIVATE ${SRC_SDL})
 
-if(${use_allegro})
-	target_link_libraries(civ2 ${ALLEGRO_LIB})
-	target_link_libraries(civ2 ${ALLEGRO_PRIMITIVES_LIB})
-	target_link_libraries(civ2 ${ALLEGRO_IMAGE_LIB})
-	target_link_libraries(civ2 ${ALLEGRO_MAIN_LIB})
+	find_library(SDL_LIB NAMES SDL2 PATHS /usr/lib/ /usr/local/lib C:/SDL2/lib)
+	find_library(SDL_MAIN_LIB NAMES SDL2main PATHS /usr/lib/ /usr/local/lib C:/SDL2/lib)
+
+	target_link_libraries(civ_sdl ${SDL_LIB})
+	target_link_libraries(civ_sdl ${SDL_MAIN_LIB})
 endif()

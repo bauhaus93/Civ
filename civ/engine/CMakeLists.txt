@@ -1,5 +1,2 @@
-if(${use_allegro})
-	add_subdirectory(allegro)
-elseif(${use_sdl})
-	add_subdirectory(sdl)
-endif()
+add_subdirectory(allegro)
+add_subdirectory(sdl)

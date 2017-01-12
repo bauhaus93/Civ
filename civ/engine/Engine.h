@@ -1,6 +1,7 @@
 #pragma once
 
-#define ENGINE_SDL
+//Definitions are set by cmake
+//#define ENGINE_SDL
 //#define ENGINE_ALLEGRO
 
 

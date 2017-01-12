@@ -17,4 +17,5 @@ int main(int argc, char **argv){
 	Game game{};
 
 	game.Mainloop();
+	return 0;
 }
