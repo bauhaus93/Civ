@@ -41,8 +41,8 @@ endif()
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COMPILE_FLAGS}")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LINK_FLAGS}")
 
-option(ENABLE_ALLEGRO ON)
-option(ENABLE_SDL ON)
+option(ENABLE_ALLEGRO "Enable building with allegro" ON)
+option(ENABLE_SDL "Enable building with sdl2" ON)
 
 if(ENABLE_ALLEGRO)
 	add_executable(civ_allegro "")
