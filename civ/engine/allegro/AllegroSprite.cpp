@@ -1,6 +1,5 @@
 #include "AllegroSprite.h"
 
-
 AllegroSprite::AllegroSprite() :
 	bmp{ nullptr }{
 }
@@ -58,29 +57,28 @@ void AllegroSprite::MakeColorTransparent(const RGBColor& color){
 	int bmpH = al_get_bitmap_height(bmp);
 	int bmpW = al_get_bitmap_width(bmp);
 
-
 	ALLEGRO_LOCKED_REGION* region = al_lock_bitmap(bmp, ALLEGRO_PIXEL_FORMAT_ARGB_8888, ALLEGRO_LOCK_READWRITE);
 	if (region == nullptr)
 		throw AllegroException("al_lock_bitmap");
 
-	int size = bmpH * bmpW;
-
-	uint32_t* ptr = (uint32_t*)region->data;
-
 	assert(region->pixel_size == 4);
 
-	for (int i = 0; i < size; i++){
-		uint8_t r = (*ptr & 0x00FF0000) >> 16;
-		uint8_t g = (*ptr & 0x0000FF00) >> 8;
-		uint8_t b = (*ptr & 0x000000FF);
+	for(int x = 0; x < bmpW; x++){
+		for(int y = 0; y < bmpH; y++){
+			uint32_t* ptr = (uint32_t*)(((uint8_t*)region->data) + region->pitch*y + 4 * x);
 
-		if (r == color.r && g == color.g && b == color.b)
-			*ptr = (*ptr & 0x00FFFFFF);
-		ptr++;
+			uint8_t r = (*ptr & 0x00FF0000) >> 16;
+			uint8_t g = (*ptr & 0x0000FF00) >> 8;
+			uint8_t b = (*ptr & 0x000000FF);
+
+			if (r == color.r && g == color.g && b == color.b)
+				*ptr = (*ptr & 0x00FFFFFF);
+
+		}
 	}
 
 	al_unlock_bitmap(bmp);
-	//TODO maybe free region? 
+	//TODO maybe free region?
 }
 
 int AllegroSprite::GetWidth(void) const{
