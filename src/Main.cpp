@@ -13,10 +13,10 @@ using namespace std;
 
 int main(int argc, char **argv){
 	unique_ptr<Game> game = nullptr;
-
+	
 	Log::CreateStd();
 	Engine::Start(Rect{ 50, 50, 1024, 768 }, "test");
-
+	
 	try{
 		game = make_unique<Game>();
 	}

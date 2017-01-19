@@ -53,9 +53,9 @@ if(ENABLE_SDL)
 endif()
 
 include_directories(/usr/include)
-include_directories(civ)
+include_directories(src)
 
-add_subdirectory(civ)
+add_subdirectory(src)
 
 if(ENABLE_ALLEGRO)
 	target_compile_definitions(civ_allegro PRIVATE ENGINE_ALLEGRO)
