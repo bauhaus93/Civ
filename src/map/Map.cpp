@@ -25,7 +25,7 @@ Map::Map(const Rect& drawField_) :
 }
 
 
-Map::~Map(void){
+Map::~Map(){
 
 }
 
@@ -39,7 +39,7 @@ void Map::Clicked(int screenX, int screenY){
 	change = true;
 }
 
-void Map::LoadTilesets(void){
+void Map::LoadTilesets(){
 	Point pos{ 1, 1 };
 
 	//Simple Tiles with only floor and resource
@@ -113,6 +113,6 @@ void Map::LoadTilesets(void){
 
 }
 
-void Map::Render(void){
+void Map::Render(){
 	grid.Render(drawField);
 }

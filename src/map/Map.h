@@ -23,13 +23,13 @@ class Map{
 	
 	bool change;
 
-	void		LoadTilesets(void);
+	void		LoadTilesets();
 
 public:
 				Map(const Rect& drawField_);
-				~Map(void);
+				~Map();
 
 	void		Clicked(int screenX, int screenY);
-	void		Render(void);
+	void		Render();
 };
 

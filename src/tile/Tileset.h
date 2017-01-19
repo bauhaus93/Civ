@@ -24,16 +24,16 @@ private:
 public:
 	Tileset(const std::string& name_, unsigned int resourceChance_, bool simple_);
 	Tileset(Tileset&& other) noexcept;
-	~Tileset(void) = default;
+	~Tileset() = default;
 
-	bool IsSimple(void) const{ return simple; }
+	bool IsSimple() const{ return simple; }
 
 	void AddFloor(Sprite&& sprite);
 	void AddResource(Resource&& res);
 
-	const Sprite& GetRandomFloor(void) const;
+	const Sprite& GetRandomFloor() const;
 	const Resource& GetResource(int id) const;
-	int GetRandomResource(void) const ;
+	int GetRandomResource() const ;
 
 	bool operator==(const Tileset& other) const { return this == &other; };
 	bool operator!=(const Tileset& other) const { return this != &other; };

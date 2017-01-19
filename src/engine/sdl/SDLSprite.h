@@ -24,7 +24,7 @@ class SDLSprite{
 	SDL_Rect		rect;
 
 public:
-					SDLSprite(void);
+					SDLSprite();
 					SDLSprite(const Rect& dim);
 					SDLSprite(const SDLSprite& src, const Rect& dim_);
 					SDLSprite(SDL_Surface* src, const Rect& dim_);
@@ -33,12 +33,12 @@ public:
 					SDLSprite(SDLSprite&& other) noexcept;
 	SDLSprite&		operator=(SDLSprite&& other) noexcept;
 		
-					~SDLSprite(void);
+					~SDLSprite();
 	void			Add(const SDLSprite& sprite, const Rect& dim);
 	void			Add(const SDLSprite& sprite);
 	void			SetAsRenderTarget();
 	void			Render(int x, int y);
-	Uint32			GetFormat(void) const;
+	Uint32			GetFormat() const;
 	const SDL_Rect&	GetRect() const;
 	RGBAColor		PixelAt(int x, int y);
 };

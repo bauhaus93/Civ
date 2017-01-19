@@ -28,11 +28,11 @@ public:
 
 					Tile(const Tileset& tileset_);
 					Tile(const Tile& other) = delete;
-	virtual			~Tile(void);
+	virtual			~Tile();
 
 	virtual void	CreateTileSprite(uint8_t neighbourMask) = 0;
 	void			AddSprite(const Sprite& add);
-	const Tileset&	GetTileset(void){ return tileset; }
+	const Tileset&	GetTileset(){ return tileset; }
 
 	void			Render(int x, int y);
 };

@@ -57,6 +57,8 @@ include_directories(src)
 
 add_subdirectory(src)
 
+file(COPY src/bmp DESTINATION .)
+
 if(ENABLE_ALLEGRO)
 	target_compile_definitions(civ_allegro PRIVATE ENGINE_ALLEGRO)
 	if(WIN32)

@@ -81,11 +81,11 @@ void AllegroSprite::MakeColorTransparent(const RGBColor& color){
 	//TODO maybe free region?
 }
 
-int AllegroSprite::GetWidth(void) const{
+int AllegroSprite::GetWidth() const{
 	return al_get_bitmap_width(bmp);
 }
 
-int AllegroSprite::GetHeight(void) const{
+int AllegroSprite::GetHeight() const{
 	return al_get_bitmap_height(bmp);
 }
 
@@ -103,7 +103,7 @@ void AllegroSprite::Render(int x, int y){
 	al_draw_bitmap(bmp, x, y, 0);
 }
 
-void AllegroSprite::SetAsRenderTarget(void){
+void AllegroSprite::SetAsRenderTarget(){
 	al_set_target_bitmap(bmp);
 }
 

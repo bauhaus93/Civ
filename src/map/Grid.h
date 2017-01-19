@@ -50,7 +50,7 @@ protected:
 
 public:
 	GridTraversal(Grid& grid);
-	virtual ~GridTraversal(void);
-	virtual Node* Next(void);
-	bool HasNext(void) const{ return curr != nullptr; }
+	virtual ~GridTraversal();
+	virtual Node* Next();
+	bool HasNext() const{ return curr != nullptr; }
 };

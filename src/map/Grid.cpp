@@ -4,12 +4,12 @@
 using namespace std;
 
 
-Grid::Grid(void):
+Grid::Grid():
 	mouseClickComparator{}{
 
 }
 
-Grid::~Grid(void){
+Grid::~Grid(){
 	vector<Node*> nodes;
 	GridTraversal g{ *this };
 
@@ -312,7 +312,7 @@ GridTraversal::~GridTraversal(){
 
 }
 
-Node* GridTraversal::Next(void){
+Node* GridTraversal::Next(){
 	auto currReturn = curr;
 
 	curr = curr->GetEast();

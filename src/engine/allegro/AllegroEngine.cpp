@@ -47,7 +47,7 @@ AllegroEngine::AllegroEngine(const Rect& screen, const string& windowName){
 
 }
 
-AllegroEngine::~AllegroEngine(void){
+AllegroEngine::~AllegroEngine(){
 
 	if (eventQueue != nullptr){
 		al_destroy_event_queue(eventQueue);
@@ -68,19 +68,19 @@ AllegroEngine::~AllegroEngine(void){
 	Logger::Write("Shut down Allegro");
 }
 
-ALLEGRO_DISPLAY* AllegroEngine::GetDisplay(void){
+ALLEGRO_DISPLAY* AllegroEngine::GetDisplay(){
 	return display;
 }
 
-int AllegroEngine::GetScreenX(void) const{
+int AllegroEngine::GetScreenX() const{
 	return al_get_display_width(display);
 }
 
-int AllegroEngine::GetScreenY(void) const{
+int AllegroEngine::GetScreenY() const{
 	return al_get_display_height(display);
 }
 
-void AllegroEngine::ClearScene(void){
+void AllegroEngine::ClearScene(){
 	al_clear_to_color(al_map_rgba(0, 0, 0, 0xFF));
 }
 
@@ -88,7 +88,7 @@ void AllegroEngine::SetColor(const RGBAColor& col){
 	//TODO WILL BE REPLACED/REMOVED LATER
 }
 
-void AllegroEngine::ClearRenderTarget(void){
+void AllegroEngine::ClearRenderTarget(){
 	al_set_target_bitmap(al_get_backbuffer(display));
 }
 
@@ -96,7 +96,7 @@ void AllegroEngine::SetWindowTitle(const string& title){
 	al_set_window_title(display, title.c_str());
 }
 
-std::queue<Event> AllegroEngine::PollEvents(void){
+std::queue<Event> AllegroEngine::PollEvents(){
 	queue<Event> events;
 
 	ALLEGRO_EVENT event;
@@ -121,7 +121,7 @@ std::queue<Event> AllegroEngine::PollEvents(void){
 	return events;
 }
 
-void AllegroEngine::ShowScene(void){
+void AllegroEngine::ShowScene(){
 	al_flip_display();
 }
 

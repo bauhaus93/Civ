@@ -17,13 +17,13 @@ class FPSHandler{
 
 public:
 								FPSHandler(uint32_t desiredFPS_);
-								~FPSHandler(void);
+								~FPSHandler();
 	void						Align(uint32_t ticks);
-	void						Delay(void);
-	uint32_t					GetFPS(void) const { return static_cast<uint32_t>(lastFPS); };
-	uint32_t					GetDelay(void) const { return static_cast<uint32_t>(delay); };
+	void						Delay();
+	uint32_t					GetFPS() const { return static_cast<uint32_t>(lastFPS); };
+	uint32_t					GetDelay() const { return static_cast<uint32_t>(delay); };
 };
 
-inline void FPSHandler::Delay(void){
+inline void FPSHandler::Delay(){
 	std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(delay)));
 }

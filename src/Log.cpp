@@ -51,7 +51,7 @@ void Log::Write(const exception& e){
 	Write(e.what());
 }
 
-Log& Log::Instance(void){
+Log& Log::Instance(){
 	return *instance;
 }
 

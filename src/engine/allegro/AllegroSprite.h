@@ -24,12 +24,12 @@ public:
 					~AllegroSprite();
 
 	void			MakeColorTransparent(const RGBColor& color);
-	int				GetWidth(void) const;
-	int				GetHeight(void) const;
+	int				GetWidth() const;
+	int				GetHeight() const;
 	void			Add(const AllegroSprite& add);
 	void			Add(const AllegroSprite& add, const Rect& rect);
 	void			Render(int x, int y);
-	void			SetAsRenderTarget(void);
+	void			SetAsRenderTarget();
 	RGBAColor		PixelAt(int x, int y);
 };
 

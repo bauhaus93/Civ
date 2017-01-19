@@ -27,29 +27,29 @@ class AllegroEngine{
 
 
 							AllegroEngine(const Rect& screen, const std::string& windowName);
-							~AllegroEngine(void);
+							~AllegroEngine();
 
 public:
-	ALLEGRO_DISPLAY*		GetDisplay(void);
-	int						GetScreenX(void) const;
-	int						GetScreenY(void) const;
-	void					ClearScene(void);
+	ALLEGRO_DISPLAY*		GetDisplay();
+	int						GetScreenX() const;
+	int						GetScreenY() const;
+	void					ClearScene();
 	void					SetColor(const RGBAColor& col);
-	void					ClearRenderTarget(void);
+	void					ClearRenderTarget();
 	void					SetWindowTitle(const std::string& title);
-	std::queue<Event>		PollEvents(void);
-	void					ShowScene(void);
+	std::queue<Event>		PollEvents();
+	void					ShowScene();
 
 	void					DrawRect(const Rect& rect);
 	void					DrawFillRect(const Rect & rect);
 	void					DrawLine(int startX, int startY, int stopX, int stopY);
 
 	static					void Start(const Rect& screen, const std::string& windowName);
-	static					void Stop(void);
-	static AllegroEngine&	Instance(void);
+	static					void Stop();
+	static AllegroEngine&	Instance();
 
 };
 
-inline AllegroEngine& AllegroEngine::Instance(void){
+inline AllegroEngine& AllegroEngine::Instance(){
 	return *instance;
 }

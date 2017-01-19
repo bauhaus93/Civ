@@ -29,7 +29,7 @@ SDLEngine::SDLEngine(const Rect& screen, const string& windowName):
 	Logger::Write("Renderer created!");
 }
 
-SDLEngine::~SDLEngine(void){
+SDLEngine::~SDLEngine(){
 	if (renderer != nullptr){
 		SDL_DestroyRenderer(renderer);
 		renderer = nullptr;
@@ -76,7 +76,7 @@ RGBAColor SDLEngine::SetColor(const RGBAColor& col){
 	return std::move(old);
 }
 
-void SDLEngine::ClearRenderTarget(void){
+void SDLEngine::ClearRenderTarget(){
 	if (SDL_SetRenderTarget(renderer, nullptr) == -1)
 		throw SDLException("SDL_SetRenderTarget");
 }
@@ -94,7 +94,7 @@ void SDLEngine::SetWindowTitle(const std::string& title){
 	SDL_SetWindowTitle(GetWindow(), title.c_str());
 }
 
-std::queue<Event> SDLEngine::PollEvents(void){
+std::queue<Event> SDLEngine::PollEvents(){
 	queue<Event> events;
 
 	SDL_Event event;

@@ -29,12 +29,12 @@ public:
 					~Node();
 					
 	inline void		SetTile(std::unique_ptr<Tile> tile_);
-	inline Tile&	GetTile(void){ return *tile; }
+	inline Tile&	GetTile(){ return *tile; }
 	inline void		Render(int x, int y);
 	void			RenderRow(int startX, int startY, int maxX);
-	int				GetX(void) const{ return x; };
-	int				GetY(void) const{ return y; }
-	bool			IsOdd(void) const{ return GetY() % 2 == 1; }
+	int				GetX() const{ return x; };
+	int				GetY() const{ return y; }
+	bool			IsOdd() const{ return GetY() % 2 == 1; }
 
 	inline void		LinkWithNortheast(Node* ne);
 	inline void		LinkWithNorthwest(Node* nw);
@@ -46,15 +46,15 @@ public:
 	inline void		SetSoutheast(Node* se);
 	inline void		SetSouthwest(Node* sw);
 
-	inline Node*	GetNortheast(void);
-	inline Node*	GetNorthwest(void);
-	inline Node*	GetSoutheast(void);
-	inline Node*	GetSouthwest(void);
+	inline Node*	GetNortheast();
+	inline Node*	GetNorthwest();
+	inline Node*	GetSoutheast();
+	inline Node*	GetSouthwest();
 
-	inline Node*	GetNorth(void);
-	inline Node*	GetSouth(void);
-	inline Node*	GetWest(void);
-	inline Node*	GetEast(void);
+	inline Node*	GetNorth();
+	inline Node*	GetSouth();
+	inline Node*	GetWest();
+	inline Node*	GetEast();
 
 };
 
@@ -106,35 +106,35 @@ void Node::SetSouthwest(Node* sw){
 	southwest = sw;
 }
 
-Node* Node::GetNortheast(void){
+Node* Node::GetNortheast(){
 	return northeast;
 }
 
-Node* Node::GetNorthwest(void){
+Node* Node::GetNorthwest(){
 	return northwest;
  }
 
-Node* Node::GetSoutheast(void){
+Node* Node::GetSoutheast(){
 	return southeast;
 }
 
-Node* Node::GetSouthwest(void){
+Node* Node::GetSouthwest(){
 	return southwest;
 }
 
-Node* Node::GetNorth(void){
+Node* Node::GetNorth(){
 	GET_NEIGHBOUR(GetNorthwest, GetNortheast);
 }
 
-Node* Node::GetSouth(void){
+Node* Node::GetSouth(){
 	GET_NEIGHBOUR(GetSouthwest, GetSoutheast);
 }
 
-Node* Node::GetWest(void){
+Node* Node::GetWest(){
 	GET_NEIGHBOUR(GetNorthwest, GetSouthwest);
 }
 
-Node* Node::GetEast(void){
+Node* Node::GetEast(){
 	GET_NEIGHBOUR(GetNortheast, GetSoutheast);
 }
 

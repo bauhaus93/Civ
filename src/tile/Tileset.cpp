@@ -23,7 +23,7 @@ void Tileset::AddResource(Resource&& res){
 	resource.push_back(move(res));
 }
 
-const Sprite& Tileset::GetRandomFloor(void) const{
+const Sprite& Tileset::GetRandomFloor() const{
 	return floor.at(common::Random(floor.size()));
 }
 
@@ -31,7 +31,7 @@ const Resource& Tileset::GetResource(int id) const{
 	return resource.at(id);
 }
 
-int Tileset::GetRandomResource(void) const{
+int Tileset::GetRandomResource() const{
 	return common::Random() < resourceChance ? common::Random(resource.size()) : -1;
 }
 

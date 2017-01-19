@@ -14,7 +14,7 @@ inline SDL_Rect ToSDLRect(const Rect& rect){
 	return r;
 }
 
-SDLSprite::SDLSprite(void) :
+SDLSprite::SDLSprite() :
 	texture{ nullptr },
 	rect{ 0, 0, 0, 0 }{
 }
@@ -85,7 +85,7 @@ SDLSprite& SDLSprite::operator=(SDLSprite&& other) noexcept{
 	return *this;
 }
 
-SDLSprite::~SDLSprite(void){
+SDLSprite::~SDLSprite(){
 	if (texture != nullptr)
 		SDL_DestroyTexture(texture);	//FUCK YOU TOO
 }
@@ -110,7 +110,7 @@ void SDLSprite::Render(int x, int y){
 		throw SDLException("SDL_RenderCopy");
 }
 
-Uint32 SDLSprite::GetFormat(void) const{
+Uint32 SDLSprite::GetFormat() const{
 	Uint32 format;
 	if (SDL_QueryTexture(texture, &format, nullptr, nullptr, nullptr) == -1)
 		throw SDLException("SDL_QueryTexture");

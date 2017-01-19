@@ -14,7 +14,7 @@ public:
 	Resource(const Resource& other);
 
 	~Resource();
-	const Sprite& GetSprite(void) const;
+	const Sprite& GetSprite() const;
 
 	Resource& operator=(Resource&& other) noexcept;
 };

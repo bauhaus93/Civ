@@ -6,7 +6,7 @@ FPSHandler::FPSHandler(uint32_t desiredFPS_):
 
 }
 
-FPSHandler::~FPSHandler(void){
+FPSHandler::~FPSHandler(){
 }
 
 void FPSHandler::Align(uint32_t ticks){

@@ -20,15 +20,16 @@ class Game{
 	unsigned int	fpsCheckInterval;
 	unsigned int	lastRenderTime;
 
-	void		Tick(void);
-	void		HandleEvents(void);
-	void		MouseEvent(Event& e);
-	void		Render(void);
+	void		Tick();
+	void 		HandleFPS();
+	void		HandleEvents();
+	void		HandleMouseEvent(Event& e);
+	void		Render();
 
 public:
-				Game(void);
-				~Game(void);
+				Game();
+				~Game();
 
-	int			Mainloop(void);
+	int			Mainloop();
 
 };

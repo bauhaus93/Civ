@@ -34,6 +34,6 @@ public:
 	static void CreateStd(std::string& name);
 	static void CreateStd();
 	static void CloseStd();
-	static Log& Instance(void);
+	static Log& Instance();
 
 };

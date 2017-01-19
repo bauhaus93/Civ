@@ -20,7 +20,7 @@ Resource::Resource(const Resource& other):
 Resource::~Resource(){
 }
 
-const Sprite& Resource::GetSprite(void) const{
+const Sprite& Resource::GetSprite() const{
 	return sprite;
 }
 
