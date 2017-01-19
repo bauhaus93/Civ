@@ -28,8 +28,6 @@ public:
 	Log();
 	~Log();
 
-
-
 	void Write(const std::string& msg);
 	void Write(const std::exception& e);
 
@@ -39,4 +37,3 @@ public:
 	static Log& Instance(void);
 
 };
-

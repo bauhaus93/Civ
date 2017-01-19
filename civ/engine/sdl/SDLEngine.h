@@ -17,7 +17,8 @@
 #include "common/Rect.h"
 #include "common/Color.h"
 #include "Log.h"
-#include "Event.h"
+#include "event/Event.h"
+#include "event/Key.h"
 
 class SDLEngine{
 

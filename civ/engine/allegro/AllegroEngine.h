@@ -12,7 +12,8 @@
 #include "exception/CivException.h"
 #include "AllegroException.h"
 #include "Log.h"
-#include "Event.h"
+#include "event/Event.h"
+#include "event/Key.h"
 
 class AllegroEngine{
 
@@ -52,4 +53,3 @@ public:
 inline AllegroEngine& AllegroEngine::Instance(void){
 	return *instance;
 }
-

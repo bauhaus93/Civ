@@ -8,10 +8,10 @@ AllegroEngine::AllegroEngine(const Rect& screen, const string& windowName){
 
 	if (!al_install_system(ALLEGRO_VERSION_INT, nullptr))
 		throw AllegroException("al_install_system");
-	
+
 	if (!al_install_keyboard())
 		throw AllegroException("al_install_keyboard");
-	
+
 	if (!al_install_mouse())
 		throw AllegroException("al_install_mouse");
 
@@ -107,16 +107,12 @@ std::queue<Event> AllegroEngine::PollEvents(void){
 				events.emplace(EventType::QUIT);
 				break;
 			case ALLEGRO_EVENT_KEY_UP:
-				events.emplace(EventType::KEY_PRESSED, event.keyboard.keycode);
+				events.emplace(EventType::KEY_PRESSED, (Key) (event.keyboard.keycode - 1));
 				break;
 			case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
-				{
-				Event e(EventType::MOUSE_PRESSED);
-				e.flags |= event.mouse.button;
-				e.point.x = event.mouse.x;
-				e.point.y = event.mouse.y;
-				events.push(e);
-				}
+				events.emplace(	EventType::MOUSE_PRESSED,
+				 				Mouse{(MouseButton)(event.mouse.button & 1 ? MouseButton::LEFT : MouseButton::RIGHT),
+								Point{event.mouse.x, event.mouse.y}});
 				break;
 			default:
 				break;

@@ -49,15 +49,14 @@ void Game::HandleEvents(void){
 	auto q = Engine::Instance().PollEvents();
 
 	while (!q.empty()){
-		Event e = q.back();
-		q.pop();
+		Event& e = q.back();
 
 		switch (e.type){
 			case EventType::QUIT:
 				throw CivException("Tick", "Quit was invoked");
 				break;
 			case EventType::KEY_PRESSED:
-				if (e.flags == 'q')
+				if (e.key == Key::Q)
 					throw CivException("Tick", "Q pressed");
 				break;
 			case EventType::MOUSE_PRESSED:
@@ -67,13 +66,13 @@ void Game::HandleEvents(void){
 				Logger::Write("Received unhandled event");
 				break;
 		}
-
+		q.pop();
 	}
 }
 
 void Game::MouseEvent(Event& e){
-	if (e.flags & 1)	//= left mouse click
-		map.Clicked(e.point.x, e.point.y);
+	if (e.mouse.button == MouseButton::LEFT)	//= left mouse click
+		map.Clicked(e.mouse.pos.x, e.mouse.pos.y);
 }
 
 void Game::Render(void){
@@ -86,4 +85,3 @@ void Game::Render(void){
 
 	lastRenderTime = common::TimeDiff(start);
 }
-

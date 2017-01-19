@@ -8,6 +8,9 @@
 #include "common/Common.h"
 #include "map/Map.h"
 #include "FPSHandler.h"
+#include "event/Event.h"
+#include "event/Key.h"
+#include "event/Mouse.h"
 
 class Game{
 
@@ -29,4 +32,3 @@ public:
 	int			Mainloop(void);
 
 };
-

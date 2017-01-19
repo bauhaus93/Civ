@@ -1,6 +1,8 @@
 #pragma once
 
 #include "common/Point.h"
+#include "Key.h"
+#include "Mouse.h"
 
 enum class EventType{
 	KEY_PRESSED,
@@ -17,11 +19,16 @@ struct Event{
 
 	union{
 		Point point;
+		Key key;
+		Mouse mouse;
 	};
 
 	Event(EventType type_, int flags_);
 	Event(EventType type_);
-	~Event();
-	
-};
 
+	Event(EventType type_, const Point& point_);
+	Event(EventType type_, Key key_);
+	Event(EventType type_, const Mouse& mouse_);
+	~Event();
+
+};

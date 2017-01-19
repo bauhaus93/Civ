@@ -13,7 +13,6 @@ Log::Log():
 	out{ cerr }{
 }
 
-
 Log::~Log(){
 	if (file.is_open())
 		file.close();

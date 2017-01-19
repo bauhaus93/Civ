@@ -105,19 +105,12 @@ std::queue<Event> SDLEngine::PollEvents(void){
 				events.emplace(EventType::QUIT);
 				break;
 			case SDL_KEYUP:
-				events.emplace(EventType::KEY_PRESSED, event.key.keysym.sym);
+				events.emplace(EventType::KEY_PRESSED, (Key)(event.key.keysym.scancode - 4));
 				break;
 			case SDL_MOUSEBUTTONUP:
-				{
-				Event e(EventType::MOUSE_PRESSED);
-				if (event.button.button == SDL_BUTTON_LEFT)
-					e.flags |= 1;
-				if (event.button.button == SDL_BUTTON_RIGHT)
-					e.flags |= 2;
-				e.point.x = event.button.x;
-				e.point.y = event.button.y;
-				events.push(e);
-				}
+				events.emplace(	EventType::MOUSE_PRESSED,
+								Mouse{(event.button.button == SDL_BUTTON_LEFT ? MouseButton::LEFT : MouseButton::RIGHT),
+								Point{event.button.x, event.button.y}});
 				break;
 			default:
 				break;
