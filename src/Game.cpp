@@ -37,7 +37,7 @@ void Game::Tick(void){
 	if (ticks % fpsCheckInterval == 0){
 		fps.Align(fpsCheckInterval);
 		stringstream s;
-		s << "fps: " << fps.GetFPS() << " | render time: " << lastRenderTime << " ms | delay: " << fps.GetDelay() << " ms " << endl;
+		s << "fps: " << fps.GetFPS() << " | render time: " << lastRenderTime << " ms | delay: " << fps.GetDelay() << " ms ";
 		Engine::Instance().SetWindowTitle(s.str());
 	}
 
