@@ -1,7 +1,5 @@
 #include "SimplexNoise.h"
 
-
-
 using namespace std;
 
 static constexpr double F2 = 0.5 * (sqrt(3.0) - 1.0);
@@ -45,7 +43,6 @@ uint32_t SimplexNoise::GetSeed() const{
 */
 double SimplexNoise::GetNoise(double x, double y){
 
-    cout << sizeof(gradients) / (2 * sizeof(int)) << endl;
     double n0 = 0, n1 = 0, n2 = 0; // Noise contributions from the three corners
     // Skew the input space to determine which simplex cell we're in
     double s = (x + y) * F2; // Hairy factor for 2D

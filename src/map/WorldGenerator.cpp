@@ -1,5 +1,9 @@
 #include "WorldGenerator.h"
 
+/* This makes good landmass/ocean noise for now:
+noise.GetOctavedNoise(node->GetX(), node->GetY(), 6, 0.2, 0.02) > 0.33 || noise.GetOctavedNoise(node->GetX(), node->GetY(), 3, 0.5, 0.1) > 0.33)
+*/
+
 using namespace std;
 
 static unique_ptr<Tile> CreateTile(const Tileset& tileset);
@@ -12,12 +16,17 @@ WorldGenerator::~WorldGenerator(){
 }
 
 void WorldGenerator::Generate(Grid & grid, std::vector<Tileset>& tilesets){
+	SimplexNoise noise{};
 	GridTraversal g{ grid };
 
 	while (g.HasNext()){
 		auto node = g.Next();
-		node->SetTile(CreateTile(tilesets.at(common::Random(tilesets.size()))));
-		
+
+		if(noise.GetOctavedNoise(node->GetX(), node->GetY(), 6, 0.2, 0.02) > 0.33 || noise.GetOctavedNoise(node->GetX(), node->GetY(), 3, 0.5, 0.1) > 0.33)
+			node->SetTile(CreateTile(tilesets.at(6)));
+		else
+			node->SetTile(CreateTile(tilesets.at(1)));
+
 	}
 
 	GridTraversal g2{ grid };
