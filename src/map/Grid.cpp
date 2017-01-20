@@ -98,7 +98,6 @@ Node* Grid::CreateBlock(int sizeX, int sizeY){
 	auto rowTop = make_unique<vector<Node*>>();
 	auto rowBot = make_unique<vector<Node*>>();
 
-	cout << "create block" << endl;
 	for (int x = 0; x < sizeX; x++){
 		rowTop->push_back(new Node(x, 0));
 	}
@@ -326,5 +325,3 @@ Node* GridTraversal::Next(){
 	}
 	return currReturn;
 }
-
-
