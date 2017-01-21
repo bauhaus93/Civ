@@ -79,6 +79,7 @@ unique_ptr<Tile> TileFactory::CreateTile(const std::string& tilesetName) const{
     if(iter == tilesets.end())
         throw CivException("TileFactory::CreateTile", "Tileset " + tilesetName + " not existing!");
     auto& tileset = iter->second;
+
     if(tileset.IsSimple())
         return make_unique<TileSimple>(tileset);
     return make_unique<TileExtended>(tileset);

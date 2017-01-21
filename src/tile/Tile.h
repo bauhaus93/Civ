@@ -6,12 +6,6 @@
 #include "Tileset.h"
 #include "engine/Sprite.h"
 
-enum class TileExtensions{
-	RIVER,
-	STREET
-	//etc
-};
-
 class Tile{
 
 protected:
@@ -20,7 +14,6 @@ protected:
 	int 			resource;
 
 	std::unique_ptr<Sprite> 	sprite;
-	std::vector<TileExtensions> extensions;
 
 public:
 

@@ -8,11 +8,14 @@ Tileset::Tileset(const string& name_, unsigned int resourceChance_, bool simple_
 	simple{ simple_ }{
 }
 
-Tileset::Tileset(Tileset&& other) noexcept{
-	name = other.name;
-	resourceChance = other.resourceChance;
-	floor = move(other.floor);
-	resource = move(other.resource);
+Tileset::Tileset(Tileset&& other) noexcept:
+	name{ other.name},
+	resourceChance{ other.resourceChance },
+	simple{ other.simple},
+	floor{ move(other.floor) },
+	resource{ move(other.resource) },
+	extension{ move(other.extension)}{
+
 }
 
 void Tileset::AddFloor(Sprite&& sprite){

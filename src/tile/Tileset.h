@@ -14,7 +14,7 @@ class Tileset{
 private:
 	std::string		name;
 	unsigned int	resourceChance;
-	bool			simple;
+	const bool		simple;
 
 
 	std::vector<Sprite>			floor;
@@ -35,7 +35,7 @@ public:
 	const Sprite& GetRandomFloor() const;
 	const Resource& GetResource(int id) const;
 	const Sprite& GetExtension(uint8_t neighbourMask) const;
-	
+
 	int GetRandomResource() const ;
 
 	bool operator==(const Tileset& other) const { return this == &other; };

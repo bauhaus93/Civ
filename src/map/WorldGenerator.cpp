@@ -24,7 +24,7 @@ void WorldGenerator::Generate(Grid& grid, const TileFactory& tileFactory){
 		auto node = g.Next();
 
 		if(noise.GetOctavedNoise(node->GetX(), node->GetY(), 6, 0.2, 0.02) > 0.33 || noise.GetOctavedNoise(node->GetX(), node->GetY(), 3, 0.5, 0.1) > 0.33)
-			node->SetTile(tileFactory.CreateTile("jungle"));
+			node->SetTile(tileFactory.CreateTile("mountains"));
 		else
 			node->SetTile(tileFactory.CreateTile("grasslands"));
 

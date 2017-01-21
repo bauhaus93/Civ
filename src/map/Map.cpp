@@ -41,9 +41,16 @@ void Map::Clicked(int screenX, int screenY){
 }
 
 void Map::LoadTilesets(){
-	Point pos{ 1, 1 };
-
 	Logger::Write("Loading Tilesets");
+
+	LoadSimpleTilesets();
+	LoadExtendedTilesets();
+
+	Logger::Write("Tilesets loaded");
+}
+
+void Map::LoadSimpleTilesets(){
+	Point pos{ 1, 1 };
 
 	tileFactory.AddSimpleTileset("desert", RESOURCE_CHANCE);
 	for(int i = 0; i < 4; i++){
@@ -99,7 +106,32 @@ void Map::LoadTilesets(){
 			tileFactory.AddResource("jungle", pos);
 		pos.x += 65;
 	}
-	Logger::Write("Tilesets loaded");
+}
+
+void Map::LoadExtendedTilesets(){
+	Point pos{ 1, 133 };
+	Point resourcePos{ 131, 100};
+	Point fillerPos{ 1, 100 };
+	const string namesT1[] = {"forest", "hills", "mountains"};
+	const string namesT2[] = {"forest", "mountains", "hills"};
+
+	for(int i = 0; i < 3; i++){
+		tileFactory.AddExtendedTileset(namesT1[i], RESOURCE_CHANCE);
+		tileFactory.AddFloor(namesT1[i], fillerPos);
+		for(int j = 0; j < 2; j++)
+			tileFactory.AddResource(namesT1[i], Point{ resourcePos.x + j * 65, resourcePos.y + i * 33});
+	}
+
+	for(uint8_t mask = 0; mask < 16; mask++){
+		for(int i = 0; i < 3; i++)
+			tileFactory.AddExtension(namesT2[i], Point{ pos.x, pos.y + i * 66}, mask);
+		if(mask == 7){
+			pos.x = 1;
+			pos.y += 33;
+		}
+		else
+			pos.x += 65;
+	}
 }
 
 void Map::Render(){

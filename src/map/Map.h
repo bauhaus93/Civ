@@ -22,6 +22,8 @@ class Map{
 	bool change;
 
 	void		LoadTilesets();
+	void 		LoadSimpleTilesets();
+	void 		LoadExtendedTilesets();
 
 public:
 				Map(const Rect& drawField_);
