@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <map>
 
 #include "engine/Sprite.h"
 #include "Resource.h"
@@ -16,8 +17,9 @@ private:
 	bool			simple;
 
 
-	std::vector<Sprite>		floor;
-	std::vector<Resource>	resource;
+	std::vector<Sprite>			floor;
+	std::vector<Resource>		resource;
+	std::map<uint8_t, Sprite>	extension;
 
 public:
 	Tileset(const std::string& name_, unsigned int resourceChance_, bool simple_);
@@ -28,9 +30,12 @@ public:
 
 	void AddFloor(Sprite&& sprite);
 	void AddResource(Resource&& res);
+	void AddExtension(Sprite&& sprite, uint8_t neighbourMask);
 
 	const Sprite& GetRandomFloor() const;
 	const Resource& GetResource(int id) const;
+	const Sprite& GetExtension(uint8_t neighbourMask) const;
+	
 	int GetRandomResource() const ;
 
 	bool operator==(const Tileset& other) const { return this == &other; };

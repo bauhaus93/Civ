@@ -13,3 +13,10 @@ Rect::Rect(const Rect& other) :
 	w{ other.w },
 	h{ other.h }{
 }
+
+Rect::Rect(const Point& p, int w_, int h_):
+	x{ p.x},
+	y{ p.y},
+	w{ w_},
+	h{ h_}{
+}

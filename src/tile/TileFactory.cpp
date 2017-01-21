@@ -22,10 +22,18 @@ bool TileFactory::HasTileset(const string& tilesetName) const{
     return tilesets.find(tilesetName) != tilesets.end();
 }
 
-void TileFactory::AddSimpleTileset(const string& name, unsigned int resourceChance){
-    auto result = tilesets.emplace(name, Tileset{name, resourceChance, true});
+void TileFactory::AddTileset(const string& name, unsigned int resourceChance, bool simple){
+    auto result = tilesets.emplace(name, Tileset{name, resourceChance, simple});
     if(result.second == false)
         throw CivException("TileFactory::AddSimpleTileset", "Tilset " + name + " already existing!");
+}
+
+void TileFactory::AddSimpleTileset(const string& name, unsigned int resourceChance){
+    AddTileset(name, resourceChance, true);
+}
+
+void TileFactory::AddExtendedTileset(const string& name, unsigned int resourceChance){
+    AddTileset(name, resourceChance, false);
 }
 
 void TileFactory::AddFloor(const string& tilesetName, const Point& pos){
@@ -47,6 +55,23 @@ void TileFactory::AddResource(const string& tilesetName, const Point& pos){
     auto sprite = spriteFactory.CreateDiamondSprite(TERRAIN1, pos);
     auto resource{move(sprite)};
     tileset.AddResource(move(resource));
+}
+
+void TileFactory::AddExtension(const string& tilesetName, const Point& pos, uint8_t neighbourMask){
+    AddExtension(tilesetName, Rect{ pos, 64, 32 }, neighbourMask);
+}
+
+void TileFactory::AddExtension(const string& tilesetName, const Rect& dim, uint8_t neighbourMask){
+    auto iter = tilesets.find(tilesetName);
+    if(iter == tilesets.end())
+        throw CivException("TileFactory::AddExtension", "Tileset " + tilesetName + " not existing!");
+    auto& tileset = iter->second;
+
+    if(tileset.IsSimple())
+        throw CivException("TileFactory::AddExtension", "Tileset " + tilesetName + " is simple, but must be extended!");
+
+    auto sprite = spriteFactory.CreateSprite(TERRAIN2, dim);
+    tileset.AddExtension(move(sprite), neighbourMask);
 }
 
 unique_ptr<Tile> TileFactory::CreateTile(const std::string& tilesetName) const{

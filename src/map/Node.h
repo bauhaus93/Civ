@@ -27,7 +27,7 @@ class Node{
 public:
 					Node(int x_, int y_);
 					~Node();
-					
+
 	inline void		SetTile(std::unique_ptr<Tile> tile_);
 	inline Tile&	GetTile(){ return *tile; }
 	inline void		Render(int x, int y);
@@ -58,7 +58,7 @@ public:
 
 };
 
-uint8_t CreateSimpleNeighbourMask(Node* node);
+uint8_t CreateNeighbourMask(Node* node);
 
 void Node::SetTile(std::unique_ptr<Tile> tile_){
 	tile = move(tile_);
@@ -137,6 +137,3 @@ Node* Node::GetWest(){
 Node* Node::GetEast(){
 	GET_NEIGHBOUR(GetNortheast, GetSoutheast);
 }
-
-
-

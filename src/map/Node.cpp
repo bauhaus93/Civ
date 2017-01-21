@@ -28,7 +28,7 @@ void Node::RenderRow(int screenX, int screenY, int maxX){
 	}
 }
 
-uint8_t CreateSimpleNeighbourMask(Node* node){
+uint8_t CreateNeighbourMask(Node* node){
 	uint8_t mask = 0;
 	auto& onTileset = node->GetTile().GetTileset();
 
@@ -44,5 +44,18 @@ uint8_t CreateSimpleNeighbourMask(Node* node){
 	if (SAME_NEIGHBOUR(node, onTileset, GetNorthwest))
 		mask |= 8;
 
+
+	if (SAME_NEIGHBOUR(node, onTileset, GetNorth))
+		mask |= 16;
+
+	if (SAME_NEIGHBOUR(node, onTileset, GetEast))
+		mask |= 32;
+
+	if (SAME_NEIGHBOUR(node, onTileset, GetSouth))
+		mask |= 64;
+
+	if (SAME_NEIGHBOUR(node, onTileset, GetWest))
+		mask |= 128;
+		
 	return mask;
 }
