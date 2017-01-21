@@ -34,4 +34,3 @@ const Resource& Tileset::GetResource(int id) const{
 int Tileset::GetRandomResource() const{
 	return common::Random() < resourceChance ? common::Random(resource.size()) : -1;
 }
-

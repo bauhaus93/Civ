@@ -16,7 +16,7 @@ void SDLSpriteFactory::AddSpriteSheet(const string& filename, const string& shee
 	SDL_Surface *tmp = SDL_LoadBMP(filename.c_str());
 	SDL_Surface *img = nullptr;
 	SDL_Rect rect{ 0, 0, 0, 0 };
-	
+
 
 	if (tmp == nullptr)
 		throw SDLException("SDL_LoadBMP");
@@ -35,7 +35,7 @@ void SDLSpriteFactory::AddSpriteSheet(const string& filename, const string& shee
 		SDL_FreeSurface(tmp);
 		throw SDLException("SDL_BlitSurface");
 	}
-		
+
 	baseImgs.insert(make_pair(sheetname, img));
 }
 
@@ -60,7 +60,7 @@ void SDLSpriteFactory::MakeTransparent(const RGBColor& color){
 		}
 		SDL_UnlockSurface(surf);
 	}
-	
+
 }
 
 SDLSprite SDLSpriteFactory::CreateSprite(const string& name, const Rect& dim){

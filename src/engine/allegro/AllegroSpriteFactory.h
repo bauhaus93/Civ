@@ -21,4 +21,3 @@ public:
 	AllegroSprite	CreateSprite(const std::string& sheetname, const Rect& dim);
 	AllegroSprite	CreateDiamondSprite(const std::string& sheetname, const Point& pos);
 };
-

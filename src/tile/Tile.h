@@ -12,16 +12,14 @@ enum class TileExtensions{
 	//etc
 };
 
-
-
 class Tile{
 
 protected:
-	const Tileset& tileset;
-	const Sprite& floor;
-	int resource;
+	const Tileset& 	tileset;
+	const Sprite& 	floor;
+	int 			resource;
 
-	std::unique_ptr<Sprite> sprite;
+	std::unique_ptr<Sprite> 	sprite;
 	std::vector<TileExtensions> extensions;
 
 public:
@@ -36,8 +34,3 @@ public:
 
 	void			Render(int x, int y);
 };
-
-
-
-
-

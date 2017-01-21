@@ -5,7 +5,7 @@ using namespace std;
 
 Tile::Tile(const Tileset& tileset_ ) :
 	tileset{ tileset_ },
-	floor{tileset.GetRandomFloor()},
+	floor{ tileset.GetRandomFloor() },
 	resource{ tileset.GetRandomResource() }{
 
 }

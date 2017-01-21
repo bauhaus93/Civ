@@ -27,4 +27,3 @@ public:
 	SDLSprite	CreateSprite(const std::string& sheetname, const Rect& dim);
 	SDLSprite	CreateDiamondSprite(const std::string& sheetname, const Point& pos);
 };
-

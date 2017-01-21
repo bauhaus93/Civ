@@ -4,11 +4,9 @@
 #include <string>
 #include <memory>
 
-
 #include "engine/Sprite.h"
 #include "Resource.h"
 #include "common/Common.h"
-
 
 class Tileset{
 
