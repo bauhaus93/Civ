@@ -35,7 +35,9 @@ void WorldGenerator::Generate(Grid& grid, const TileFactory& tileFactory){
 
 	while (g2.HasNext()){
 		auto node = g2.Next();
-		node->GetTile().CreateTileSprite(CreateNeighbourMask(node));
+		auto& tile = node->GetTile();
+		tile.UpdateTerrainNeighbourMask(CreateNeighbourMask(node));
+		tile.CreateSprite();
 	}
 	Logger::Write("World generated in " + to_string(common::TimeDiff(start)) + "ms");
 }

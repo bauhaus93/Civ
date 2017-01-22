@@ -22,7 +22,7 @@ class Map{
 	bool change;
 
 	void		LoadTilesets();
-	void 		LoadSimpleTilesets();
+	void 		LoadBasicTilesets();
 	void 		LoadExtendedTilesets();
 
 public:

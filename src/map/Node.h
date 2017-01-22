@@ -4,6 +4,7 @@
 
 #include "Neighbour.h"
 #include "tile/Tile.h"
+#include "tileset/BasicTerrainset.h"
 
 
 
@@ -11,7 +12,7 @@
 							else if(b() != nullptr) return b()->a();\
 							return nullptr;}
 
-#define SAME_NEIGHBOUR(node, tileset, neighbour) ( node->neighbour() != nullptr && tileset == node->neighbour()->GetTile().GetTileset() )
+#define SAME_NEIGHBOUR(node, tileset, neighbour) ( node->neighbour() != nullptr && tileset == node->neighbour()->GetTile().GetTerrainset() )
 
 
 

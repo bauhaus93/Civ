@@ -43,19 +43,19 @@ void Map::Clicked(int screenX, int screenY){
 void Map::LoadTilesets(){
 	Logger::Write("Loading Tilesets");
 
-	LoadSimpleTilesets();
+	LoadBasicTilesets();
 	LoadExtendedTilesets();
 
 	Logger::Write("Tilesets loaded");
 }
 
-void Map::LoadSimpleTilesets(){
+void Map::LoadBasicTilesets(){
 	Point pos{ 1, 1 };
 
-	tileFactory.AddSimpleTileset("desert", RESOURCE_CHANCE);
+	tileFactory.AddBasicTileset("desert", RESOURCE_CHANCE);
 	for(int i = 0; i < 4; i++){
 		if(i < 2)
-			tileFactory.AddFloor("desert", pos);
+			tileFactory.AddBasicSprite("desert", pos);
 		else
 			tileFactory.AddResource("desert", pos);
 		pos.x += 65;
@@ -63,10 +63,10 @@ void Map::LoadSimpleTilesets(){
 
 	pos.x = 1;
 	pos.y += 33;
-	tileFactory.AddSimpleTileset("prairie", RESOURCE_CHANCE);
+	tileFactory.AddBasicTileset("prairie", RESOURCE_CHANCE);
 	for(int i = 0; i < 3; i++){
 		if(i == 0){
-			tileFactory.AddFloor("prairie", pos);
+			tileFactory.AddBasicSprite("prairie", pos);
 			pos.x += 65;
 		}
 		else
@@ -76,8 +76,8 @@ void Map::LoadSimpleTilesets(){
 
 	pos.x = 1;
 	pos.y += 33;
-	tileFactory.AddSimpleTileset("grasslands", RESOURCE_CHANCE);
-	tileFactory.AddFloor("grasslands", pos);
+	tileFactory.AddBasicTileset("grasslands", RESOURCE_CHANCE);
+	tileFactory.AddBasicSprite("grasslands", pos);
 	tileFactory.AddResource("grasslands", Point{ 456, 232 });
 
 	pos.x = 1;
@@ -85,10 +85,10 @@ void Map::LoadSimpleTilesets(){
 
 	const string names[] = {"tundra", "arctic", "swamp"};
 	for(int i = 0; i < 3; i++){
-		tileFactory.AddSimpleTileset(names[i], RESOURCE_CHANCE);
+		tileFactory.AddBasicTileset(names[i], RESOURCE_CHANCE);
 		for(int j = 0; j < 3; j++){
 			if(j == 0){
-				tileFactory.AddFloor(names[i], pos);
+				tileFactory.AddBasicSprite(names[i], pos);
 				pos.x += 65;
 			}
 			else
@@ -98,10 +98,10 @@ void Map::LoadSimpleTilesets(){
 		pos.x = 1;
 		pos.y += 33;
 	}
-	tileFactory.AddSimpleTileset("jungle", RESOURCE_CHANCE);
+	tileFactory.AddBasicTileset("jungle", RESOURCE_CHANCE);
 	for(int i = 0; i < 4; i++){
 		if(i < 2)
-			tileFactory.AddFloor("jungle", pos);
+			tileFactory.AddBasicSprite("jungle", pos);
 		else
 			tileFactory.AddResource("jungle", pos);
 		pos.x += 65;
@@ -117,14 +117,14 @@ void Map::LoadExtendedTilesets(){
 
 	for(int i = 0; i < 3; i++){
 		tileFactory.AddExtendedTileset(namesT1[i], RESOURCE_CHANCE);
-		tileFactory.AddFloor(namesT1[i], fillerPos);
+		tileFactory.AddBasicSprite(namesT1[i], fillerPos);
 		for(int j = 0; j < 2; j++)
 			tileFactory.AddResource(namesT1[i], Point{ resourcePos.x + j * 65, resourcePos.y + i * 33});
 	}
 
 	for(uint8_t mask = 0; mask < 16; mask++){
 		for(int i = 0; i < 3; i++)
-			tileFactory.AddExtension(namesT2[i], Point{ pos.x, pos.y + i * 66}, mask);
+			tileFactory.AddExtendedSprite(namesT2[i], Point{ pos.x, pos.y + i * 66}, mask);
 		if(mask == 7){
 			pos.x = 1;
 			pos.y += 33;

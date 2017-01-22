@@ -27,7 +27,7 @@ void Node::RenderRow(int screenX, int screenY, int maxX){
 
 uint8_t CreateNeighbourMask(Node* node){
 	uint8_t mask = 0;
-	auto& onTileset = node->GetTile().GetTileset();
+	auto& onTileset = node->GetTile().GetTerrainset();
 
 	if (SAME_NEIGHBOUR(node, onTileset, GetNortheast))
 		mask |= (uint8_t)Neighbour::NE;

@@ -3,27 +3,28 @@
 #include <memory>
 #include <vector>
 
-#include "tileset/Tileset.h"
+#include "tileset/BasicTerrainset.h"
 #include "engine/Sprite.h"
 
 class Tile{
 
-protected:
-	const Tileset& 	tileset;
-	const Sprite& 	floor;
-	int 			resource;
+	const BasicTerrainset& 	terrainset;
+	int						basicSpriteID;
+	int 					resourceID;
+	uint8_t					terrainNeighbourMask;
 
-	std::unique_ptr<Sprite> 	sprite;
+	std::unique_ptr<Sprite> sprite;
 
 public:
 
-					Tile(const Tileset& tileset_);
-					Tile(const Tile& other) = delete;
-	virtual			~Tile();
+							Tile(const BasicTerrainset& tileset_);
+							Tile(const Tile& other) = delete;
+							~Tile() = default;
 
-	virtual void	CreateTileSprite(uint8_t neighbourMask) = 0;
-	void			AddSprite(const Sprite& add);
-	const Tileset&	GetTileset(){ return tileset; }
+	void					CreateSprite();
+	void					AddSprite(const Sprite& add);
+	void 					UpdateTerrainNeighbourMask(uint8_t newMask);
+	const BasicTerrainset&	GetTerrainset(){ return terrainset; }
 
-	void			Render(int x, int y);
+	void					Render(int x, int y);
 };

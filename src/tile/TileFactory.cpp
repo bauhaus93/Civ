@@ -22,28 +22,53 @@ bool TileFactory::HasTileset(const string& tilesetName) const{
     return tilesets.find(tilesetName) != tilesets.end();
 }
 
-void TileFactory::AddTileset(const string& name, unsigned int resourceChance, bool simple){
-    auto result = tilesets.emplace(name, Tileset{name, resourceChance, simple});
+void TileFactory::AddTileset(const string& name, unsigned int resourceChance, TilesetType type){
+    unique_ptr<Tileset> ts = nullptr;
+
+    switch(type){
+        case TilesetType::BASIC:
+            ts = make_unique<BasicTerrainset>(name, resourceChance);
+            break;
+        case TilesetType::EXTENDED:
+            ts = make_unique<ExtendedTerrainset>(name, resourceChance);
+            break;
+        case TilesetType::OCEAN:
+            ts = make_unique<OceanTerrainset>(name, resourceChance);
+            break;
+        default:
+            throw CivException("TileFactory::AddTileset", "Unknown tileset type: " + to_string((int)type));
+    }
+
+    auto result = tilesets.emplace(name, move(ts));
     if(result.second == false)
-        throw CivException("TileFactory::AddSimpleTileset", "Tilset " + name + " already existing!");
+        throw CivException("TileFactory::AddTileset", "Tileset " + name + " already existing!");
 }
 
-void TileFactory::AddSimpleTileset(const string& name, unsigned int resourceChance){
-    AddTileset(name, resourceChance, true);
+void TileFactory::AddBasicTileset(const string& name, unsigned int resourceChance){
+    AddTileset(name, resourceChance, TilesetType::BASIC);
 }
 
 void TileFactory::AddExtendedTileset(const string& name, unsigned int resourceChance){
-    AddTileset(name, resourceChance, false);
+    AddTileset(name, resourceChance, TilesetType::EXTENDED);
 }
 
-void TileFactory::AddFloor(const string& tilesetName, const Point& pos){
+void TileFactory::AddOceanTileset(const string& name, unsigned int resourceChance){
+    AddTileset(name, resourceChance, TilesetType::OCEAN);
+}
+
+void TileFactory::AddBasicSprite(const string& tilesetName, const Point& pos){
     auto iter = tilesets.find(tilesetName);
     if(iter == tilesets.end())
-        throw CivException("TileFactory::AddFloor", "Tileset " + tilesetName + " not existing!");
+        throw CivException("TileFactory::AddBasic", "Tileset " + tilesetName + " not existing!");
 
-    auto& tileset = iter->second;
-    auto sprite = spriteFactory.CreateDiamondSprite(TERRAIN1, pos);
-    tileset.AddFloor(move(sprite));
+    auto& tileset = *iter->second;
+
+    if(tileset.GetType() & (int)TilesetType::BASIC){
+        auto sprite = spriteFactory.CreateDiamondSprite(TERRAIN1, pos);
+        ((BasicTerrainset&)tileset).AddBasicSprite(move(sprite));
+    }
+    else
+        throw CivException("TileFactory::AddBasic", "Tileset " + tilesetName + " is no basic terrainset!");
 }
 
 void TileFactory::AddResource(const string& tilesetName, const Point& pos){
@@ -51,36 +76,59 @@ void TileFactory::AddResource(const string& tilesetName, const Point& pos){
     if(iter == tilesets.end())
         throw CivException("TileFactory::AddResource", "Tileset " + tilesetName + " not existing!");
 
-    auto& tileset = iter->second;
-    auto sprite = spriteFactory.CreateDiamondSprite(TERRAIN1, pos);
-    auto resource{move(sprite)};
-    tileset.AddResource(move(resource));
+    auto& tileset = *iter->second;
+
+    if(tileset.GetType() & (int)TilesetType::BASIC){
+        auto sprite = spriteFactory.CreateDiamondSprite(TERRAIN1, pos);
+        auto resource{move(sprite)};
+        ((BasicTerrainset&)tileset).AddResource(move(resource));
+    }
+    else
+        throw CivException("TileFactory::AddResource", "Tileset " + tilesetName + " is no basic terrainset!");
+
 }
 
-void TileFactory::AddExtension(const string& tilesetName, const Point& pos, uint8_t neighbourMask){
-    AddExtension(tilesetName, Rect{ pos, 64, 32 }, neighbourMask);
-}
-
-void TileFactory::AddExtension(const string& tilesetName, const Rect& dim, uint8_t neighbourMask){
+void TileFactory::AddExtendedSprite(const string& tilesetName, const Point& pos, uint8_t neighbourMask){
     auto iter = tilesets.find(tilesetName);
     if(iter == tilesets.end())
-        throw CivException("TileFactory::AddExtension", "Tileset " + tilesetName + " not existing!");
-    auto& tileset = iter->second;
+        throw CivException("TileFactory::AddExtendedSprite", "Tileset " + tilesetName + " not existing!");
 
-    if(tileset.IsSimple())
-        throw CivException("TileFactory::AddExtension", "Tileset " + tilesetName + " is simple, but must be extended!");
+    auto& tileset = *iter->second;
 
-    auto sprite = spriteFactory.CreateSprite(TERRAIN2, dim);
-    tileset.AddExtension(move(sprite), neighbourMask);
+    if(tileset.GetType() & (int)TilesetType::EXTENDED){
+        auto sprite = spriteFactory.CreateDiamondSprite(TERRAIN2, pos);
+        ((ExtendedTerrainset&)tileset).AddExtendedSprite(move(sprite), neighbourMask);
+    }
+    else
+        throw CivException("TileFactory::AddExtendedSprite", "Tileset " + tilesetName + " is no extended terrainset!");
 }
 
-unique_ptr<Tile> TileFactory::CreateTile(const std::string& tilesetName) const{
+void TileFactory::AddCoastline(const string& tilesetName, const Point& pos, uint8_t neighbourMask){
     auto iter = tilesets.find(tilesetName);
     if(iter == tilesets.end())
-        throw CivException("TileFactory::CreateTile", "Tileset " + tilesetName + " not existing!");
-    auto& tileset = iter->second;
+        throw CivException("TileFactory::AddCoastline", "Tileset " + tilesetName + " not existing!");
 
-    if(tileset.IsSimple())
-        return make_unique<TileSimple>(tileset);
-    return make_unique<TileExtended>(tileset);
+    auto& tileset = *iter->second;
+
+    if(tileset.GetType() & (int)TilesetType::OCEAN){
+        auto sprite = spriteFactory.CreateDiamondSprite(TERRAIN1, pos);
+        ((OceanTerrainset&)tileset).AddCoastline(move(sprite), neighbourMask);
+    }
+    else
+        throw CivException("TileFactory::AddCoastline", "Tileset " + tilesetName + " is no ocean terrainset!");
+}
+
+
+unique_ptr<Tile> TileFactory::CreateTile(const std::string& terrainsetName) const{
+    auto iter = tilesets.find(terrainsetName);
+    if(iter == tilesets.end())
+        throw CivException("TileFactory::CreateTile", "Tileset " + terrainsetName + " not existing!");
+    auto& tileset = *iter->second;
+
+    if(tileset.GetType() & (int)TilesetType::BASIC){
+        return make_unique<Tile>((BasicTerrainset&)tileset);
+    }
+    else
+        throw CivException("TileFactory::CreateTile", "Tileset " + terrainsetName + " is not a terrain set!");
+
 }
