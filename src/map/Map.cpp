@@ -45,6 +45,7 @@ void Map::LoadTilesets(){
 
 	LoadBasicTilesets();
 	LoadExtendedTilesets();
+	LoadOceanTileset();
 
 	Logger::Write("Tilesets loaded");
 }
@@ -132,6 +133,39 @@ void Map::LoadExtendedTilesets(){
 		else
 			pos.x += 65;
 	}
+}
+
+void Map::LoadOceanTileset(){
+	Point pos{ 1, 331 };
+
+	tileFactory.AddOceanTileset("ocean", RESOURCE_CHANCE);
+	tileFactory.AddBasicSprite("ocean", pos);
+	pos.x += 65 * 2;
+
+	for(int i = 0; i < 2; i++){
+		tileFactory.AddResource("ocean", pos);
+		pos.x += 65;
+	}
+
+	pos.x = 1;
+	pos.y = 378;	//STD POS = 429, DEBUG = 378
+	const Corner corners[] = {Corner::N, Corner::S, Corner::W, Corner::E};
+	for(int i = 0; i < 4; i++){
+		for(uint8_t j = 0; j < 8; j++){
+			tileFactory.AddCoastline("ocean", pos, corners[i], j);
+			pos.x += 66;
+		}
+		if(i < 2){
+			pos.x = 1;
+			pos.y += 17;
+		}
+		else
+			pos.x = 34;
+	}
+
+
+
+
 }
 
 void Map::Render(){

@@ -103,7 +103,7 @@ void TileFactory::AddExtendedSprite(const string& tilesetName, const Point& pos,
         throw CivException("TileFactory::AddExtendedSprite", "Tileset " + tilesetName + " is no extended terrainset!");
 }
 
-void TileFactory::AddCoastline(const string& tilesetName, const Point& pos, uint8_t neighbourMask){
+void TileFactory::AddCoastline(const string& tilesetName, const Point& pos, Corner corner, uint8_t mask){
     auto iter = tilesets.find(tilesetName);
     if(iter == tilesets.end())
         throw CivException("TileFactory::AddCoastline", "Tileset " + tilesetName + " not existing!");
@@ -111,8 +111,8 @@ void TileFactory::AddCoastline(const string& tilesetName, const Point& pos, uint
     auto& tileset = *iter->second;
 
     if(tileset.GetType() & (int)TilesetType::OCEAN){
-        auto sprite = spriteFactory.CreateDiamondSprite(TERRAIN1, pos);
-        ((OceanTerrainset&)tileset).AddCoastline(move(sprite), neighbourMask);
+        auto sprite = spriteFactory.CreateSprite(TERRAIN2, Rect{pos, 32, 16});
+        ((OceanTerrainset&)tileset).AddCoastline(move(sprite), corner, mask);
     }
     else
         throw CivException("TileFactory::AddCoastline", "Tileset " + tilesetName + " is no ocean terrainset!");

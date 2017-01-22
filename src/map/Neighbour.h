@@ -1,4 +1,4 @@
-
+#pragma once
 enum class Neighbour{
     NONE    = 0,
     NE      = (1 << 0),

@@ -95,7 +95,7 @@ void AllegroSprite::Add(const AllegroSprite& add){
 
 void AllegroSprite::Add(const AllegroSprite& add, const Rect& rect){
 	al_set_target_bitmap(bmp);
-	al_draw_bitmap_region(add.bmp, rect.x, rect.y, rect.w, rect.h, 0, 0, 0);
+	al_draw_bitmap_region(add.bmp, 0, 0, rect.w, rect.h, rect.x, rect.y, 0);
 	al_set_target_bitmap(al_get_backbuffer(AllegroEngine::Instance().GetDisplay()));
 }
 

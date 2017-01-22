@@ -6,6 +6,8 @@
 #include <random>
 #include <chrono>
 
+#include "exception/CivException.h"
+
 namespace common{
 
 	extern std::mt19937 generator;
@@ -39,6 +41,8 @@ inline unsigned int common::Random(){
 }
 
 inline unsigned int common::Random(int range){
+	if(range <= 0)
+		throw CivException("common::Random", "Range must be > 0");
 	return static_cast<unsigned int>(distributionStd(generator) % range);
 }
 

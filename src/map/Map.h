@@ -5,6 +5,7 @@
 
 #include "engine/SpriteFactory.h"
 #include "tile/TileFactory.h"
+#include "tileset/OceanTerrainset.h"
 #include "Grid.h"
 #include "WorldGenerator.h"
 #include "common/Rect.h"
@@ -24,6 +25,7 @@ class Map{
 	void		LoadTilesets();
 	void 		LoadBasicTilesets();
 	void 		LoadExtendedTilesets();
+	void 		LoadOceanTileset();
 
 public:
 				Map(const Rect& drawField_);
