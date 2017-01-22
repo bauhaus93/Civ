@@ -3,7 +3,7 @@
 #include <memory>
 
 #include "Tile.h"
-#include "Tileset.h"
+#include "tileset/Tileset.h"
 #include "engine/Sprite.h"
 
 class TileSimple: public Tile{
@@ -13,4 +13,3 @@ public:
 	~TileSimple();
 	void CreateTileSprite(uint8_t neighbourMask) override;
 };
-

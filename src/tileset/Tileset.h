@@ -5,16 +5,37 @@
 #include <memory>
 #include <map>
 
-#include "engine/Sprite.h"
-#include "Resource.h"
-#include "common/Common.h"
-
 class Tileset{
+	std::string		name;
+
+public:
+					Tileset(const std::string& name_);
+	virtual			~Tileset();
+
+	std::string		GetName() const;
+
+	bool 			operator==(const Tileset& other) const;
+	bool 			operator!=(const Tileset& other) const;
+};
+
+inline Tileset::GetName() const{
+	return name;
+}
+
+inline bool Tileset::operator==(const Tileset& other) const{
+	return this == &other;
+}
+
+inline bool Tileset::operator!=(const Tileset& other) const {
+	return this != &other;
+}
+
+/*class Tileset{
 
 private:
-	std::string		name;
-	unsigned int	resourceChance;
-	const bool		simple;
+	std::string			name;
+	unsigned int		resourceChance;
+	const bool 			simple;
 
 
 	std::vector<Sprite>			floor;
@@ -40,4 +61,4 @@ public:
 
 	bool operator==(const Tileset& other) const { return this == &other; };
 	bool operator!=(const Tileset& other) const { return this != &other; };
-};
+};*/

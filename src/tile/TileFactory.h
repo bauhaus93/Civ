@@ -6,7 +6,7 @@
 #include "Tile.h"
 #include "TileSimple.h"
 #include "TileExtended.h"
-#include "Tileset.h"
+#include "tileset/Tileset.h"
 #include "engine/SpriteFactory.h"
 #include "engine/Sprite.h"
 #include "common/Color.h"

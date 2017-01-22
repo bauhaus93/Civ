@@ -1,7 +1,4 @@
 #include "Node.h"
-#include "Grid.h"
-
-
 
 Node::Node(int x_, int y_) :
 	tile{ nullptr },
@@ -33,29 +30,29 @@ uint8_t CreateNeighbourMask(Node* node){
 	auto& onTileset = node->GetTile().GetTileset();
 
 	if (SAME_NEIGHBOUR(node, onTileset, GetNortheast))
-		mask |= 1;
+		mask |= (uint8_t)Neighbour::NE;
 
 	if (SAME_NEIGHBOUR(node, onTileset, GetSoutheast))
-		mask |= 2;
+		mask |= (uint8_t)Neighbour::SE;
 
 	if (SAME_NEIGHBOUR(node, onTileset, GetSouthwest))
-		mask |= 4;
+		mask |= (uint8_t)Neighbour::SW;
 
 	if (SAME_NEIGHBOUR(node, onTileset, GetNorthwest))
-		mask |= 8;
+		mask |= (uint8_t)Neighbour::NW;
 
 
 	if (SAME_NEIGHBOUR(node, onTileset, GetNorth))
-		mask |= 16;
+		mask |= (uint8_t)Neighbour::N;
 
 	if (SAME_NEIGHBOUR(node, onTileset, GetEast))
-		mask |= 32;
+		mask |= (uint8_t)Neighbour::E;
 
 	if (SAME_NEIGHBOUR(node, onTileset, GetSouth))
-		mask |= 64;
+		mask |= (uint8_t)Neighbour::S;
 
 	if (SAME_NEIGHBOUR(node, onTileset, GetWest))
-		mask |= 128;
-		
+		mask |= (uint8_t)Neighbour::W;
+
 	return mask;
 }
