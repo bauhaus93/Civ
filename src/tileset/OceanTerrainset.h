@@ -30,5 +30,5 @@ public:
     void                AddCoastline(Sprite&& sprite, Corner corner, uint8_t mask);
 
     void                Draw(Sprite& sprite, int basicID, int resourceID, uint8_t neighbourMask) const override;
-    virtual	int         GetType() const;
+    virtual	int         GetType() const override;
 };

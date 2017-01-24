@@ -2,8 +2,8 @@
 
 using namespace std;
 
-static constexpr double F2 = 0.5 * (sqrt(3.0) - 1.0);
-static constexpr double G2 = (3.0 - sqrt(3.0)) / 6.0;
+static const double F2 = 0.5 * (sqrt(3.0) - 1.0);
+static const double G2 = (3.0 - sqrt(3.0)) / 6.0;
 static constexpr int gradients[][2] = { {1, 1}, {-1, 1}, {1, -1}, {-1, -1}, {1, 0}, {-1, 0}, {1, 0}, {-1, 0}, {0, 1}, {0, -1}, {0, 1}, {0, -1}};
 
 double dot(int gradX, int gradY, double x, double y){
