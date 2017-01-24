@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <map>
+#include <random>
 
 #include "engine/SpriteFactory.h"
 #include "tile/TileFactory.h"

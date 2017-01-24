@@ -8,18 +8,20 @@ Map::Map(const Rect& drawField_) :
 	grid{}{
 
 	SpriteFactory spriteFactory;
-	WorldGenerator wg;
-
-
-
 
 	spriteFactory.AddSpriteSheet("bmp/TERRAIN1.bmp", "terrain1");
 	grid.SetMouseClickComparator(spriteFactory.CreateDiamondSprite("terrain1", Point{ 66, 447 }));	//TODO move in Grid
+
+
+	LoadTilesets();
+
+
+
 	grid.Create(75, 120);
 	grid.AlignViewToCenter(drawField.w, drawField.h);
 
-	LoadTilesets();
-	wg.Generate(grid, tileFactory);
+	WorldGenerator wg{tileFactory, random_device{}()};
+	wg.Generate(grid);
 
 	change = true;
 
