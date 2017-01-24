@@ -11,14 +11,6 @@ Resource::Resource(Resource&& other) noexcept{
 	sprite = move(other.sprite);
 }
 
-Resource::Resource(const Resource& other):
-	sprite{ other.sprite }{
-
-}
-
-
-Resource::~Resource(){
-}
 
 const Sprite& Resource::GetSprite() const{
 	return sprite;

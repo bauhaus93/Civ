@@ -5,13 +5,11 @@ using namespace std;
 static void TextureOnTexture(SDL_Texture *src, const SDL_Rect& srcRect, SDL_Texture *dest, const SDL_Rect& destRect);
 
 inline Rect ToRect(const SDL_Rect& rect){
-	Rect r{ rect.x, rect.y, rect.w, rect.h };
-	return std::move(r);
+	return Rect{rect.x, rect.y, rect.w, rect.h};
 }
 
 inline SDL_Rect ToSDLRect(const Rect& rect){
-	SDL_Rect r{ rect.x, rect.y, rect.w, rect.h };
-	return r;
+	return SDL_Rect{ rect.x, rect.y, rect.w, rect.h };
 }
 
 SDLSprite::SDLSprite() :
@@ -50,23 +48,14 @@ SDLSprite::SDLSprite(SDL_Surface* src, const Rect& dim_) :
 		throw SDLException("SDL_QueryTexture");
 }
 
-SDLSprite::SDLSprite(const Rect& dim) :
+SDLSprite::SDLSprite(const Dimension& size) :
 	texture{ nullptr },
-	rect{ 0, 0, dim.w, dim.h }{
+	rect{ 0, 0, size.x, size.y }{
 
-	texture = SDL_CreateTexture(SDLEngine::Instance().GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, dim.w, dim.h);
+	texture = SDL_CreateTexture(SDLEngine::Instance().GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, rect.w, rect.h);
 
 	if (texture == nullptr)
 		throw SDLException("SDL_CreateTexture");
-}
-
-SDLSprite::SDLSprite(const SDLSprite& src, const Rect& dim) :
-	SDLSprite{ dim }{
-	Add(src, dim);
-}
-
-SDLSprite::SDLSprite(const SDLSprite& src) :
-	SDLSprite{ src, ToRect(src.GetRect()) }{
 }
 
 SDLSprite::SDLSprite(SDLSprite&& other) noexcept:
@@ -90,12 +79,13 @@ SDLSprite::~SDLSprite(){
 		SDL_DestroyTexture(texture);	//FUCK YOU TOO
 }
 
-void SDLSprite::Add(const SDLSprite& SDLSprite, const Rect& dim){
-	TextureOnTexture(SDLSprite.texture, ToSDLRect(dim), texture, rect);
+void SDLSprite::Add(const SDLSprite& sprite, const Point& src, const Point& dest){
+	TextureOnTexture(sprite.texture, SDL_Rect{src.x, src.y, sprite.GetWidth(), sprite.GetHeight()}, texture, SDL_Rect{dest.x, dest.y, sprite.GetWidth(), sprite.GetHeight()});
 }
 
 void SDLSprite::Add(const SDLSprite& SDLSprite){
-	Add(SDLSprite, ToRect(SDLSprite.GetRect()));
+	const Point zero{0, 0};
+	Add(SDLSprite, zero, zero);
 }
 
 void SDLSprite::SetAsRenderTarget(){
@@ -119,6 +109,14 @@ Uint32 SDLSprite::GetFormat() const{
 
 const SDL_Rect& SDLSprite::GetRect() const{
 	return rect;
+}
+
+int SDLSprite::GetWidth() const{
+	return rect.w;
+}
+
+int SDLSprite::GetHeight() const{
+	return rect.h;
 }
 
 RGBAColor SDLSprite::PixelAt(int x, int y){

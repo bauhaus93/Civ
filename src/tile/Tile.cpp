@@ -19,7 +19,7 @@ void Tile::UpdateTerrainNeighbourMask(uint8_t newMask){
 }
 
 void Tile::CreateSprite(){
-	sprite = make_unique<Sprite>(Rect{0, 0, 64, 32});
+	sprite = make_unique<Sprite>(Dimension{64, 32});
 
 	terrainset.Draw(*sprite, basicSpriteID, resourceID, terrainNeighbourMask);
 }

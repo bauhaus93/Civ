@@ -147,20 +147,20 @@ void Map::LoadOceanTileset(){
 		pos.x += 65;
 	}
 
-	pos.x = 1;
-	pos.y = 378;	//STD POS = 429, DEBUG = 378
-	const Corner corners[] = {Corner::N, Corner::S, Corner::W, Corner::E};
+	pos.x = 67;
+	pos.y = 429;	//STD POS = 429, DEBUG = 378
+
 	for(int i = 0; i < 4; i++){
-		for(uint8_t j = 0; j < 8; j++){
-			tileFactory.AddCoastline("ocean", pos, corners[i], j);
+		for(uint8_t j = 1; j < 8; j++){
+			tileFactory.AddCoastline("ocean", pos, j << (8 * i));
 			pos.x += 66;
 		}
 		if(i < 2){
-			pos.x = 1;
+			pos.x = 67;
 			pos.y += 17;
 		}
 		else
-			pos.x = 34;
+			pos.x = 100;
 	}
 
 

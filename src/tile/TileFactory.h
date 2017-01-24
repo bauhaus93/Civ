@@ -32,7 +32,7 @@ public:
     void    AddBasicSprite(const std::string& tilesetName, const Point& pos);
     void    AddResource(const std::string& tilesetName, const Point& pos);
     void    AddExtendedSprite(const std::string& tilesetName, const Point& pos, uint8_t neighbourMask);
-    void    AddCoastline(const std::string& tilesetName, const Point& pos, Corner corner, uint8_t mask);
+    void    AddCoastline(const std::string& tilesetName, const Point& pos, uint32_t mask);
 
     int     GetTilesetCount() const;
     bool    HasTileset(const std::string& tilesetName) const;

@@ -1,41 +1,42 @@
 #include "AllegroSprite.h"
 
 AllegroSprite::AllegroSprite() :
-	bmp{ nullptr }{
+	bmp{ nullptr },
+	size{ 0, 0, }{
 }
 
-AllegroSprite::AllegroSprite(const AllegroSprite& sprite, const Rect& rect) :
-	AllegroSprite(rect){
+AllegroSprite::AllegroSprite(const AllegroSprite& sprite, const Rect& srcRect) :
+	AllegroSprite(Dimension{srcRect.w, srcRect.h}){
 	al_set_target_bitmap(bmp);
-	al_draw_bitmap_region(sprite.bmp, rect.x, rect.y, rect.w, rect.h, 0, 0, 0);
+	al_draw_bitmap_region(sprite.bmp, srcRect.x, srcRect.y, srcRect.w, srcRect.h, 0, 0, 0);
 	al_set_target_bitmap(al_get_backbuffer(AllegroEngine::Instance().GetDisplay()));
 
 }
 
-AllegroSprite::AllegroSprite(const Rect& rect){
-	bmp = al_create_bitmap(rect.w, rect.h);
+AllegroSprite::AllegroSprite(const Dimension& size_):
+	size { size_ }{
+	bmp = al_create_bitmap(size.x, size.y);
 
 	if (bmp == nullptr)
 		throw AllegroException("al_create_bitmap");
 
 }
 
-AllegroSprite::AllegroSprite(const std::string& filename){
+AllegroSprite::AllegroSprite(const std::string& filename):
+	size{ 0, 0 }{
 	bmp = al_load_bitmap(filename.c_str());
 
 	if (bmp == nullptr)
 		throw AllegroException("al_load_bitmap");
+
+	size.x = al_get_bitmap_width(bmp);
+	size.y = al_get_bitmap_height(bmp);
 }
 
 AllegroSprite::AllegroSprite(AllegroSprite&& other) noexcept:
-	bmp{ other.bmp }{
+	bmp{ other.bmp },
+	size{ other.GetWidth(), other.GetHeight()}{
 	other.bmp = nullptr;
-
-}
-
-AllegroSprite::AllegroSprite(const AllegroSprite & other) :
-	AllegroSprite{ other, Rect{0, 0,  other.GetWidth(), other.GetHeight()} }{
-
 }
 
 //TODO maybe check if caller has already a bmp? (also in SDLSprite)
@@ -90,12 +91,13 @@ int AllegroSprite::GetHeight() const{
 }
 
 void AllegroSprite::Add(const AllegroSprite& add){
-	Add(add, Rect{ 0, 0, add.GetWidth(), add.GetHeight() });
+	const Point zero{0, 0};
+	Add(add, zero, zero);
 }
 
-void AllegroSprite::Add(const AllegroSprite& add, const Rect& rect){
+void AllegroSprite::Add(const AllegroSprite& add, const Point& src, const Point& dest){
 	al_set_target_bitmap(bmp);
-	al_draw_bitmap_region(add.bmp, 0, 0, rect.w, rect.h, rect.x, rect.y, 0);
+	al_draw_bitmap_region(add.bmp, src.x, src.y, add.GetWidth(), add.GetHeight(), dest.x, dest.y, 0);
 	al_set_target_bitmap(al_get_backbuffer(AllegroEngine::Instance().GetDisplay()));
 }
 

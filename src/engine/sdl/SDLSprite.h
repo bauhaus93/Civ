@@ -25,21 +25,20 @@ class SDLSprite{
 
 public:
 					SDLSprite();
-					SDLSprite(const Rect& dim);
-					SDLSprite(const SDLSprite& src, const Rect& dim_);
+					SDLSprite(const Dimension& size);
 					SDLSprite(SDL_Surface* src, const Rect& dim_);
-					SDLSprite(const SDLSprite& s);
 
 					SDLSprite(SDLSprite&& other) noexcept;
 	SDLSprite&		operator=(SDLSprite&& other) noexcept;
-		
+
 					~SDLSprite();
-	void			Add(const SDLSprite& sprite, const Rect& dim);
+	void			Add(const SDLSprite& sprite, const Point& src, const Point& dest);
 	void			Add(const SDLSprite& sprite);
 	void			SetAsRenderTarget();
 	void			Render(int x, int y);
 	Uint32			GetFormat() const;
 	const SDL_Rect&	GetRect() const;
 	RGBAColor		PixelAt(int x, int y);
+	int				GetWidth() const;
+	int				GetHeight() const;
 };
-

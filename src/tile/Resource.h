@@ -11,11 +11,9 @@ public:
 	Resource(){};
 	Resource(Sprite&& sprite_) noexcept;
 	Resource(Resource&& other) noexcept;
-	Resource(const Resource& other);
 
-	~Resource();
+	~Resource() = default;
 	const Sprite& GetSprite() const;
 
 	Resource& operator=(Resource&& other) noexcept;
 };
-
