@@ -10,14 +10,27 @@ WorldGenerator::WorldGenerator(const TileFactory& tileFactory_, uint32_t seed):
 	tileFactory{ tileFactory_ },
 	rng{ seed },
 	landmassNoise{ static_cast<uint32_t>(rng()) },
+	elevationNoise{ static_cast<uint32_t>(rng()) },
 	temperatureNoise{ static_cast<uint32_t>(rng()) },
 	moistureNoise{ static_cast<uint32_t>(rng()) },
-	elevationNoise{ static_cast<uint32_t>(rng()) }{
+	elevationMod{ 1.0 },
+	temperatureMod{ 1.0 },
+	moistureMod{ 1.0 }{
+	Logger::Write("Landmass generation seed: " + to_string(seed));
 }
 
 void WorldGenerator::Generate(Grid& grid){
+	Generate(grid, 1.0, 1.0, 1.0);
+}
+
+void WorldGenerator::Generate(Grid& grid, double elevationMod_, double temperatureMod_, double moistureMod_){
 	auto start = common::Time();
 	Logger::Write("Generating world");
+
+	elevationMod = elevationMod_;
+	temperatureMod = temperatureMod_;
+	moistureMod = moistureMod_;
+
 
 	GridTraversal g{ grid };
 
@@ -47,16 +60,13 @@ void WorldGenerator::CalculateNode(Node& node){
 	double temperature = (1 + temperatureNoise.GetOctavedNoise(x, y, 4, 2.0, 0.01)) / 2;
 	double moisture = (1 + moistureNoise.GetOctavedNoise(x, y, 4, 2.0, 0.01)) / 2;
 
-	elevation *= 1;
-	temperature *= 1;
-	moisture *= 1;
+	elevation *= elevationMod;
+	temperature *= temperatureMod;
+	moisture *= moistureMod;
 
-	if(!isLand){
+	if(!isLand)
 		node.SetTile(tileFactory.CreateTile("ocean"));
-		return;
-	}
-
-	if(IsMountain(elevation, temperature, moisture))
+	else if(IsMountain(elevation, temperature, moisture))
 		node.SetTile(tileFactory.CreateTile("mountains"));
 	else if(IsHills(elevation, temperature, moisture))
 		node.SetTile(tileFactory.CreateTile("hills"));
@@ -77,58 +87,4 @@ void WorldGenerator::CalculateNode(Node& node){
 	else
 		node.SetTile(tileFactory.CreateTile("grasslands"));
 
-}
-
-bool WorldGenerator::IsMountain(double elevation, double temperature, double moisture){
-	if(elevation > 0.8 && elevation > 0.5 * temperature && elevation > 0.5 * moisture)
-		return true;
-	return false;
-}
-
-bool WorldGenerator::IsHills(double elevation, double temperature, double moisture){
-	if(elevation > 0.7 && elevation > 0.75 * moisture)
-		return true;
-	return false;
-}
-
-bool WorldGenerator::IsDesert(double elevation, double temperature, double moisture){
-	if(temperature > 0.75 && moisture < 0.4)
-		return true;
-	return false;
-}
-
-bool WorldGenerator::IsPrairie(double elevation, double temperature, double moisture){
-	if(temperature > 0.4 && moisture < 0.33)
-		return true;
-	return false;
-}
-
-bool WorldGenerator::IsJungle(double elevation, double temperature, double moisture){
-	if(temperature > 0.75 && moisture > 0.5)
-		return true;
-	return false;
-}
-
-bool WorldGenerator::IsSwamp(double elevation, double temperature, double moisture){
-	if(temperature > 0.3 && temperature < 0.6 && moisture > 0.7 && elevation < 0.4)
-		return true;
-	return false;
-}
-
-bool WorldGenerator::IsForest(double elevation, double temperature, double moisture){
-	if(temperature > 0.25 && temperature < 0.5 && moisture > 0.4 && elevation > 0.4)
-		return true;
-	return false;
-}
-
-bool WorldGenerator::IsArctic(double elevation, double temperature, double moisture){
-	if(temperature < 0.15)
-		return true;
-	return false;
-}
-
-bool WorldGenerator::IsTundra(double elevation, double temperature, double moisture){
-	if(temperature < 0.20 && moisture > 0.25)
-		return true;
-	return false;
 }
