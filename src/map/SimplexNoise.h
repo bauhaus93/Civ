@@ -23,7 +23,7 @@ class SimplexNoise{
 
 public:
                 SimplexNoise();
-                SimplexNoise(uint32_t seed_);
+    explicit    SimplexNoise(uint32_t seed_);
                 ~SimplexNoise();
 
     uint32_t    GetSeed() const;

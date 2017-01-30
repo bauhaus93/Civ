@@ -29,7 +29,7 @@ class Map{
 	void 		LoadOceanTileset();
 
 public:
-				Map(const Rect& drawField_);
+	explicit	Map(const Rect& drawField_);
 				~Map();
 
 	void		Clicked(int screenX, int screenY);

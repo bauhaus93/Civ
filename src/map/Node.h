@@ -16,6 +16,8 @@
 
 
 
+
+
 class Node{
 
 	std::unique_ptr<Tile> tile;
@@ -30,7 +32,7 @@ class Node{
 
 public:
 					Node(int x_, int y_);
-					~Node();
+					~Node() = default;
 
 	inline void		SetTile(std::unique_ptr<Tile> tile_);
 	inline Tile&	GetTile(){ return *tile; }
@@ -39,6 +41,9 @@ public:
 	int				GetX() const{ return x; };
 	int				GetY() const{ return y; }
 	bool			IsOdd() const{ return GetY() % 2 == 1; }
+	void 			UpdateTile();
+	uint8_t			GetNeighbourMask();
+	void			UpdateDither();
 
 	inline void		LinkWithNortheast(Node* ne);
 	inline void		LinkWithNorthwest(Node* nw);
@@ -61,8 +66,6 @@ public:
 	inline Node*	GetEast();
 
 };
-
-uint8_t CreateNeighbourMask(Node* node);
 
 void Node::SetTile(std::unique_ptr<Tile> tile_){
 	tile = move(tile_);

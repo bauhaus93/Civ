@@ -16,7 +16,7 @@ class FPSHandler{
 	double						delay;
 
 public:
-								FPSHandler(uint32_t desiredFPS_);
+	explicit					FPSHandler(uint32_t desiredFPS_);
 								~FPSHandler();
 	void						Align(uint32_t ticks);
 	void						Delay();

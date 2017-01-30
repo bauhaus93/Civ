@@ -6,20 +6,17 @@ ExtendedTerrainset::ExtendedTerrainset(const string& name_, uint8_t resourceChan
     BasicTerrainset(name_, resourceChance_){
 }
 
-void ExtendedTerrainset::AddExtendedSprite(Sprite&& sprite, uint8_t neighbourMask){
-    auto result = extension.emplace(neighbourMask, move(sprite));
+void ExtendedTerrainset::AddExtendedSprite(const Sprite& sprite, uint8_t neighbourMask){
+    auto result = extension.emplace(neighbourMask, sprite);
     if(result.second == false)
         throw CivException("ExtendedTerrainset::AddExtension", "Neighourmask " + to_string((int) neighbourMask) + " already existing!");
 }
 
-void ExtendedTerrainset::Draw(Sprite& sprite, int basicID, int resourceID, uint8_t neighbourMask) const{
-    sprite.Add(basic.at(basicID));
-    sprite.Add(extension.at(neighbourMask & 0xF));
-
-    if(resourceID > -1)
-        sprite.Add(resource.at(resourceID).GetSprite());
+void ExtendedTerrainset::GetSpriteHashes(vector<uint32_t>& spriteHashes, int basicID, int resourceID, uint8_t neighbourMask) const{
+    BasicTerrainset::GetSpriteHashes(spriteHashes, basicID, resourceID, neighbourMask);
+    spriteHashes.push_back(extension.at(neighbourMask & 0xF).get().GetHash());
 }
 
-int ExtendedTerrainset::GetType() const{
-    return BasicTerrainset::GetType() | (int)TilesetType::EXTENDED;
+TilesetType ExtendedTerrainset::GetType() const{
+    return TilesetType::EXTENDED;
 }

@@ -2,19 +2,25 @@
 
 AllegroSprite::AllegroSprite() :
 	bmp{ nullptr },
-	size{ 0, 0, }{
+	size{ 0, 0, },
+	hash{ 0 }{
+}
+
+AllegroSprite::AllegroSprite(const AllegroSprite& sprite):
+	AllegroSprite(sprite, Rect{ 0, 0, size.x, size.y }){
 }
 
 AllegroSprite::AllegroSprite(const AllegroSprite& sprite, const Rect& srcRect) :
-	AllegroSprite(Dimension{srcRect.w, srcRect.h}){
+	AllegroSprite(Dimension{ srcRect.w, srcRect.h }){
 	al_set_target_bitmap(bmp);
 	al_draw_bitmap_region(sprite.bmp, srcRect.x, srcRect.y, srcRect.w, srcRect.h, 0, 0, 0);
 	al_set_target_bitmap(al_get_backbuffer(AllegroEngine::Instance().GetDisplay()));
-
+	CalculateHash();
 }
 
 AllegroSprite::AllegroSprite(const Dimension& size_):
-	size { size_ }{
+	size{ size_ },
+	hash{ 0 }{
 	bmp = al_create_bitmap(size.x, size.y);
 
 	if (bmp == nullptr)
@@ -23,7 +29,7 @@ AllegroSprite::AllegroSprite(const Dimension& size_):
 }
 
 AllegroSprite::AllegroSprite(const std::string& filename):
-	size{ 0, 0 }{
+	AllegroSprite()	{
 	bmp = al_load_bitmap(filename.c_str());
 
 	if (bmp == nullptr)
@@ -31,6 +37,7 @@ AllegroSprite::AllegroSprite(const std::string& filename):
 
 	size.x = al_get_bitmap_width(bmp);
 	size.y = al_get_bitmap_height(bmp);
+	CalculateHash();
 }
 
 AllegroSprite::AllegroSprite(AllegroSprite&& other) noexcept:
@@ -42,6 +49,9 @@ AllegroSprite::AllegroSprite(AllegroSprite&& other) noexcept:
 //TODO maybe check if caller has already a bmp? (also in SDLSprite)
 AllegroSprite& AllegroSprite::operator=(AllegroSprite&& other) noexcept{
 	bmp = other.bmp;
+	hash = other.hash;
+	size.x = other.size.x;
+	size.y = other.size.y;
 	other.bmp = nullptr;
 	return *this;
 }
@@ -99,9 +109,10 @@ void AllegroSprite::Add(const AllegroSprite& add, const Point& src, const Point&
 	al_set_target_bitmap(bmp);
 	al_draw_bitmap_region(add.bmp, src.x, src.y, add.GetWidth(), add.GetHeight(), dest.x, dest.y, 0);
 	al_set_target_bitmap(al_get_backbuffer(AllegroEngine::Instance().GetDisplay()));
+	CalculateHash();
 }
 
-void AllegroSprite::Render(int x, int y){
+void AllegroSprite::Render(int x, int y) const{
 	al_draw_bitmap(bmp, x, y, 0);
 }
 
@@ -113,4 +124,43 @@ RGBAColor AllegroSprite::PixelAt(int x, int y){
 	RGBAColor col;
 	al_unmap_rgba(al_get_pixel(bmp, x, y), &col.r, &col.g, &col.b, &col.a);
 	return col;
+}
+
+/*Important: Don't mix up composite hashes with the sprite hashes
+Sprite hashes are calculated by the pixels of the sprite
+Composite hashes are calculated by the hashes of the sprites of which the composite consists
+So the composite hash of a sprite and the hash of the sprite do not match!*/
+void AllegroSprite::CalculateHash(){
+	int bmpH = al_get_bitmap_height(bmp);
+	int bmpW = al_get_bitmap_width(bmp);
+
+	ALLEGRO_LOCKED_REGION* region = al_lock_bitmap(bmp, ALLEGRO_PIXEL_FORMAT_ARGB_8888, ALLEGRO_LOCK_READWRITE);
+	if (region == nullptr)
+		throw AllegroException("al_lock_bitmap");
+
+	assert(region->pixel_size == 4);
+
+	hash = 0;
+	for(int x = 0; x < bmpW; x++){
+		for(int y = 0; y < bmpH; y++){
+			uint32_t color = (uint32_t)*(((uint8_t*)region->data) + region->pitch*y + 4 * x);
+			hash += color;
+			hash += hash << 10;
+			hash ^= hash >> 6;
+
+		}
+	}
+	al_unlock_bitmap(bmp);
+
+	hash += hash << 3;
+	hash ^= hash >> 11;
+	hash += hash << 15;
+
+	if(hash == 0)	//TODO temporary hack	
+		hash = 1;
+	assert(hash != 0);	//zero is reserved
+}
+
+uint32_t AllegroSprite::GetHash() const{
+	return hash;
 }

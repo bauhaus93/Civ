@@ -1,6 +1,7 @@
-add_sources(	
+add_sources(
 	Color.cpp
 	Common.cpp
 	Point.cpp
 	Rect.cpp
+	Hash.cpp
 )

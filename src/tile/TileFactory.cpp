@@ -2,16 +2,10 @@
 
 using namespace std;
 
-const string TERRAIN1{"terrain1"};
-const string TERRAIN2{"terrain2"};
-const string TERRAIN1PATH{"bmp/TERRAIN1.bmp"};
-const string TERRAIN2PATH{"bmp/TERRAIN2.bmp"};
 
-TileFactory::TileFactory(){
-    spriteFactory.AddSpriteSheet(TERRAIN1PATH, TERRAIN1);
-	spriteFactory.AddSpriteSheet(TERRAIN2PATH, TERRAIN2);
-	spriteFactory.MakeTransparent(RGBColor{ 0x87, 0x87, 0x87 });
-	spriteFactory.MakeTransparent(RGBColor{ 0xFF, 0x00, 0xFF });
+TileFactory::TileFactory():
+    spriteManager{ SpriteManager::Instance() }{
+
 }
 
 int TileFactory::GetTilesetCount() const{
@@ -63,9 +57,11 @@ void TileFactory::AddBasicSprite(const string& tilesetName, const Point& pos){
 
     auto& tileset = *iter->second;
 
-    if(tileset.GetType() & (int)TilesetType::BASIC){
-        auto sprite = spriteFactory.CreateDiamondSprite(TERRAIN1, pos);
-        ((BasicTerrainset&)tileset).AddBasicSprite(move(sprite));
+    if( tileset.GetType() == TilesetType::BASIC ||
+        tileset.GetType() == TilesetType::EXTENDED ||
+        tileset.GetType() == TilesetType::OCEAN){
+        auto& sprite = spriteManager.CreateDiamondFromSpritesheet(TERRAIN1, pos);
+        ((BasicTerrainset&)tileset).AddBasicSprite(sprite);
     }
     else
         throw CivException("TileFactory::AddBasic", "Tileset " + tilesetName + " is no basic terrainset!");
@@ -78,10 +74,12 @@ void TileFactory::AddResource(const string& tilesetName, const Point& pos){
 
     auto& tileset = *iter->second;
 
-    if(tileset.GetType() & (int)TilesetType::BASIC){
-        auto sprite = spriteFactory.CreateDiamondSprite(TERRAIN1, pos);
-        auto resource{move(sprite)};
-        ((BasicTerrainset&)tileset).AddResource(move(resource));
+    if( tileset.GetType() == TilesetType::BASIC ||
+        tileset.GetType() == TilesetType::EXTENDED ||
+        tileset.GetType() == TilesetType::OCEAN){
+        auto& sprite = spriteManager.CreateDiamondFromSpritesheet(TERRAIN1, pos);
+        Resource resource{ sprite };
+        ((BasicTerrainset&)tileset).AddResource(resource);
     }
     else
         throw CivException("TileFactory::AddResource", "Tileset " + tilesetName + " is no basic terrainset!");
@@ -95,9 +93,9 @@ void TileFactory::AddExtendedSprite(const string& tilesetName, const Point& pos,
 
     auto& tileset = *iter->second;
 
-    if(tileset.GetType() & (int)TilesetType::EXTENDED){
-        auto sprite = spriteFactory.CreateDiamondSprite(TERRAIN2, pos);
-        ((ExtendedTerrainset&)tileset).AddExtendedSprite(move(sprite), neighbourMask);
+    if(tileset.GetType() == TilesetType::EXTENDED){
+        auto& sprite = spriteManager.CreateDiamondFromSpritesheet(TERRAIN2, pos);
+        ((ExtendedTerrainset&)tileset).AddExtendedSprite(sprite, neighbourMask);
     }
     else
         throw CivException("TileFactory::AddExtendedSprite", "Tileset " + tilesetName + " is no extended terrainset!");
@@ -110,9 +108,9 @@ void TileFactory::AddCoastline(const string& tilesetName, const Point& pos, uint
 
     auto& tileset = *iter->second;
 
-    if(tileset.GetType() & (int)TilesetType::OCEAN){
-        auto sprite = spriteFactory.CreateSprite(TERRAIN2, Rect{pos, 32, 16});
-        ((OceanTerrainset&)tileset).AddCoastline(move(sprite), mask);
+    if(tileset.GetType() == TilesetType::OCEAN){
+        auto& sprite = spriteManager.CreateFromSpritesheet(TERRAIN1, Rect{ pos, 32, 16});
+        ((OceanTerrainset&)tileset).AddCoastline(sprite, mask);
     }
     else
         throw CivException("TileFactory::AddCoastline", "Tileset " + tilesetName + " is no ocean terrainset!");
@@ -125,7 +123,9 @@ unique_ptr<Tile> TileFactory::CreateTile(const std::string& terrainsetName) cons
         throw CivException("TileFactory::CreateTile", "Tileset " + terrainsetName + " not existing!");
     auto& tileset = *iter->second;
 
-    if(tileset.GetType() & (int)TilesetType::BASIC){
+    if( tileset.GetType() == TilesetType::BASIC ||
+        tileset.GetType() == TilesetType::EXTENDED ||
+        tileset.GetType() == TilesetType::OCEAN){
         return make_unique<Tile>((BasicTerrainset&)tileset);
     }
     else

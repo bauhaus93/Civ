@@ -25,7 +25,7 @@ class SDLSprite{
 
 public:
 					SDLSprite();
-					SDLSprite(const Dimension& size);
+	explicit		SDLSprite(const Dimension& size);
 					SDLSprite(SDL_Surface* src, const Rect& dim_);
 
 					SDLSprite(SDLSprite&& other) noexcept;

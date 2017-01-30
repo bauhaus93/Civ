@@ -15,6 +15,5 @@
 class SDLException : public GameException{
 
 public:
-	SDLException(const std::string& task);
+	explicit SDLException(const std::string& task);
 };
-

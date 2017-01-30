@@ -8,7 +8,7 @@
 #include "tileset/BasicTerrainset.h"
 #include "tileset/ExtendedTerrainset.h"
 #include "tileset/OceanTerrainset.h"
-#include "engine/SpriteFactory.h"
+#include "engine/SpriteManager.h"
 #include "engine/Sprite.h"
 #include "common/Color.h"
 #include "common/Point.h"
@@ -17,7 +17,7 @@
 
 class TileFactory{
 
-    SpriteFactory                                   spriteFactory;
+    SpriteManager& spriteManager;
     std::map<std::string, std::unique_ptr<Tileset>> tilesets;
 
     void AddTileset(const std::string& name, unsigned int resourceChance, TilesetType type);

@@ -11,7 +11,9 @@ AllegroSpriteFactory::~AllegroSpriteFactory(){
 	sprites.clear();
 }
 
-void AllegroSpriteFactory::AddSpriteSheet(const std::string& filename, const std::string& sheetname){
+void AllegroSpriteFactory::AddSpriteSheet(const std::string& sheetname, const std::string& filename){
+	if(sprites.find(sheetname) != sprites.end())
+		throw CivException("AllegroSpriteFactory::AddSpriteSheet", "Sheet \"" + sheetname + "\" already existing!");
 	sprites.emplace(make_pair(sheetname, filename));
 }
 

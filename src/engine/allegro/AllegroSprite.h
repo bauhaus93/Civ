@@ -12,13 +12,17 @@
 class AllegroSprite{
 	ALLEGRO_BITMAP* bmp;
 	Dimension		size;
+	uint32_t		hash;
+
+	void 			CalculateHash();
 
 public:
 					AllegroSprite();
-					AllegroSprite(const Dimension& size_);
+	explicit		AllegroSprite(const Dimension& size_);
+					AllegroSprite(const AllegroSprite& sprite);
 					AllegroSprite(const AllegroSprite& sprite, const Rect& srcRect);
 
-					AllegroSprite(const std::string& filename);
+	explicit		AllegroSprite(const std::string& filename);
 					AllegroSprite(AllegroSprite&& other) noexcept;
 	AllegroSprite&	operator=(AllegroSprite&& other) noexcept;
 					~AllegroSprite();
@@ -28,7 +32,8 @@ public:
 	int				GetHeight() const;
 	void			Add(const AllegroSprite& add);
 	void			Add(const AllegroSprite& add, const Point& src, const Point& dest);
-	void			Render(int x, int y);
+	void			Render(int x, int y) const;
 	void			SetAsRenderTarget();
 	RGBAColor		PixelAt(int x, int y);
+	uint32_t		GetHash() const;
 };

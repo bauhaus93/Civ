@@ -4,26 +4,25 @@
 #include <vector>
 
 #include "tileset/BasicTerrainset.h"
+#include "tileset/TilesetType.h"
 #include "engine/Sprite.h"
+#include "engine/SpriteManager.h"
 
 class Tile{
 
 	const BasicTerrainset& 	terrainset;
 	int						basicSpriteID;
 	int 					resourceID;
-	uint8_t					terrainNeighbourMask;
 
-	std::unique_ptr<Sprite> sprite;
+	const Sprite*			sprite;
 
 public:
 
-							Tile(const BasicTerrainset& tileset_);
+	explicit				Tile(const BasicTerrainset& tileset_);
 							Tile(const Tile& other) = delete;
 							~Tile() = default;
 
-	void					CreateSprite();
-	void					AddSprite(const Sprite& add);
-	void 					UpdateTerrainNeighbourMask(uint8_t newMask);
+	void					UpdateSprite(uint8_t terrainNeighbourMask);
 	const BasicTerrainset&	GetTerrainset(){ return terrainset; }
 
 	void					Render(int x, int y);

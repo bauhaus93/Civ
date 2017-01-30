@@ -5,7 +5,11 @@ using namespace std;
 
 
 Grid::Grid():
-	mouseClickComparator{}{
+	root{ nullptr },
+	view{ nullptr },
+	center{ nullptr },
+	advanceAll{ false },
+	mouseClickComparator{ SpriteManager::Instance().CreateFromSpritesheet(TERRAIN1, Rect{ 66, 447, 64, 32}) }{
 
 }
 
@@ -21,10 +25,6 @@ Grid::~Grid(){
 		delete nodes.back();
 		nodes.pop_back();
 	}
-}
-
-void Grid::SetMouseClickComparator(Sprite mouseClickComparator_){
-	mouseClickComparator = move(mouseClickComparator_);
 }
 
 void Grid::Create(int sizeX, int sizeY){
@@ -145,7 +145,7 @@ void Grid::CenterToClick(int screenX, int screenY, int maxX, int maxY){
 	AlignViewToCenter(maxX, maxY);
 }
 
-Node* Grid::GoRelative(Node* node, int x, int y){
+/*Node* Grid::GoRelative(Node* node, int x, int y){
 
 
 	while (x > 0){
@@ -199,7 +199,7 @@ Node* Grid::GoRelative(Node* node, int x, int y){
 		y++;
 	}
 	return node;
-}
+}*/
 
 Node* Grid::NodeAtScreenPos(int x, int y){
 	auto node = view;
@@ -300,6 +300,9 @@ void Grid::AlignViewToCenter(int screenSizeX, int screenSizeY){
 GridTraversal::GridTraversal(Grid& grid) :
 	curr{ grid.root },
 	rowFirst{ grid.root }{
+
+	if(curr == nullptr)
+		return;
 
 	if (curr->IsOdd())
 		advanced = true;

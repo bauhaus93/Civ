@@ -22,7 +22,7 @@ class SDLSpriteFactory{
 public:
 				SDLSpriteFactory();
 				~SDLSpriteFactory();
-	void		AddSpriteSheet(const std::string& filename, const std::string& sheetname);
+	void		AddSpriteSheet(const std::string& sheetname, const std::string& filename);
 	void		MakeTransparent(const RGBColor& color);
 	SDLSprite	CreateSprite(const std::string& sheetname, const Rect& dim);
 	SDLSprite	CreateDiamondSprite(const std::string& sheetname, const Point& pos);

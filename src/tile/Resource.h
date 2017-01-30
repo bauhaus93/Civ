@@ -6,14 +6,11 @@
 
 class Resource{
 
-	Sprite sprite;
+	const Sprite& sprite;
 public:
-	Resource(){};
-	Resource(Sprite&& sprite_) noexcept;
-	Resource(Resource&& other) noexcept;
+	explicit Resource(const Sprite& sprite_);
+	Resource(const Resource& other);
 
 	~Resource() = default;
 	const Sprite& GetSprite() const;
-
-	Resource& operator=(Resource&& other) noexcept;
 };

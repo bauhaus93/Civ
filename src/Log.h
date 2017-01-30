@@ -24,7 +24,7 @@ class Log{
 	std::ostream& out;
 
 public:
-	Log(std::string& name);
+	explicit Log(std::string& name);
 	Log();
 	~Log();
 

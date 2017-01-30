@@ -8,12 +8,12 @@ BasicTerrainset::BasicTerrainset(const string& name_, uint8_t resourceChance_):
 
 }
 
-void BasicTerrainset::AddBasicSprite(Sprite&& sprite){
-    basic.push_back(move(sprite));
+void BasicTerrainset::AddBasicSprite(const Sprite& sprite){
+    basic.push_back(sprite);
 }
 
-void BasicTerrainset::AddResource(Resource&& res){
-    resource.push_back(move(res));
+void BasicTerrainset::AddResource(Resource res){
+    resource.push_back(res);
 }
 
 int BasicTerrainset::GetRandomBasicID() const{
@@ -25,13 +25,15 @@ int BasicTerrainset::GetRandomResourceID() const{
     return -1;
 }
 
-void BasicTerrainset::Draw(Sprite& sprite, int basicID, int resourceID, uint8_t neighbourMask) const{
-    sprite.Add(basic.at(basicID));
+void BasicTerrainset::GetSpriteHashes(vector<uint32_t>& hashes, int basicID, int resourceID, uint8_t neighbourMask) const{
+    hashes.push_back(basic.at(basicID).get().GetHash());
 
     if(resourceID > -1)
-        sprite.Add(resource.at(resourceID).GetSprite());
+        hashes.push_back(resource.at(resourceID).GetSprite().GetHash());
+    else
+        hashes.push_back(0);
 }
 
-int BasicTerrainset::GetType() const{
-    return (int)TilesetType::BASIC;
+TilesetType BasicTerrainset::GetType() const{
+    return TilesetType::BASIC;
 }

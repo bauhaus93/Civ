@@ -16,7 +16,7 @@ class AllegroSpriteFactory{
 public:
 					AllegroSpriteFactory();
 					~AllegroSpriteFactory();
-	void			AddSpriteSheet(const std::string& filename, const std::string& sheetname);
+	void			AddSpriteSheet(const std::string& sheetname, const std::string& filename);
 	void			MakeTransparent(const RGBColor& color);
 	AllegroSprite	CreateSprite(const std::string& sheetname, const Rect& dim);
 	AllegroSprite	CreateDiamondSprite(const std::string& sheetname, const Point& pos);

@@ -7,15 +7,7 @@ Map::Map(const Rect& drawField_) :
 	tileFactory{},
 	grid{}{
 
-	SpriteFactory spriteFactory;
-
-	spriteFactory.AddSpriteSheet("bmp/TERRAIN1.bmp", "terrain1");
-	grid.SetMouseClickComparator(spriteFactory.CreateDiamondSprite("terrain1", Point{ 66, 447 }));	//TODO move in Grid
-
-
 	LoadTilesets();
-
-
 
 	grid.Create(75, 120);
 	grid.AlignViewToCenter(drawField.w, drawField.h);

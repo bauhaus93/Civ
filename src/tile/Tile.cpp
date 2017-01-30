@@ -7,21 +7,14 @@ Tile::Tile(const BasicTerrainset& terrainset_ ) :
 	terrainset{ terrainset_ },
 	basicSpriteID{ terrainset.GetRandomBasicID() },
 	resourceID{ terrainset.GetRandomResourceID() },
-	terrainNeighbourMask{ 0 }{
+	sprite{ &SpriteManager::Instance().GetDummy() }{
 }
 
-void Tile::AddSprite(const Sprite& add){
-	sprite->Add(add);
-}
+void Tile::UpdateSprite(uint8_t terrainNeighbourMask){
+	vector<uint32_t> spriteHashes;
 
-void Tile::UpdateTerrainNeighbourMask(uint8_t newMask){
-	terrainNeighbourMask = newMask;
-}
-
-void Tile::CreateSprite(){
-	sprite = make_unique<Sprite>(Dimension{64, 32});
-
-	terrainset.Draw(*sprite, basicSpriteID, resourceID, terrainNeighbourMask);
+	terrainset.GetSpriteHashes(spriteHashes, basicSpriteID, resourceID, terrainNeighbourMask);
+	sprite = &SpriteManager::Instance().GetTerrainComposite(spriteHashes, terrainset.GetType());
 }
 
 void Tile::Render(int x, int y){

@@ -8,7 +8,6 @@
 
 class AllegroException: public GameException{
 public:
-	AllegroException(const std::string& task);
+	explicit AllegroException(const std::string& task);
 	~AllegroException();
 };
-

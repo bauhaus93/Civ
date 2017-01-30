@@ -23,12 +23,12 @@ struct Event{
 		Mouse mouse;
 	};
 
-	Event(EventType type_, int flags_);
-	Event(EventType type_);
+				Event(EventType type_, int flags_);
+	explicit 	Event(EventType type_);
 
-	Event(EventType type_, const Point& point_);
-	Event(EventType type_, Key key_);
-	Event(EventType type_, const Mouse& mouse_);
-	~Event();
+				Event(EventType type_, const Point& point_);
+				Event(EventType type_, Key key_);
+				Event(EventType type_, const Mouse& mouse_);
+				~Event();
 
 };

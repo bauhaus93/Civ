@@ -5,6 +5,7 @@
 
 #include "Node.h"
 #include "engine/Sprite.h"
+#include "engine/SpriteManager.h"
 
 class Grid{
 
@@ -20,14 +21,12 @@ private:
 
 	Node* CreateBlock(int sizeX, int sizeY);
 	Node* LinkRows(std::vector<Node*>& top, std::vector<Node*>& bot);
-	Node* GoRelative(Node* node, int x, int y);
+	//Node* GoRelative(Node* node, int x, int y);
 
 public:
-	
+
 	Grid();
 	~Grid();
-
-	void SetMouseClickComparator(Sprite mouseClickComparator_);
 
 	void Create(int sizeX, int sizeY);
 	void Render(const Rect& field);
@@ -49,7 +48,7 @@ protected:
 	bool	advanced;
 
 public:
-	GridTraversal(Grid& grid);
+	explicit GridTraversal(Grid& grid);
 	virtual ~GridTraversal();
 	virtual Node* Next();
 	bool HasNext() const{ return curr != nullptr; }
