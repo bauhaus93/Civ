@@ -32,7 +32,7 @@ SpriteManager::SpriteManager():
     factory.MakeTransparent(RGBColor{ 0x87, 0x87, 0x87 });
     factory.MakeTransparent(RGBColor{ 0xFF, 0x00, 0xFF });
 
-	dummy = move(factory.CreateSprite(TERRAIN1, Rect{0, 0, 1, 1}));
+	dummy = move(factory.CreateSprite(TERRAIN1, Rect{1, 1, 64, 32}));
 
     Logger::Write("Created sprite manager");
 }
@@ -111,28 +111,16 @@ Sprite SpriteManager::CreateOceanTerrainComposite(const vector<uint32_t>& sprite
                                         Point{ 0, 8},
                                         Point{ 32, 8}};
 
-		/*cout << "new ocean composite" << endl;
-		for(auto e : spriteHashes)
-			std::cout << "hash: " << e << std::endl;*/
-
-		/*for(auto pair : storage)
-			cout << pair.first << endl;*/
-
-
     try{
-				//cout << spriteHashes[0] << endl;
         Sprite sprite { storage.at(spriteHashes[0]) };   //basic sprite
 
         for(int i = 0; i < 4; i++){
-					//cout << spriteHashes[2 + i] << endl;
             if(spriteHashes[2 + i] != 0)
                 sprite.Add(storage.at(spriteHashes[2 + i]), Point{0, 0}, coastEdges[i]);    //coastline, if existing
         }
 
-				//cout << spriteHashes[1] << endl;
         if(spriteHashes.at(1) != 0)
             sprite.Add(storage.at(spriteHashes[1]));    //resource sprite, if existing
-				//cout << "done!" << endl;
         return sprite;
     }
     catch(const out_of_range& e){

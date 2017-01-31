@@ -109,7 +109,7 @@ void TileFactory::AddCoastline(const string& tilesetName, const Point& pos, uint
     auto& tileset = *iter->second;
 
     if(tileset.GetType() == TilesetType::OCEAN){
-        auto& sprite = spriteManager.CreateFromSpritesheet(TERRAIN1, Rect{ pos, 32, 16});
+        auto& sprite = spriteManager.CreateFromSpritesheet(TERRAIN2, Rect{ pos, 32, 16});
         ((OceanTerrainset&)tileset).AddCoastline(sprite, mask);
     }
     else

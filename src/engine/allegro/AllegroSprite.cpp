@@ -2,26 +2,27 @@
 
 AllegroSprite::AllegroSprite() :
 	bmp{ nullptr },
-	size{ 0, 0, },
+	size{ 0, 0 },
 	hash{ 0 }{
 }
 
 AllegroSprite::AllegroSprite(const AllegroSprite& sprite):
-	AllegroSprite(sprite, Rect{ 0, 0, size.x, size.y }){
+	AllegroSprite(sprite, Rect{ 0, 0, sprite.GetWidth(), sprite.GetHeight() }){
 }
 
+//Important: Rect gives starting point + width/height of rectangle!
 AllegroSprite::AllegroSprite(const AllegroSprite& sprite, const Rect& srcRect) :
 	AllegroSprite(Dimension{ srcRect.w, srcRect.h }){
 	al_set_target_bitmap(bmp);
-	al_draw_bitmap_region(sprite.bmp, srcRect.x, srcRect.y, srcRect.w, srcRect.h, 0, 0, 0);
+	al_draw_bitmap_region(sprite.bmp, srcRect.x, srcRect.y, srcRect.x + srcRect.w, srcRect.y + srcRect.h, 0, 0, 0);
 	al_set_target_bitmap(al_get_backbuffer(AllegroEngine::Instance().GetDisplay()));
 	CalculateHash();
 }
 
 AllegroSprite::AllegroSprite(const Dimension& size_):
+	bmp { al_create_bitmap(size_.x, size_.y) },
 	size{ size_ },
 	hash{ 0 }{
-	bmp = al_create_bitmap(size.x, size.y);
 
 	if (bmp == nullptr)
 		throw AllegroException("al_create_bitmap");
@@ -51,8 +52,8 @@ AllegroSprite::AllegroSprite(AllegroSprite&& other) noexcept:
 AllegroSprite& AllegroSprite::operator=(AllegroSprite&& other) noexcept{
 	bmp = other.bmp;
 	hash = other.hash;
-	size.x = other.size.x;
-	size.y = other.size.y;
+	size.x = other.GetWidth();
+	size.y = other.GetHeight();
 	other.bmp = nullptr;
 	return *this;
 }
@@ -135,6 +136,7 @@ void AllegroSprite::CalculateHash(){
 	int bmpH = al_get_bitmap_height(bmp);
 	int bmpW = al_get_bitmap_width(bmp);
 
+
 	ALLEGRO_LOCKED_REGION* region = al_lock_bitmap(bmp, ALLEGRO_PIXEL_FORMAT_ARGB_8888, ALLEGRO_LOCK_READWRITE);
 	if (region == nullptr)
 		throw AllegroException("al_lock_bitmap");
@@ -157,8 +159,6 @@ void AllegroSprite::CalculateHash(){
 	hash ^= hash >> 11;
 	hash += hash << 15;
 
-	if(hash == 0)	//TODO temporary hack
-		hash = 1;
 	assert(hash != 0);	//zero is reserved
 }
 
