@@ -16,7 +16,7 @@ class BasicTerrainset: public Tileset{
     uint8_t                 resourceChance;
 
 protected:
-    std::vector<std::shared_ptr<Sprite>>	basic;
+    std::vector<std::shared_ptr<const Sprite>>	basic;
 	std::vector<Resource>	resource;
 
 public:

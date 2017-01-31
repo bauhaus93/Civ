@@ -2,6 +2,38 @@
 
 using namespace std;
 
+uint8_t GetNorthernCoastline(uint8_t neighbourMask){
+    uint8_t mask = 0;
+    mask |= (neighbourMask & static_cast<uint8_t>(Neighbour::N)) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(2);
+    mask |= (neighbourMask & static_cast<uint8_t>(Neighbour::NW)) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(1);
+    mask |= (neighbourMask & static_cast<uint8_t>(Neighbour::NE)) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(4);
+    return mask;
+}
+
+uint8_t GetSouthernCoastline(uint8_t neighbourMask){
+    uint8_t mask = 0;
+    mask |= (neighbourMask & static_cast<uint8_t>(Neighbour::S)) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(2);
+    mask |= (neighbourMask & static_cast<uint8_t>(Neighbour::SW)) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(4);
+    mask |= (neighbourMask & static_cast<uint8_t>(Neighbour::SE)) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(1);
+    return mask;
+}
+
+uint8_t GetWesternCoastline(uint8_t neighbourMask){
+    uint8_t mask = 0;
+    mask |= (neighbourMask & static_cast<uint8_t>(Neighbour::W)) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(2);
+    mask |= (neighbourMask & static_cast<uint8_t>(Neighbour::NW)) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(4);
+    mask |= (neighbourMask & static_cast<uint8_t>(Neighbour::SW)) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(1);
+    return mask;
+}
+
+uint8_t GetEasternCoastline(uint8_t neighbourMask){
+    uint8_t mask = 0;
+    mask |= (neighbourMask & static_cast<uint8_t>(Neighbour::E)) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(2);
+    mask |= (neighbourMask & static_cast<uint8_t>(Neighbour::NE)) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(1);
+    mask |= (neighbourMask & static_cast<uint8_t>(Neighbour::SE)) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(4);
+    return mask;
+}
+
 OceanTerrainset::OceanTerrainset(const string& name_, uint8_t resourceChance_):
     BasicTerrainset(name_, resourceChance_){
 
@@ -18,11 +50,12 @@ void OceanTerrainset::AddCoastline(shared_ptr<Sprite> sprite, uint32_t mask){
 void OceanTerrainset::GetSpriteHashes(vector<uint32_t>& spriteHashes, int basicID, int resourceID, uint8_t neighbourMask) const{
     BasicTerrainset::GetSpriteHashes(spriteHashes, basicID, resourceID, neighbourMask);
 
+
     //N, S, W, E coastlines
-    uint8_t mask[] = { ((neighbourMask & static_cast<uint8_t>(Neighbour::N)) ? 0 : 2) | ((neighbourMask & static_cast<uint8_t>(Neighbour::NW)) ? 0 : 1) | ((neighbourMask & static_cast<uint8_t>(Neighbour::NE)) ? 0 : 4),
-                        ((neighbourMask & static_cast<uint8_t>(Neighbour::S)) ? 0 : 2) | ((neighbourMask & static_cast<uint8_t>(Neighbour::SW)) ? 0 : 4) | ((neighbourMask & static_cast<uint8_t>(Neighbour::SE)) ? 0 : 1),
-                        ((neighbourMask & static_cast<uint8_t>(Neighbour::W)) ? 0 : 2) | ((neighbourMask & static_cast<uint8_t>(Neighbour::NW)) ? 0 : 4) | ((neighbourMask & static_cast<uint8_t>(Neighbour::SW)) ? 0 : 1),
-                        ((neighbourMask & static_cast<uint8_t>(Neighbour::E)) ? 0 : 2) | ((neighbourMask & static_cast<uint8_t>(Neighbour::NE)) ? 0 : 1) | ((neighbourMask & static_cast<uint8_t>(Neighbour::SE)) ? 0 : 4)};
+    uint8_t mask[] = {  GetNorthernCoastline(neighbourMask),
+                        GetSouthernCoastline(neighbourMask),
+                        GetWesternCoastline(neighbourMask),
+                        GetEasternCoastline(neighbourMask)};
 
     for(int i = 0; i < 4; i++){
         if(mask[i] != 0)

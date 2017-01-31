@@ -13,7 +13,7 @@
 
 
 class ExtendedTerrainset: public BasicTerrainset{
-    std::map<uint8_t, std::shared_ptr<Sprite>>	extension;
+    std::map<uint8_t, std::shared_ptr<const Sprite>>	extension;
 
 public:
                 ExtendedTerrainset(const std::string& name_, uint8_t resourceChance_);

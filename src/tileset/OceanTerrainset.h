@@ -13,7 +13,7 @@
 //TODO mabye refactor to be an extended terrainset, which overrides Draw (less work in TileFactory)
 
 class OceanTerrainset: public BasicTerrainset{
-    std::map<uint32_t, std::shared_ptr<Sprite>>	coastline;
+    std::map<uint32_t, std::shared_ptr<const Sprite>>	coastline;
 
 public:
                         OceanTerrainset(const std::string& name_, uint8_t resourceChance_);
