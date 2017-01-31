@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <functional>
+#include <memory>
 
 #include "common/Common.h"
 #include "engine/Sprite.h"
@@ -15,14 +16,14 @@ class BasicTerrainset: public Tileset{
     uint8_t                 resourceChance;
 
 protected:
-    std::vector<std::reference_wrapper<const Sprite>>	basic;
+    std::vector<std::shared_ptr<Sprite>>	basic;
 	std::vector<Resource>	resource;
 
 public:
                         BasicTerrainset(const std::string& name_, uint8_t resourceChance_);
     virtual             ~BasicTerrainset() = default;
 
-    void                AddBasicSprite(const Sprite& sprite);
+    void                AddBasicSprite(std::shared_ptr<Sprite> sprite);
     void                AddResource(Resource res);
     int                 GetRandomBasicID() const;
     int                 GetRandomResourceID() const;

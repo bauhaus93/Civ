@@ -17,7 +17,7 @@ private:
 	Node* center;
 	bool advanceAll;
 
-	Sprite mouseClickComparator;
+	std::shared_ptr<Sprite> mouseClickComparator;
 
 	Node* CreateBlock(int sizeX, int sizeY);
 	Node* LinkRows(std::vector<Node*>& top, std::vector<Node*>& bot);

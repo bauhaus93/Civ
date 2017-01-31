@@ -25,13 +25,16 @@ class SpriteManager{
     static SpriteManager*       instance;
 
     SpriteFactory               factory;
-    std::map<uint32_t, Sprite>  storage;
-    Sprite                      dummy;
+    std::map<uint32_t, std::weak_ptr<Sprite>>   storage;
+    std::shared_ptr<Sprite>     dummy;
 
+    std::shared_ptr<Sprite> GetElement(uint32_t hash);
+    std::shared_ptr<Sprite> GetExistingElement(uint32_t hash);
 
-    Sprite CreateBasicTerrainComposite(const std::vector<uint32_t>& spriteHashes);
-    Sprite CreateExtendedTerrainComposite(const std::vector<uint32_t>& spriteHashes);
-    Sprite CreateOceanTerrainComposite(const std::vector<uint32_t>& spriteHashes);
+    std::shared_ptr<Sprite> CreateBasicTerrainComposite(const std::vector<uint32_t>& spriteHashes);
+    std::shared_ptr<Sprite> CreateExtendedTerrainComposite(const std::vector<uint32_t>& spriteHashes);
+    std::shared_ptr<Sprite> CreateOceanTerrainComposite(const std::vector<uint32_t>& spriteHashes);
+
 
     SpriteManager();
     ~SpriteManager();
@@ -44,11 +47,11 @@ public:
 
     //void        LoadSpritesheet(const std::string& sheetname, const std::string& filename);
     //void        AddSpritesheetTransparency(RGBColor color);
-    Sprite&     CreateFromSpritesheet(const std::string& sheetname, const Rect& rect);
-    Sprite&     CreateDiamondFromSpritesheet(const std::string& sheetname, const Point& pos);
+    std::shared_ptr<Sprite>     CreateFromSpritesheet(const std::string& sheetname, const Rect& rect);
+    std::shared_ptr<Sprite>     CreateDiamondFromSpritesheet(const std::string& sheetname, const Point& pos);
 
-    Sprite&     GetTerrainComposite(const std::vector<uint32_t>& spriteHashes, TilesetType type);
-    Sprite&     GetDummy();
+    std::shared_ptr<Sprite>     GetTerrainComposite(const std::vector<uint32_t>& spriteHashes, TilesetType type);
+    std::shared_ptr<Sprite>     GetDummy();
 
 };
 

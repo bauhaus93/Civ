@@ -223,7 +223,7 @@ Node* Grid::NodeAtScreenPos(int x, int y){
 	}
 
 	if (x >= 0 && y>= 0 && x < 64 && y < 32){
-		RGBAColor col = mouseClickComparator.PixelAt(x, y);
+		RGBAColor col = mouseClickComparator->PixelAt(x, y);
 
 		switch (col.r){
 			case 107:

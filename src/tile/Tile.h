@@ -14,7 +14,7 @@ class Tile{
 	int						basicSpriteID;
 	int 					resourceID;
 
-	const Sprite*			sprite;
+	std::shared_ptr<Sprite> sprite;
 
 public:
 

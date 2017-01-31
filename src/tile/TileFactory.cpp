@@ -60,7 +60,7 @@ void TileFactory::AddBasicSprite(const string& tilesetName, const Point& pos){
     if( tileset.GetType() == TilesetType::BASIC ||
         tileset.GetType() == TilesetType::EXTENDED ||
         tileset.GetType() == TilesetType::OCEAN){
-        auto& sprite = spriteManager.CreateDiamondFromSpritesheet(TERRAIN1, pos);
+        auto sprite = spriteManager.CreateDiamondFromSpritesheet(TERRAIN1, pos);
         ((BasicTerrainset&)tileset).AddBasicSprite(sprite);
     }
     else
@@ -77,7 +77,7 @@ void TileFactory::AddResource(const string& tilesetName, const Point& pos){
     if( tileset.GetType() == TilesetType::BASIC ||
         tileset.GetType() == TilesetType::EXTENDED ||
         tileset.GetType() == TilesetType::OCEAN){
-        auto& sprite = spriteManager.CreateDiamondFromSpritesheet(TERRAIN1, pos);
+        auto sprite = spriteManager.CreateDiamondFromSpritesheet(TERRAIN1, pos);
         Resource resource{ sprite };
         ((BasicTerrainset&)tileset).AddResource(resource);
     }
@@ -94,7 +94,7 @@ void TileFactory::AddExtendedSprite(const string& tilesetName, const Point& pos,
     auto& tileset = *iter->second;
 
     if(tileset.GetType() == TilesetType::EXTENDED){
-        auto& sprite = spriteManager.CreateDiamondFromSpritesheet(TERRAIN2, pos);
+        auto sprite = spriteManager.CreateDiamondFromSpritesheet(TERRAIN2, pos);
         ((ExtendedTerrainset&)tileset).AddExtendedSprite(sprite, neighbourMask);
     }
     else
@@ -109,7 +109,7 @@ void TileFactory::AddCoastline(const string& tilesetName, const Point& pos, uint
     auto& tileset = *iter->second;
 
     if(tileset.GetType() == TilesetType::OCEAN){
-        auto& sprite = spriteManager.CreateFromSpritesheet(TERRAIN2, Rect{ pos, 32, 16});
+        auto sprite = spriteManager.CreateFromSpritesheet(TERRAIN2, Rect{ pos, 32, 16});
         ((OceanTerrainset&)tileset).AddCoastline(sprite, mask);
     }
     else

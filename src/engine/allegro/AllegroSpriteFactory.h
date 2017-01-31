@@ -2,6 +2,7 @@
 
 #include <map>
 #include <string>
+#include <memory>
 
 #include <allegro5/allegro.h>
 
@@ -18,6 +19,6 @@ public:
 					~AllegroSpriteFactory();
 	void			AddSpriteSheet(const std::string& sheetname, const std::string& filename);
 	void			MakeTransparent(const RGBColor& color);
-	AllegroSprite	CreateSprite(const std::string& sheetname, const Rect& dim);
-	AllegroSprite	CreateDiamondSprite(const std::string& sheetname, const Point& pos);
+	std::shared_ptr<AllegroSprite>	CreateSprite(const std::string& sheetname, const Rect& dim);
+	std::shared_ptr<AllegroSprite>	CreateDiamondSprite(const std::string& sheetname, const Point& pos);
 };

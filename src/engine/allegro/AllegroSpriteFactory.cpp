@@ -23,18 +23,18 @@ void AllegroSpriteFactory::MakeTransparent(const RGBColor& color){
 	}
 }
 
-AllegroSprite AllegroSpriteFactory::CreateSprite(const std::string& sheetname, const Rect& dim){
+std::shared_ptr<AllegroSprite> AllegroSpriteFactory::CreateSprite(const std::string& sheetname, const Rect& dim){
 	try{
-		return AllegroSprite(sprites.at(sheetname), dim);
+		return std::make_shared<AllegroSprite>(sprites.at(sheetname), dim);
 	}
 	catch (const std::out_of_range& e){
 		throw CivException("AllegroSpriteFactory::CreateSprite", "Map element " + sheetname + " not existing");
 	}
 }
 
-AllegroSprite AllegroSpriteFactory::CreateDiamondSprite(const std::string& sheetname, const Point& pos){
+std::shared_ptr<AllegroSprite> AllegroSpriteFactory::CreateDiamondSprite(const std::string& sheetname, const Point& pos){
 	try{
-		return AllegroSprite(sprites.at(sheetname), Rect{ pos.x, pos.y, 64, 32 });
+		return std::make_shared<AllegroSprite>(sprites.at(sheetname), Rect{ pos.x, pos.y, 64, 32 });
 	}
 	catch (const std::out_of_range& e){
 		throw CivException("AllegroSpriteFactory::CreateSprite", "Map element " + sheetname + " not existing");

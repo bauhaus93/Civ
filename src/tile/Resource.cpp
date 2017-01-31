@@ -3,7 +3,7 @@
 using namespace std;
 
 
-Resource::Resource(const Sprite& sprite_):
+Resource::Resource(shared_ptr<Sprite> sprite_):
 	sprite{ sprite_ }{
 }
 
@@ -11,6 +11,6 @@ Resource::Resource(const Resource& other):
 	sprite{ other.sprite }{
 }
 
-const Sprite& Resource::GetSprite() const{
+std::shared_ptr<Sprite> Resource::GetSprite() const{
 	return sprite;
 }
