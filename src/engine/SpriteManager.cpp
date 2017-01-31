@@ -103,7 +103,7 @@ exist
 shared_ptr<Sprite> SpriteManager::CreateBasicTerrainComposite(const vector<uint32_t>& spriteHashes){
     assert(spriteHashes.size() >= 2);
 
-    auto sprite = make_shared<Sprite>(*GetExistingElement(spriteHashes[0]));	//basic
+    auto sprite = make_shared<Sprite>(*GetExistingElement(spriteHashes[0]), Rect{ 0, 0, 64, 32});	//basic
 
     if(spriteHashes.at(1) != 0)
         sprite->Add(*GetExistingElement(spriteHashes[1]));	//resource, if existing
@@ -118,7 +118,7 @@ shared_ptr<Sprite> SpriteManager::CreateExtendedTerrainComposite(const vector<ui
     assert(spriteHashes.size() >= 3);
 	assert(spriteHashes[2] != 0);	//must have an extension sprite hash
 
-	auto sprite = make_shared<Sprite>(*GetExistingElement(spriteHashes[0]));	//basic
+    auto sprite = make_shared<Sprite>(*GetExistingElement(spriteHashes[0]), Rect{ 0, 0, 64, 32});	//basic
 
     sprite->Add(*GetExistingElement(spriteHashes[2]));							//extension
 
@@ -139,7 +139,7 @@ shared_ptr<Sprite> SpriteManager::CreateOceanTerrainComposite(const vector<uint3
                                         Point{ 0, 8},
                                         Point{ 32, 8}};
 
-	auto sprite = make_shared<Sprite>(*GetExistingElement(spriteHashes[0]));	//basic
+    auto sprite = make_shared<Sprite>(*GetExistingElement(spriteHashes[0]), Rect{ 0, 0, 64, 32});	//basic
 
     for(int i = 0; i < 4; i++){
         if(spriteHashes[2 + i] != 0)

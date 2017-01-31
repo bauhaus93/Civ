@@ -24,6 +24,6 @@ public:
 				~SDLSpriteFactory();
 	void		AddSpriteSheet(const std::string& sheetname, const std::string& filename);
 	void		MakeTransparent(const RGBColor& color);
-	SDLSprite	CreateSprite(const std::string& sheetname, const Rect& dim);
-	SDLSprite	CreateDiamondSprite(const std::string& sheetname, const Point& pos);
+	std::shared_ptr<SDLSprite>	CreateSprite(const std::string& sheetname, const Rect& dim);
+	std::shared_ptr<SDLSprite>	CreateDiamondSprite(const std::string& sheetname, const Point& pos);
 };

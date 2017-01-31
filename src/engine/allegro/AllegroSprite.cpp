@@ -6,10 +6,6 @@ AllegroSprite::AllegroSprite() :
 	hash{ 0 }{
 }
 
-AllegroSprite::AllegroSprite(const AllegroSprite& sprite):
-	AllegroSprite(sprite, Rect{ 0, 0, sprite.GetWidth(), sprite.GetHeight() }){
-}
-
 //Important: Rect gives starting point + width/height of rectangle!
 AllegroSprite::AllegroSprite(const AllegroSprite& sprite, const Rect& srcRect) :
 	AllegroSprite(Dimension{ srcRect.w, srcRect.h }){

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <cassert>
 
 #include <allegro5/allegro.h>
 
@@ -19,7 +20,7 @@ class AllegroSprite{
 public:
 					AllegroSprite();
 	explicit		AllegroSprite(const Dimension& size_);
-					AllegroSprite(const AllegroSprite& sprite);
+					AllegroSprite(const AllegroSprite& sprite) = delete;
 					AllegroSprite(const AllegroSprite& sprite, const Rect& srcRect);
 
 	explicit		AllegroSprite(const std::string& filename);

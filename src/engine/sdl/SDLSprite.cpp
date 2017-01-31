@@ -14,7 +14,8 @@ inline SDL_Rect ToSDLRect(const Rect& rect){
 
 SDLSprite::SDLSprite() :
 	texture{ nullptr },
-	rect{ 0, 0, 0, 0 }{
+	rect{ 0, 0, 0, 0 },
+	hash{ 0 }{
 }
 
 SDLSprite::SDLSprite(SDL_Surface* src, const Rect& dim_) :
@@ -46,11 +47,20 @@ SDLSprite::SDLSprite(SDL_Surface* src, const Rect& dim_) :
 
 	if (SDL_QueryTexture(texture, nullptr, nullptr, &rect.w, &rect.h) == -1)
 		throw SDLException("SDL_QueryTexture");
+	CalculateHash();
+}
+
+SDLSprite::SDLSprite(const SDLSprite& other, const Rect& dim_):
+	SDLSprite(Dimension{ dim_.w, dim_.h }){
+	SDL_Rect dim = ToSDLRect(dim_);
+	TextureOnTexture(other.texture, dim, texture, SDL_Rect{0, 0, rect.w, rect.h});
+	CalculateHash();
 }
 
 SDLSprite::SDLSprite(const Dimension& size) :
 	texture{ nullptr },
-	rect{ 0, 0, size.x, size.y }{
+	rect{ 0, 0, size.x, size.y },
+	hash{ 0 }{
 
 	texture = SDL_CreateTexture(SDLEngine::Instance().GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, rect.w, rect.h);
 
@@ -60,7 +70,8 @@ SDLSprite::SDLSprite(const Dimension& size) :
 
 SDLSprite::SDLSprite(SDLSprite&& other) noexcept:
 	texture{ other.texture },
-	rect{ other.rect.x, other.rect.y, other.rect.w, other.rect.h }{
+	rect{ other.rect.x, other.rect.y, other.rect.w, other.rect.h },
+	hash{ other.hash }{
 	other.texture = nullptr;
 }
 
@@ -70,6 +81,7 @@ SDLSprite& SDLSprite::operator=(SDLSprite&& other) noexcept{
 	rect.y = other.rect.y;
 	rect.w = other.rect.w;
 	rect.h = other.rect.h;
+	hash = other.hash;
 	other.texture = nullptr;	//FUCK YOU
 	return *this;
 }
@@ -81,6 +93,7 @@ SDLSprite::~SDLSprite(){
 
 void SDLSprite::Add(const SDLSprite& sprite, const Point& src, const Point& dest){
 	TextureOnTexture(sprite.texture, SDL_Rect{src.x, src.y, sprite.GetWidth(), sprite.GetHeight()}, texture, SDL_Rect{dest.x, dest.y, sprite.GetWidth(), sprite.GetHeight()});
+	CalculateHash();
 }
 
 void SDLSprite::Add(const SDLSprite& SDLSprite){
@@ -93,10 +106,10 @@ void SDLSprite::SetAsRenderTarget(){
 		throw SDLException("SDL_SetRenderTarget");
 }
 
-void SDLSprite::Render(int x, int y){
-	rect.x = x;
-	rect.y = y;
-	if (SDL_RenderCopy(SDLEngine::Instance().GetRenderer(), texture, nullptr, &rect) == -1)
+void SDLSprite::Render(int x, int y) const{
+	SDL_Rect r{ x, y, rect.w, rect.h};
+
+	if (SDL_RenderCopy(SDLEngine::Instance().GetRenderer(), texture, nullptr, &r) == -1)
 		throw SDLException("SDL_RenderCopy");
 }
 
@@ -132,7 +145,47 @@ RGBAColor SDLSprite::PixelAt(int x, int y){
 	if (SDL_SetRenderTarget(SDLEngine::Instance().GetRenderer(), nullptr) == -1)
 		throw SDLException("SDL_SetRenderTarget");
 
-	return move(RGBAColor{ static_cast<uint8_t>((pixels >> 24) & 0xFF), static_cast<uint8_t>((pixels >> 16) & 0xFF), static_cast<uint8_t>((pixels >> 8) && 0xFF), static_cast<uint8_t>(pixels & 0xFF) });
+	return RGBAColor{ static_cast<uint8_t>((pixels >> 24) & 0xFF), static_cast<uint8_t>((pixels >> 16) & 0xFF), static_cast<uint8_t>((pixels >> 8) && 0xFF), static_cast<uint8_t>(pixels & 0xFF) };
+}
+
+void SDLSprite::CalculateHash(){
+
+	SDL_Rect r{0, 0, 0, 0};
+
+	if (SDL_SetRenderTarget(SDLEngine::Instance().GetRenderer(), texture) == -1)
+		throw SDLException("SDL_SetRenderTarget");
+
+	SDL_RenderGetViewport(SDLEngine::Instance().GetRenderer(), &r);
+	uint32_t* pixels = new uint32_t[r.w * r.h];
+
+	if (SDL_RenderReadPixels(SDLEngine::Instance().GetRenderer(), &r, SDL_PIXELFORMAT_RGBA8888, &pixels, 4*r.w) < 0){
+		delete[] pixels;
+		throw SDLException("SDL_RenderReadPixels");
+	}
+	hash = 0;
+	for(int x = 0; x < rect.w; x++){
+		for(int y = 0; y < rect.h; y++){
+			hash += *pixels;
+			hash += hash << 10;
+			hash ^= hash >> 6;
+			pixels++;
+		}
+	}
+
+	hash += hash << 3;
+	hash ^= hash >> 11;
+	hash += hash << 15;
+
+	delete[] pixels;
+
+	if (SDL_SetRenderTarget(SDLEngine::Instance().GetRenderer(), nullptr) == -1)
+		throw SDLException("SDL_SetRenderTarget");
+
+	assert(hash != 0);	//zero is reserved
+}
+
+uint32_t SDLSprite::GetHash() const{
+	return hash;
 }
 
 static void TextureOnTexture(SDL_Texture *src, const SDL_Rect& srcRect, SDL_Texture *dest, const SDL_Rect& destRect){

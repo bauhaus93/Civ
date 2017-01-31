@@ -66,16 +66,15 @@ void SDLSpriteFactory::MakeTransparent(const RGBColor& color){
 
 }
 
-SDLSprite SDLSpriteFactory::CreateSprite(const string& name, const Rect& dim){
+shared_ptr<SDLSprite> SDLSpriteFactory::CreateSprite(const string& name, const Rect& dim){
 	try{
-		return SDLSprite(baseImgs.at(name), dim);
+		return make_shared<SDLSprite>(baseImgs.at(name), dim);
 	}
 	catch (const out_of_range& e){
 		throw CivException("SDLSpriteFactory::CreateSprite", "Map element " + name + " not existing");
 	}
 }
 
-SDLSprite SDLSpriteFactory::CreateDiamondSprite(const string& name, const Point& pos){
-	const Rect rect = { pos.x, pos.y, 64, 32 };
-	return CreateSprite(name, rect);
+shared_ptr<SDLSprite> SDLSpriteFactory::CreateDiamondSprite(const string& name, const Point& pos){
+	return CreateSprite(name, Rect{ pos.x, pos.y, 64, 32});
 }

@@ -1,8 +1,7 @@
 #pragma once
 
 #include <string>
-#include <iostream>
-
+#include <cassert>
 
 #ifdef _WIN32
 	#include <sdl/SDL.h>
@@ -22,12 +21,17 @@ class SDLSprite{
 
 	SDL_Texture*	texture;
 	SDL_Rect		rect;
+	uint32_t		hash;
+
+	void 			CalculateHash();
 
 public:
 					SDLSprite();
 	explicit		SDLSprite(const Dimension& size);
 					SDLSprite(SDL_Surface* src, const Rect& dim_);
+					SDLSprite(const SDLSprite& other, const Rect& dim_);
 
+					SDLSprite(const SDLSprite& other) = delete;
 					SDLSprite(SDLSprite&& other) noexcept;
 	SDLSprite&		operator=(SDLSprite&& other) noexcept;
 
@@ -35,10 +39,11 @@ public:
 	void			Add(const SDLSprite& sprite, const Point& src, const Point& dest);
 	void			Add(const SDLSprite& sprite);
 	void			SetAsRenderTarget();
-	void			Render(int x, int y);
+	void			Render(int x, int y) const;
 	Uint32			GetFormat() const;
 	const SDL_Rect&	GetRect() const;
 	RGBAColor		PixelAt(int x, int y);
 	int				GetWidth() const;
 	int				GetHeight() const;
+	uint32_t		GetHash() const;
 };

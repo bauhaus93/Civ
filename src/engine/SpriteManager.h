@@ -3,6 +3,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <cassert>
 
 #include "SpriteFactory.h"
 #include "Sprite.h"
