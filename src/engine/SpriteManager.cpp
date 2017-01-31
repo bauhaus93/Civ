@@ -41,6 +41,19 @@ SpriteManager::~SpriteManager(){
     Logger::Write("Destroyed sprite manager");
 }
 
+int SpriteManager::ClearUnneeded(){
+	int c = 0;
+
+	auto iter = storage.begin();
+	while(iter != storage.end()){
+		if(iter->second.expired()){
+			iter = storage.erase(iter);
+			c++;
+		}
+	}
+	return c;
+}
+
 shared_ptr<Sprite> SpriteManager::GetElement(uint32_t hash){
 	auto found = storage.find(hash);
 

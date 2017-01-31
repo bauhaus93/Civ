@@ -41,14 +41,17 @@ class SpriteManager{
 
 public:
 
-    static void             Start();
-    static void             Stop();
-    static SpriteManager&   Instance();
+    static void                 Start();
+    static void                 Stop();
+    static SpriteManager&       Instance();
+
+    int                         ClearUnneeded();
 
     //void        LoadSpritesheet(const std::string& sheetname, const std::string& filename);
     //void        AddSpritesheetTransparency(RGBColor color);
     std::shared_ptr<Sprite>     CreateFromSpritesheet(const std::string& sheetname, const Rect& rect);
     std::shared_ptr<Sprite>     CreateDiamondFromSpritesheet(const std::string& sheetname, const Point& pos);
+
 
     std::shared_ptr<Sprite>     GetTerrainComposite(const std::vector<uint32_t>& spriteHashes, TilesetType type);
     std::shared_ptr<Sprite>     GetDummy();
