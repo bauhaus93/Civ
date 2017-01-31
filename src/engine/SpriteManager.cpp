@@ -100,7 +100,7 @@ Sprite SpriteManager::CreateExtendedTerrainComposite(const vector<uint32_t>& spr
         return sprite;
     }
     catch(const out_of_range& e){
-        throw CivException("SpriteManager::CreateBasicTerrainComposite", string("Sprite hash, which should exist, not existing in storage: ") + e.what());
+        throw CivException("SpriteManager::CreateExtendedTerrainComposite", string("Sprite hash, which should exist, not existing in storage: ") + e.what());
     }
 }
 
@@ -111,21 +111,32 @@ Sprite SpriteManager::CreateOceanTerrainComposite(const vector<uint32_t>& sprite
                                         Point{ 0, 8},
                                         Point{ 32, 8}};
 
+		/*cout << "new ocean composite" << endl;
+		for(auto e : spriteHashes)
+			std::cout << "hash: " << e << std::endl;*/
+
+		/*for(auto pair : storage)
+			cout << pair.first << endl;*/
+
+
     try{
+				//cout << spriteHashes[0] << endl;
         Sprite sprite { storage.at(spriteHashes[0]) };   //basic sprite
 
         for(int i = 0; i < 4; i++){
-            if(spriteHashes[i] != 0)
+					//cout << spriteHashes[2 + i] << endl;
+            if(spriteHashes[2 + i] != 0)
                 sprite.Add(storage.at(spriteHashes[2 + i]), Point{0, 0}, coastEdges[i]);    //coastline, if existing
         }
 
+				//cout << spriteHashes[1] << endl;
         if(spriteHashes.at(1) != 0)
             sprite.Add(storage.at(spriteHashes[1]));    //resource sprite, if existing
-
+				//cout << "done!" << endl;
         return sprite;
     }
     catch(const out_of_range& e){
-        throw CivException("SpriteManager::CreateBasicTerrainComposite", string("Sprite hash, which should exist, not existing in storage: ") + e.what());
+        throw CivException("SpriteManager::CreateOceanTerrainComposite", string("Sprite hash, which should exist, not existing in storage: ") + e.what());
     }
 }
 
@@ -136,6 +147,8 @@ Sprite& SpriteManager::GetTerrainComposite(const std::vector<uint32_t>& spriteHa
 
     if(found != storage.end()) //composite sprite already existing, so return it
         return found->second;
+
+		cout << "storage size: " << storage.size() << endl;
 
     //We use the composite hash for lookup, because it is easier to calculate
     //(we don't have to create the sprite first, to see if the created sprite hash is already existing)

@@ -30,6 +30,7 @@ void OceanTerrainset::GetSpriteHashes(vector<uint32_t>& spriteHashes, int basicI
         else
             spriteHashes.push_back(0);
     }
+
 }
 
 TilesetType OceanTerrainset::GetType() const{

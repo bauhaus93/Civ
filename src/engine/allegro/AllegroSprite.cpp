@@ -42,7 +42,8 @@ AllegroSprite::AllegroSprite(const std::string& filename):
 
 AllegroSprite::AllegroSprite(AllegroSprite&& other) noexcept:
 	bmp{ other.bmp },
-	size{ other.GetWidth(), other.GetHeight()}{
+	size{ other.GetWidth(), other.GetHeight()},
+	hash{ other.hash }{
 	other.bmp = nullptr;
 }
 
@@ -156,7 +157,7 @@ void AllegroSprite::CalculateHash(){
 	hash ^= hash >> 11;
 	hash += hash << 15;
 
-	if(hash == 0)	//TODO temporary hack	
+	if(hash == 0)	//TODO temporary hack
 		hash = 1;
 	assert(hash != 0);	//zero is reserved
 }
