@@ -13,14 +13,14 @@ SDLSpriteFactory::~SDLSpriteFactory(){
 }
 
 void SDLSpriteFactory::AddSpriteSheet(const std::string& sheetname, const std::string& filename){
-	SDL_Surface *tmp = SDL_LoadBMP(filename.c_str());
+	SDL_Surface *tmp = nullptr;
 	SDL_Surface *img = nullptr;
 	SDL_Rect rect{ 0, 0, 0, 0 };
 
 	if(baseImgs.find(sheetname) != baseImgs.end())
 		throw CivException("SDLSpriteFactory::AddSpriteSheet", "Sheet \"" + sheetname + "\" already existing!");
 
-
+ 	tmp = SDL_LoadBMP(filename.c_str());
 	if (tmp == nullptr)
 		throw SDLException("SDL_LoadBMP");
 	rect.w = tmp->w;
@@ -33,12 +33,13 @@ void SDLSpriteFactory::AddSpriteSheet(const std::string& sheetname, const std::s
 		throw SDLException("SDL_CreateRGBSurface");
 	}
 
+
 	if (SDL_BlitSurface(tmp, &rect, img, &rect) == -1){
 		SDL_FreeSurface(img);
 		SDL_FreeSurface(tmp);
 		throw SDLException("SDL_BlitSurface");
 	}
-
+	SDL_FreeSurface(tmp);
 	baseImgs.emplace(sheetname, img);
 }
 

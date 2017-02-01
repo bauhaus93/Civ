@@ -3,10 +3,11 @@
 using namespace std;
 
 Game::Game() :
-	map{ Rect{0, 0, Engine::Instance().GetScreenX(), Engine::Instance().GetScreenY() } },
+	map{ make_unique<Map>(Rect{0, 0, Engine::Instance().GetScreenX(), Engine::Instance().GetScreenY() }) },
 	fps{ 30 },
 	ticks{ 0 },
-	fpsCheckInterval{ 20 }{
+	fpsCheckInterval{ 20 },
+	lastRenderTime{ 0 }{
 }
 
 Game::~Game(){
@@ -55,8 +56,16 @@ void Game::HandleEvents(){
 				throw CivException("Tick", "Quit was invoked");
 				break;
 			case EventType::KEY_PRESSED:
-				if (e.key == Key::Q)
+				switch(e.key){
+				case Key::Q:
 					throw CivException("Tick", "Q pressed");
+				case Key::G:
+					map = make_unique<Map>(Rect{0, 0, Engine::Instance().GetScreenX(), Engine::Instance().GetScreenY() });
+					break;
+				default:
+					Logger::Write("Unhandled Key pressed");
+					break;
+				}
 				break;
 			case EventType::MOUSE_PRESSED:
 				HandleMouseEvent(e);
@@ -71,7 +80,7 @@ void Game::HandleEvents(){
 
 void Game::HandleMouseEvent(Event& e){
 	if (e.mouse.button == MouseButton::LEFT)
-		map.Clicked(e.mouse.pos.x, e.mouse.pos.y);
+		map->Clicked(e.mouse.pos.x, e.mouse.pos.y);
 }
 
 void Game::Render(){
@@ -79,7 +88,7 @@ void Game::Render(){
 
 	Engine::Instance().SetColor(RGBAColor{ 0, 0, 0, 0xFF });
 	Engine::Instance().ClearScene();
-	map.Render();
+	map->Render();
 	Engine::Instance().ShowScene();
 
 	lastRenderTime = common::TimeDiff(start);

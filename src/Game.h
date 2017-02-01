@@ -14,11 +14,11 @@
 
 class Game{
 
-	Map				map;
-	FPSHandler		fps;
-	uint64_t		ticks;
-	unsigned int	fpsCheckInterval;
-	unsigned int	lastRenderTime;
+	std::unique_ptr<Map>	map;
+	FPSHandler				fps;
+	uint64_t				ticks;
+	unsigned int			fpsCheckInterval;
+	unsigned int			lastRenderTime;
 
 	void		Tick();
 	void 		HandleFPS();
