@@ -11,6 +11,6 @@ Resource::Resource(const Resource& other):
 	sprite{ other.sprite }{
 }
 
-std::shared_ptr<Sprite> Resource::GetSprite() const{
+std::shared_ptr<const Sprite> Resource::GetSprite() const{
 	return sprite;
 }

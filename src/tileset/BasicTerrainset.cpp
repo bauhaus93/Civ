@@ -19,10 +19,23 @@ void BasicTerrainset::AddResource(Resource res){
 int BasicTerrainset::GetRandomBasicID() const{
     return common::Random(basic.size());
 }
+
 int BasicTerrainset::GetRandomResourceID() const{
     if(common::Random() < resourceChance)
         return common::Random(resource.size());
     return -1;
+}
+
+int BasicTerrainset::GetResourceChance() const{
+    return resourceChance;
+}
+
+int BasicTerrainset::GetBasicSpriteCount() const{
+    return basic.size();
+}
+
+int BasicTerrainset::GetResourceCount() const{
+    return resource.size();
 }
 
 void BasicTerrainset::GetSpriteHashes(vector<uint32_t>& hashes, int basicID, int resourceID, uint8_t neighbourMask) const{

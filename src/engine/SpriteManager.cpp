@@ -79,15 +79,12 @@ shared_ptr<Sprite> SpriteManager::GetExistingElement(uint32_t hash){
 
 shared_ptr<Sprite> SpriteManager::CreateFromSpritesheet(const string& sheetname, const Rect& rect){
     auto sprite = factory.CreateSprite(sheetname, rect);
+	sprite->CalculateHash();			//sprite hashes only calculate for direct spritesheet descendents, not composite ones
     uint32_t hash = sprite->GetHash();
 
     auto result = storage.emplace(hash, sprite);
 
-    //if basic spritesheet sprites collide, hash functions should definitly be changed
-	//EDIT: actually not, because eg extended terrain sets all want to add same basic floor
-    //assert(result.second == true);
-
-    return result.first->second.lock();
+    return shared_ptr<Sprite>(result.first->second);
 }
 
 shared_ptr<Sprite> SpriteManager::CreateDiamondFromSpritesheet(const std::string& sheetname, const Point& pos){
@@ -159,8 +156,6 @@ shared_ptr<Sprite> SpriteManager::GetTerrainComposite(const std::vector<uint32_t
 	if(sprite != nullptr)
 		return sprite;
 
-	cout << "storage size: " << storage.size() << endl;
-
     //We use the composite hash for lookup, because it is easier to calculate
     //(we don't have to create the sprite first, to see if the created sprite hash is already existing)
     switch(type){
@@ -183,4 +178,8 @@ shared_ptr<Sprite> SpriteManager::GetTerrainComposite(const std::vector<uint32_t
 
 shared_ptr<Sprite> SpriteManager::GetDummy(){
 	return dummy;
+}
+
+int SpriteManager::GetStorageSize() const{
+	return storage.size();
 }

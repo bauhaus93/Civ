@@ -15,7 +15,6 @@ class AllegroSprite{
 	Dimension		size;
 	uint32_t		hash;
 
-	void 			CalculateHash();
 
 public:
 					AllegroSprite();
@@ -36,5 +35,7 @@ public:
 	void			Render(int x, int y) const;
 	void			SetAsRenderTarget();
 	RGBAColor		PixelAt(int x, int y);
+	
+	void 			CalculateHash();
 	uint32_t		GetHash() const;
 };

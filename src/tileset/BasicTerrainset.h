@@ -27,6 +27,9 @@ public:
     void                AddResource(Resource res);
     int                 GetRandomBasicID() const;
     int                 GetRandomResourceID() const;
+    int                 GetBasicSpriteCount() const;
+    int                 GetResourceCount() const;
+    int                 GetResourceChance() const;
 
     virtual void        GetSpriteHashes(std::vector<uint32_t>& hashes, int basicID, int resourceID, uint8_t neighbourMask) const;
     virtual TilesetType GetType() const override;

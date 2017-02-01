@@ -6,11 +6,11 @@
 
 class Resource{
 
-	std::shared_ptr<Sprite> sprite;
+	std::shared_ptr<const Sprite> sprite;
 public:
 	explicit Resource(std::shared_ptr<Sprite> sprite_);
 	Resource(const Resource& other);
 
 	~Resource() = default;
-	std::shared_ptr<Sprite> GetSprite() const;
+	std::shared_ptr<const Sprite> GetSprite() const;
 };

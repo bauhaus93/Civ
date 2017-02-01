@@ -12,7 +12,6 @@ AllegroSprite::AllegroSprite(const AllegroSprite& sprite, const Rect& srcRect) :
 	al_set_target_bitmap(bmp);
 	al_draw_bitmap_region(sprite.bmp, srcRect.x, srcRect.y, srcRect.x + srcRect.w, srcRect.y + srcRect.h, 0, 0, 0);
 	al_set_target_bitmap(al_get_backbuffer(AllegroEngine::Instance().GetDisplay()));
-	CalculateHash();
 }
 
 AllegroSprite::AllegroSprite(const Dimension& size_):
@@ -34,7 +33,6 @@ AllegroSprite::AllegroSprite(const std::string& filename):
 
 	size.x = al_get_bitmap_width(bmp);
 	size.y = al_get_bitmap_height(bmp);
-	CalculateHash();
 }
 
 AllegroSprite::AllegroSprite(AllegroSprite&& other) noexcept:

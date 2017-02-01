@@ -40,7 +40,6 @@ OceanTerrainset::OceanTerrainset(const string& name_, uint8_t resourceChance_):
 }
 
 void OceanTerrainset::AddCoastline(shared_ptr<Sprite> sprite, uint32_t mask){
-
     auto result = coastline.emplace(mask, sprite).second;
 
     if(result == false)

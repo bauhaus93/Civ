@@ -23,6 +23,8 @@ public:
 							~Tile() = default;
 
 	void					UpdateSprite(uint8_t terrainNeighbourMask);
+	void 					RandomizeBaseSprite(std::mt19937& rng);
+	void 					RandomizeResource(std::mt19937& rng);
 	const BasicTerrainset&	GetTerrainset(){ return terrainset; }
 
 	void					Render(int x, int y);
