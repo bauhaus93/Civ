@@ -16,7 +16,7 @@ WorldGenerator::WorldGenerator(const TileFactory& tileFactory_, uint32_t seed):
 	elevationMod{ 1.0 },
 	temperatureMod{ 1.0 },
 	moistureMod{ 1.0 }{
-	Logger::Write("Landmass generation seed: " + to_string(seed));
+	Logger::Write("World generation seed: " + to_string(seed));
 }
 
 void WorldGenerator::Generate(Grid& grid){
@@ -37,7 +37,7 @@ void WorldGenerator::Generate(Grid& grid, double elevationMod_, double temperatu
 	while (g.HasNext()){
 		CalculateNode(*g.Next());
 	}
-	Logger::Write("First Traversal in " + to_string(common::TimeDiff(start)) + "ms");
+	//Logger::Write("First Traversal in " + to_string(common::TimeDiff(start)) + "ms");
 
 	GridTraversal g2{ grid };
 
