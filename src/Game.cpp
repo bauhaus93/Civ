@@ -39,7 +39,7 @@ void Game::HandleFPS(){
 	if (ticks % fpsCheckInterval == 0){
 		fps.Align(fpsCheckInterval);
 		stringstream s;
-		s << "fps: " << fps.GetFPS() << " | render time: " << lastRenderTime << " ms | delay: " << fps.GetDelay() << " ms";
+		s << "fps: " << fps.GetFPS() << " | ticks: " << ticks << " | render time: " << lastRenderTime << " ms | delay: " << fps.GetDelay() << " ms";
 		Engine::Instance().SetWindowTitle(s.str());
 	}
 	fps.Delay();
@@ -61,6 +61,7 @@ void Game::HandleEvents(){
 					throw CivException("Tick", "Q pressed");
 				case Key::G:
 					map = make_unique<Map>(Rect{0, 0, Engine::Instance().GetScreenX(), Engine::Instance().GetScreenY() });
+					Logger::Write("Removed " + to_string(SpriteManager::Instance().ClearUnneeded()) + " unreferenced sprites");
 					break;
 				default:
 					Logger::Write("Unhandled Key pressed");

@@ -50,6 +50,8 @@ int SpriteManager::ClearUnneeded(){
 			iter = storage.erase(iter);
 			c++;
 		}
+		else
+			++iter;
 	}
 	return c;
 }
