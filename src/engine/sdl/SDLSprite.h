@@ -23,7 +23,7 @@ class SDLSprite{
 	SDL_Rect		rect;
 	uint32_t		hash;
 
-	void 			CalculateHash();
+
 
 public:
 					SDLSprite();
@@ -45,5 +45,7 @@ public:
 	RGBAColor		PixelAt(int x, int y);
 	int				GetWidth() const;
 	int				GetHeight() const;
+
+	void 			CalculateHash();
 	uint32_t		GetHash() const;
 };

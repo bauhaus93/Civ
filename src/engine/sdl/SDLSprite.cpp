@@ -145,30 +145,36 @@ RGBAColor SDLSprite::PixelAt(int x, int y){
 	if (SDL_SetRenderTarget(SDLEngine::Instance().GetRenderer(), nullptr) == -1)
 		throw SDLException("SDL_SetRenderTarget");
 
-	return RGBAColor{ static_cast<uint8_t>((pixels >> 24) & 0xFF), static_cast<uint8_t>((pixels >> 16) & 0xFF), static_cast<uint8_t>((pixels >> 8) && 0xFF), static_cast<uint8_t>(pixels & 0xFF) };
+	return RGBAColor{	static_cast<uint8_t>((pixels >> 24)),
+						static_cast<uint8_t>((pixels >> 16)),
+						static_cast<uint8_t>((pixels >> 8)),
+						static_cast<uint8_t>(pixels) };	//removed all & 0xFF bc pixels are cast to uint8_t
 }
 
 void SDLSprite::CalculateHash(){
 
-	SDL_Rect r{0, 0, 0, 0};
-
 	if (SDL_SetRenderTarget(SDLEngine::Instance().GetRenderer(), texture) == -1)
 		throw SDLException("SDL_SetRenderTarget");
 
-	SDL_RenderGetViewport(SDLEngine::Instance().GetRenderer(), &r);
-	uint32_t* pixels = new uint32_t[r.w * r.h];
 
-	if (SDL_RenderReadPixels(SDLEngine::Instance().GetRenderer(), &r, SDL_PIXELFORMAT_RGBA8888, &pixels, 4*r.w) < 0){
-		delete[] pixels;
+	SDL_Surface* surf = SDL_CreateRGBSurface(0, rect.w, rect.h, 32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
+
+	if(surf == nullptr)
+		throw SDLException("SDL_CreateRGBSurface");
+
+	if (SDL_RenderReadPixels(SDLEngine::Instance().GetRenderer(), nullptr, SDL_PIXELFORMAT_RGBA8888, surf->pixels, 4*rect.w) < 0){
+		SDL_FreeSurface(surf);
 		throw SDLException("SDL_RenderReadPixels");
 	}
+
+	uint32_t* ptr = (uint32_t*)surf->pixels;
 	hash = 0;
 	for(int x = 0; x < rect.w; x++){
 		for(int y = 0; y < rect.h; y++){
-			hash += *pixels;
+			hash += *ptr;
 			hash += hash << 10;
 			hash ^= hash >> 6;
-			pixels++;
+			ptr++;
 		}
 	}
 
@@ -176,7 +182,7 @@ void SDLSprite::CalculateHash(){
 	hash ^= hash >> 11;
 	hash += hash << 15;
 
-	delete[] pixels;
+	SDL_FreeSurface(surf);
 
 	if (SDL_SetRenderTarget(SDLEngine::Instance().GetRenderer(), nullptr) == -1)
 		throw SDLException("SDL_SetRenderTarget");
