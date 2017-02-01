@@ -63,11 +63,11 @@ inline bool WorldGenerator::IsDesert(double elevation, double temperature, doubl
 }
 
 inline bool WorldGenerator::IsPrairie(double elevation, double temperature, double moisture){
-	return temperature > 0.4 && moisture < 0.33;
+	return temperature > 0.6 && moisture >= 0.4 && moisture < 0.6;
 }
 
 inline bool WorldGenerator::IsJungle(double elevation, double temperature, double moisture){
-	return temperature > 0.75 && moisture > 0.5;
+	return temperature > 0.65 && moisture > 0.65;
 }
 
 inline bool WorldGenerator::IsSwamp(double elevation, double temperature, double moisture){
@@ -75,7 +75,7 @@ inline bool WorldGenerator::IsSwamp(double elevation, double temperature, double
 }
 
 inline bool WorldGenerator::IsForest(double elevation, double temperature, double moisture){
-	return temperature > 0.25 && temperature < 0.5 && moisture > 0.4 && elevation > 0.4;
+	return temperature > 0.2 && temperature < 0.4 && moisture > 0.4 && elevation < 0.8;
 }
 
 inline bool WorldGenerator::IsArctic(double elevation, double temperature, double moisture){
