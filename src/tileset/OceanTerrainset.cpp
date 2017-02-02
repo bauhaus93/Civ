@@ -4,33 +4,33 @@ using namespace std;
 
 uint8_t GetNorthernCoastline(uint8_t neighbourMask){
     uint8_t mask = 0;
-    mask |= (neighbourMask & static_cast<uint8_t>(Neighbour::N)) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(2);
-    mask |= (neighbourMask & static_cast<uint8_t>(Neighbour::NW)) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(1);
-    mask |= (neighbourMask & static_cast<uint8_t>(Neighbour::NE)) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(4);
+    mask |= (neighbourMask & (1 << static_cast<uint8_t>(Neighbour::N))) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(2);
+    mask |= (neighbourMask & (1 << static_cast<uint8_t>(Neighbour::NW))) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(1);
+    mask |= (neighbourMask & (1 << static_cast<uint8_t>(Neighbour::NE))) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(4);
     return mask;
 }
 
 uint8_t GetSouthernCoastline(uint8_t neighbourMask){
     uint8_t mask = 0;
-    mask |= (neighbourMask & static_cast<uint8_t>(Neighbour::S)) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(2);
-    mask |= (neighbourMask & static_cast<uint8_t>(Neighbour::SW)) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(4);
-    mask |= (neighbourMask & static_cast<uint8_t>(Neighbour::SE)) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(1);
+    mask |= (neighbourMask & (1 << static_cast<uint8_t>(Neighbour::S))) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(2);
+    mask |= (neighbourMask & (1 << static_cast<uint8_t>(Neighbour::SW))) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(4);
+    mask |= (neighbourMask & (1 << static_cast<uint8_t>(Neighbour::SE))) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(1);
     return mask;
 }
 
 uint8_t GetWesternCoastline(uint8_t neighbourMask){
     uint8_t mask = 0;
-    mask |= (neighbourMask & static_cast<uint8_t>(Neighbour::W)) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(2);
-    mask |= (neighbourMask & static_cast<uint8_t>(Neighbour::NW)) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(4);
-    mask |= (neighbourMask & static_cast<uint8_t>(Neighbour::SW)) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(1);
+    mask |= (neighbourMask & (1 << static_cast<uint8_t>(Neighbour::W))) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(2);
+    mask |= (neighbourMask & (1 << static_cast<uint8_t>(Neighbour::NW))) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(4);
+    mask |= (neighbourMask & (1 << static_cast<uint8_t>(Neighbour::SW))) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(1);
     return mask;
 }
 
 uint8_t GetEasternCoastline(uint8_t neighbourMask){
     uint8_t mask = 0;
-    mask |= (neighbourMask & static_cast<uint8_t>(Neighbour::E)) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(2);
-    mask |= (neighbourMask & static_cast<uint8_t>(Neighbour::NE)) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(1);
-    mask |= (neighbourMask & static_cast<uint8_t>(Neighbour::SE)) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(4);
+    mask |= (neighbourMask & (1 << static_cast<uint8_t>(Neighbour::E))) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(2);
+    mask |= (neighbourMask & (1 << static_cast<uint8_t>(Neighbour::NE))) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(1);
+    mask |= (neighbourMask & (1 << static_cast<uint8_t>(Neighbour::SE))) ? static_cast<uint8_t>(0) : static_cast<uint8_t>(4);
     return mask;
 }
 
@@ -55,6 +55,7 @@ void OceanTerrainset::GetSpriteHashes(vector<uint32_t>& spriteHashes, int basicI
                         GetSouthernCoastline(neighbourMask),
                         GetWesternCoastline(neighbourMask),
                         GetEasternCoastline(neighbourMask)};
+
 
     for(int i = 0; i < 4; i++){
         if(mask[i] != 0)

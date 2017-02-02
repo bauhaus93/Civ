@@ -26,9 +26,11 @@ inline std::string Tileset::GetName() const{
 }
 
 inline bool Tileset::operator==(const Tileset& other) const{
-	return this == &other;
+    return GetName() == other.GetName();
+	//return this == &other;
 }
 
 inline bool Tileset::operator!=(const Tileset& other) const {
-	return this != &other;
+    return GetName() != other.GetName();
+	//return this != &other;
 }

@@ -18,7 +18,7 @@
 class TileFactory{
 
     SpriteManager& spriteManager;
-    std::map<std::string, std::unique_ptr<Tileset>> tilesets;
+    std::map<std::string, std::shared_ptr<Tileset>> tilesets;
 
     void AddTileset(const std::string& name, unsigned int resourceChance, TilesetType type);
 
@@ -37,6 +37,6 @@ public:
     int     GetTilesetCount() const;
     bool    HasTileset(const std::string& tilesetName) const;
 
-    std::unique_ptr<Tile> CreateTile(const std::string& tilesetName) const;
+    std::shared_ptr<BasicTerrainset> GetTerrainset(const std::string& tilesetName) const;
 
 };

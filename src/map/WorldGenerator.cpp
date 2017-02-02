@@ -35,22 +35,21 @@ void WorldGenerator::Generate(Grid& grid, double elevationMod_, double temperatu
 	GridTraversal g{ grid };
 
 	while (g.HasNext()){
-		CalculateNode(*g.Next());
+		CalculateTile(*g.Next());
 	}
 	//Logger::Write("First Traversal in " + to_string(common::TimeDiff(start)) + "ms");
 
-	GridTraversal g2{ grid };
-
-	while (g2.HasNext()){
-		auto node = g2.Next();
-		node->UpdateTile();
+	//GridTraversal g2{ grid };
+    g.Reset();
+	while (g.HasNext()){
+		g.Next()->Update();
 	}
 	Logger::Write("World generated in " + to_string(common::TimeDiff(start)) + "ms");
 }
 
-void WorldGenerator::CalculateNode(Node& node){
-	int x = node.GetX();
-	int y = node.GetY();
+void WorldGenerator::CalculateTile(Tile& tile){
+	int x = tile.GetX();
+	int y = tile.GetY();
 
 	bool isLand = landmassNoise.GetOctavedNoise(x, y, 6, 0.2, 0.02) > 0.33 || landmassNoise.GetOctavedNoise(x, y, 3, 0.5, 0.1) > 0.2;
 	//normalizing to [0.0, 1.0] bc easier to divide/multiply a value
@@ -62,33 +61,29 @@ void WorldGenerator::CalculateNode(Node& node){
 	temperature *= temperatureMod;
 	moisture *= moistureMod;
 
-	unique_ptr<Tile> tile = nullptr;
 	if(!isLand)
-		tile = tileFactory.CreateTile("ocean");
+		tile.SetTerrainset(tileFactory.GetTerrainset("ocean"));
 	else if(IsMountain(elevation, temperature, moisture))
-		tile = tileFactory.CreateTile("mountains");
+		tile.SetTerrainset(tileFactory.GetTerrainset("mountains"));
 	else if(IsHills(elevation, temperature, moisture))
-		tile = tileFactory.CreateTile("hills");
+		tile.SetTerrainset(tileFactory.GetTerrainset("hills"));
 	else if(IsDesert(elevation, temperature, moisture))
-		tile = tileFactory.CreateTile("desert");
+		tile.SetTerrainset(tileFactory.GetTerrainset("desert"));
 	else if(IsPrairie(elevation, temperature, moisture))
-		tile = tileFactory.CreateTile("prairie");
+		tile.SetTerrainset(tileFactory.GetTerrainset("prairie"));
 	else if(IsJungle(elevation, temperature, moisture))
-		tile = tileFactory.CreateTile("jungle");
+		tile.SetTerrainset(tileFactory.GetTerrainset("jungle"));
 	else if(IsSwamp(elevation, temperature, moisture))
-		tile = tileFactory.CreateTile("swamp");
+		tile.SetTerrainset(tileFactory.GetTerrainset("swamp"));
 	else if(IsForest(elevation, temperature, moisture))
-		tile = tileFactory.CreateTile("forest");
+		tile.SetTerrainset(tileFactory.GetTerrainset("forest"));
 	else if(IsArctic(elevation, temperature, moisture))
-		tile = tileFactory.CreateTile("arctic");
+		tile.SetTerrainset(tileFactory.GetTerrainset("arctic"));
 	else if(IsTundra(elevation, temperature, moisture))
-		tile = tileFactory.CreateTile("tundra");
+		tile.SetTerrainset(tileFactory.GetTerrainset("tundra"));
 	else
-		tile = tileFactory.CreateTile("grasslands");
+		tile.SetTerrainset(tileFactory.GetTerrainset("grasslands"));
 
-	tile->RandomizeBaseSprite(rng);
-	tile->RandomizeResource(rng);
-
-	node.SetTile(move(tile));
-
+	tile.RandomizeBaseSprite(rng);
+	tile.RandomizeResource(rng);
 }

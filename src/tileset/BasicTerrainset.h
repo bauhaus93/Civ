@@ -37,6 +37,6 @@ public:
 };
 
 inline uint32_t BasicTerrainset::GetBasicSpriteHash(int basicID) const{
-    assert(basicID >= 0 && basicID < basic.size());
+    assert(basicID >= 0 && static_cast<size_t>(basicID) < basic.size());
     return basic[basicID]->GetHash();
 }

@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "tile/Tile.h"
+#include "Neighbour.h"
 #include "engine/Sprite.h"
 #include "engine/SpriteManager.h"
 
@@ -33,9 +34,9 @@ public:
 
 	void CenterToClick(int screenX, int screenY, int maxX, int maxY);
 
-	Node* NodeAtScreenPos(int x, int y);
+	Tile* TileAtScreenPos(int x, int y);
 
-	void AlignView(Node* node, int screenSizeX, int screenSizeY);
+	void AlignView(Tile* node, int screenSizeX, int screenSizeY);
 	void AlignViewToCenter(int screenSizeX, int screenSizeY);
 
 };
@@ -43,13 +44,15 @@ public:
 class GridTraversal{
 
 protected:
-	Node*	curr;
-	Node*	rowFirst;
+    Tile*   root;
+	Tile*	curr;
+	Tile*	rowFirst;
 	bool	advanced;
 
 public:
 	explicit GridTraversal(Grid& grid);
-	virtual ~GridTraversal();
-	virtual Node* Next();
-	bool HasNext() const{ return curr != nullptr; }
+	virtual ~GridTraversal() = default;
+	virtual Tile* Next();
+	bool HasNext() const { return curr != nullptr; }
+    void Reset();
 };

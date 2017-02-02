@@ -3,10 +3,10 @@
 using namespace std;
 
 
-Tile::Tile(const BasicTerrainset& terrainset_, int x_, int y_) :
-	terrainset{ terrainset_ },
-	basicSpriteID{ terrainset.GetRandomBasicID() },
-	resourceID{ terrainset.GetRandomResourceID() },
+Tile::Tile(int x_, int y_) :
+	terrainset{ nullptr },
+	basicSpriteID{ 0 },
+	resourceID{ 0 },
     x { x_ },
     y { y_ },
     neighbour { nullptr, nullptr, nullptr, nullptr },
@@ -14,17 +14,17 @@ Tile::Tile(const BasicTerrainset& terrainset_, int x_, int y_) :
 	sprite{ nullptr }{
 }
 
-void Tile::GetTerrainSpriteHashes(vector<uint32_t>& spriteHashes, uint8_t terrainNeighbourMask){
-	terrainset.GetSpriteHashes(spriteHashes, basicSpriteID, resourceID, terrainNeighbourMask);
+void Tile::SetTerrainset(shared_ptr<const BasicTerrainset> terrainset_){
+    terrainset = terrainset_;
 }
 
 void Tile::RandomizeBaseSprite(mt19937& rng){
-	basicSpriteID = rng() % terrainset.GetBasicSpriteCount();
+	basicSpriteID = rng() % terrainset->GetBasicSpriteCount();
 }
 
 void Tile::RandomizeResource(mt19937& rng){
-	if(static_cast<uint8_t>(rng() % 100) < terrainset.GetResourceChance())
-		resourceID = rng() % terrainset.GetResourceCount();
+	if(static_cast<uint8_t>(rng() % 100) < terrainset->GetResourceChance())
+		resourceID = rng() % terrainset->GetResourceCount();
 	else
 		resourceID = -1;
 }
@@ -32,13 +32,14 @@ void Tile::RandomizeResource(mt19937& rng){
 void Tile::Update(){
     vector<uint32_t> spriteHashes;
 
-    terrainset.GetSpriteHashes(spriteHashes, basicSpriteID, resourceID, neighbourMask);
-    sprite = SpriteManager::Instance().GetTerrainComposite(spriteHashes, terrainset.GetType());
+    UpdateNeighbourMask();
+    terrainset->GetSpriteHashes(spriteHashes, basicSpriteID, resourceID, neighbourMask);
+    sprite = SpriteManager::Instance().GetTerrainComposite(spriteHashes, terrainset->GetType());
 }
 
 void Tile::SetNeighbour(Tile* tile, Neighbour dir){
-    assert(dir >= 0 && dir < 4);
-    neighbour[dir] = tile;
+    assert((uint8_t)dir < 4);
+    neighbour[static_cast<uint8_t>(dir)] = tile;
 }
 
 Tile* Tile::GetNeighbour(Neighbour dir) const{
@@ -48,7 +49,7 @@ Tile* Tile::GetNeighbour(Neighbour dir) const{
     case Neighbour::SE:
     case Neighbour::SW:
     case Neighbour::NW:
-        return neighbour[dir];
+        return neighbour[static_cast<uint8_t>(dir)];
     case Neighbour::N:
         if(GetNeighbour(Neighbour::NE) != nullptr)
             return GetNeighbour(Neighbour::NE)->GetNeighbour(Neighbour::NW);
@@ -70,7 +71,7 @@ Tile* Tile::GetNeighbour(Neighbour dir) const{
     case Neighbour::W:
         if(GetNeighbour(Neighbour::NW) != nullptr)
             return GetNeighbour(Neighbour::NW)->GetNeighbour(Neighbour::SW);
-        if(GetNeighbour(Neighbour::SE))
+        if(GetNeighbour(Neighbour::SW))
             return GetNeighbour(Neighbour::SW)->GetNeighbour(Neighbour::NW);
         break;
     default:
@@ -80,7 +81,7 @@ Tile* Tile::GetNeighbour(Neighbour dir) const{
 }
 
 void Tile::LinkNeighbours(Tile* tile, Neighbour dir){
-    assert(dir >= 0 && dir < 4);
+    assert((uint8_t)dir < 4);
 
     SetNeighbour(tile, dir);
 
@@ -102,15 +103,17 @@ void Tile::LinkNeighbours(Tile* tile, Neighbour dir){
     }
 }
 
-void Node::UpdateNeighbourMask(){
-	auto& ts = GetTerrainset();
+void Tile::UpdateNeighbourMask(){
+	auto ts = GetTerrainset();
 
     neighbourMask = 0;
 
     for(int i = 0; i < 8; i++){
-        if(neighbour[i] != nullptr && ts == GetNeighbour(i)->GetTerrainset())
+        auto nb = GetNeighbour(static_cast<Neighbour>(i));
+        if(nb != nullptr && nb->GetTerrainset() == ts)
             neighbourMask |= (1 << i);
     }
+    //neighbourMask = 0xFF;
 }
 
 void Tile::RenderRow(int screenX, int screenY, int maxX){
@@ -119,6 +122,6 @@ void Tile::RenderRow(int screenX, int screenY, int maxX){
 	while (screenX < maxX && curr != nullptr){
 		curr->Render(screenX, screenY);
 		screenX += 64;
-		curr = curr->GetEast();
+		curr = curr->GetNeighbour(Neighbour::E);
 	}
 }

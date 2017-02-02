@@ -17,17 +17,17 @@ bool TileFactory::HasTileset(const string& tilesetName) const{
 }
 
 void TileFactory::AddTileset(const string& name, unsigned int resourceChance, TilesetType type){
-    unique_ptr<Tileset> ts = nullptr;
+    shared_ptr<Tileset> ts = nullptr;
 
     switch(type){
         case TilesetType::BASIC:
-            ts = make_unique<BasicTerrainset>(name, resourceChance);
+            ts = make_shared<BasicTerrainset>(name, resourceChance);
             break;
         case TilesetType::EXTENDED:
-            ts = make_unique<ExtendedTerrainset>(name, resourceChance);
+            ts = make_shared<ExtendedTerrainset>(name, resourceChance);
             break;
         case TilesetType::OCEAN:
-            ts = make_unique<OceanTerrainset>(name, resourceChance);
+            ts = make_shared<OceanTerrainset>(name, resourceChance);
             break;
         default:
             throw CivException("TileFactory::AddTileset", "Unknown tileset type: " + to_string((int)type));
@@ -117,18 +117,18 @@ void TileFactory::AddCoastline(const string& tilesetName, const Point& pos, uint
 }
 
 
-unique_ptr<Tile> TileFactory::CreateTile(const std::string& terrainsetName) const{
+shared_ptr<BasicTerrainset> TileFactory::GetTerrainset(const std::string& terrainsetName) const{
     auto iter = tilesets.find(terrainsetName);
     if(iter == tilesets.end())
         throw CivException("TileFactory::CreateTile", "Tileset " + terrainsetName + " not existing!");
-    auto& tileset = *iter->second;
+    auto tileset = iter->second;
 
-    if( tileset.GetType() == TilesetType::BASIC ||
-        tileset.GetType() == TilesetType::EXTENDED ||
-        tileset.GetType() == TilesetType::OCEAN){
-        return make_unique<Tile>((BasicTerrainset&)tileset);
+    if( tileset->GetType() == TilesetType::BASIC ||
+        tileset->GetType() == TilesetType::EXTENDED ||
+        tileset->GetType() == TilesetType::OCEAN){
+        return static_pointer_cast<BasicTerrainset>(tileset);
     }
-    else
-        throw CivException("TileFactory::CreateTile", "Tileset " + terrainsetName + " is not a terrain set!");
+
+    throw CivException("TileFactory::CreateTile", "Tileset " + terrainsetName + " is not a terrain set!");
 
 }

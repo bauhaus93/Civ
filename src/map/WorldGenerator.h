@@ -5,7 +5,6 @@
 #include <random>
 
 #include "Grid.h"
-#include "Node.h"
 #include "SimplexNoise.h"
 #include "common/Common.h"
 #include "tile/Tile.h"
@@ -29,7 +28,7 @@ class WorldGenerator{
 	double				moistureMod;
 
 
-	void 				CalculateNode(Node& node);
+	void 				CalculateTile(Tile& tile);
 
 	bool				IsMountain(double elevation, double temperature, double moisture);
 	bool				IsHills(double elevation, double temperature, double moisture);
