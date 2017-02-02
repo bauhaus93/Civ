@@ -32,8 +32,6 @@ SpriteManager::SpriteManager():
     factory.MakeTransparent(RGBColor{ 0x87, 0x87, 0x87 });
     factory.MakeTransparent(RGBColor{ 0xFF, 0x00, 0xFF });
 
-	dummy = factory.CreateSprite(TERRAIN1, Rect{1, 1, 64, 32});
-
     Logger::Write("Created sprite manager");
 }
 
@@ -178,10 +176,39 @@ shared_ptr<Sprite> SpriteManager::GetTerrainComposite(const std::vector<uint32_t
     return result.first->second.lock();
 }
 
-shared_ptr<Sprite> SpriteManager::GetDummy(){
-	return dummy;
-}
-
 int SpriteManager::GetStorageSize() const{
 	return storage.size();
+}
+
+void SpriteManager::PrintStatistics() const{
+    vector<pair<uint32_t, int>> usecounts;
+
+    for(auto pair : storage){
+        if(pair.second.expired())
+            usecounts.push_back(make_pair(pair.first, 0));
+        else{
+            auto e = pair.second.lock();
+            usecounts.push_back(make_pair(pair.first, e.use_count()));
+        }
+    }
+    sort(usecounts.begin(), usecounts.end(), [](const pair<uint32_t, int>& a, const pair<uint32_t, int>& b){ return a.second > b.second;});
+
+    size_t i = 0;
+    int sum = 0;
+    int median = 0;
+    for(auto e : usecounts){
+        if(++i == usecounts.size() / 2)   //don't care about the exact value
+            median = e.second;
+        sum += e.second;
+    }
+
+    cout << "####################################" << endl;
+    cout << "SpriteManager storage use count info" << endl;
+    cout << "size:\t\t" << usecounts.size() << endl;
+    cout << "avg:\t\t" << (double) sum / usecounts.size() << endl;
+    cout << "median:\t\t" << median << endl;
+    cout << "top 5 sprites" << endl;
+    for(auto iter = usecounts.begin(); iter != usecounts.end() && iter < usecounts.begin() + 5; ++iter)
+        cout << iter->first << ":\t" << iter->second << endl;
+    cout << "####################################" << endl;
 }

@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include <cassert>
+#include <algorithm>
 
 #include "SpriteFactory.h"
 #include "Sprite.h"
@@ -27,7 +28,6 @@ class SpriteManager{
 
     SpriteFactory               factory;
     std::map<uint32_t, std::weak_ptr<Sprite>>   storage;
-    std::shared_ptr<Sprite>     dummy;
 
     std::shared_ptr<Sprite> GetElement(uint32_t hash);
     std::shared_ptr<Sprite> GetExistingElement(uint32_t hash);
@@ -53,8 +53,8 @@ public:
 
 
     std::shared_ptr<Sprite>     GetTerrainComposite(const std::vector<uint32_t>& spriteHashes, TilesetType type);
-    std::shared_ptr<Sprite>     GetDummy();
     int                         GetStorageSize() const;
+    void                        PrintStatistics() const;
 
 };
 

@@ -63,6 +63,9 @@ void Game::HandleEvents(){
 					map = make_unique<Map>(Rect{0, 0, Engine::Instance().GetScreenX(), Engine::Instance().GetScreenY() });
 					Logger::Write("Removed " + to_string(SpriteManager::Instance().ClearUnneeded()) + " unreferenced sprites");
 					break;
+                case Key::C:
+                    SpriteManager::Instance().PrintStatistics();
+                    break;
 				default:
 					Logger::Write("Unhandled Key pressed");
 					break;
