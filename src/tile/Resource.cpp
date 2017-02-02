@@ -10,7 +10,3 @@ Resource::Resource(shared_ptr<Sprite> sprite_):
 Resource::Resource(const Resource& other):
 	sprite{ other.sprite }{
 }
-
-std::shared_ptr<const Sprite> Resource::GetSprite() const{
-	return sprite;
-}

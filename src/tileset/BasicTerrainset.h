@@ -30,7 +30,13 @@ public:
     int                 GetBasicSpriteCount() const;
     int                 GetResourceCount() const;
     int                 GetResourceChance() const;
+    uint32_t            GetBasicSpriteHash(int basicID) const;
 
     virtual void        GetSpriteHashes(std::vector<uint32_t>& hashes, int basicID, int resourceID, uint8_t neighbourMask) const;
     virtual TilesetType GetType() const override;
 };
+
+inline uint32_t BasicTerrainset::GetBasicSpriteHash(int basicID) const{
+    assert(basicID >= 0 && basicID < basic.size());
+    return basic[basicID]->GetHash();
+}

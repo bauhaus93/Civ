@@ -3,7 +3,7 @@
 #include <vector>
 #include <memory>
 
-#include "Node.h"
+#include "tile/Tile.h"
 #include "engine/Sprite.h"
 #include "engine/SpriteManager.h"
 
@@ -12,15 +12,15 @@ class Grid{
 	friend class GridTraversal;
 
 private:
-	Node* root;
-	Node* view;
-	Node* center;
+	Tile* root;
+	Tile* view;
+	Tile* center;
 	bool advanceAll;
 
 	std::shared_ptr<Sprite> mouseClickComparator;
 
-	Node* CreateBlock(int sizeX, int sizeY);
-	Node* LinkRows(std::vector<Node*>& top, std::vector<Node*>& bot);
+	Tile* CreateBlock(int sizeX, int sizeY);
+	Tile* LinkRows(std::vector<Tile*>& top, std::vector<Tile*>& bot);
 	//Node* GoRelative(Node* node, int x, int y);
 
 public:

@@ -14,3 +14,7 @@ public:
 	~Resource() = default;
 	std::shared_ptr<const Sprite> GetSprite() const;
 };
+
+inline std::shared_ptr<const Sprite> Resource::GetSprite() const{
+	return sprite;
+}
