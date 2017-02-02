@@ -4,11 +4,12 @@
 #include <memory>
 #include <functional>
 
-#include "engine/Sprite.h"
-#include "tile/Resource.h"
 #include "BasicTerrainset.h"
-#include "map/Neighbour.h"
 #include "TilesetType.h"
+#include "Resource.h"
+#include "engine/Sprite.h"
+#include "map/Neighbour.h"
+
 
 //TODO mabye refactor to be an extended terrainset, which overrides Draw (less work in TileFactory)
 

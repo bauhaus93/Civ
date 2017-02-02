@@ -5,11 +5,12 @@
 #include <functional>
 #include <memory>
 
-#include "common/Common.h"
-#include "engine/Sprite.h"
-#include "tile/Resource.h"
+#include "Resource.h"
 #include "Tileset.h"
 #include "TilesetType.h"
+#include "common/Common.h"
+#include "engine/Sprite.h"
+
 
 class BasicTerrainset: public Tileset{
 

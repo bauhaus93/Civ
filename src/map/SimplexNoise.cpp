@@ -30,10 +30,6 @@ SimplexNoise::SimplexNoise(uint32_t seed_):
     }
 }
 
-SimplexNoise::~SimplexNoise(){
-
-}
-
 uint32_t SimplexNoise::GetSeed() const{
     return seed;
 }

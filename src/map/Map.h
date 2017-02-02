@@ -4,33 +4,24 @@
 #include <map>
 #include <random>
 
-#include "engine/SpriteFactory.h"
-#include "tile/TileFactory.h"
-#include "tileset/OceanTerrainset.h"
 #include "Grid.h"
 #include "WorldGenerator.h"
-#include "common/Rect.h"
 #include "Log.h"
-
-#define RESOURCE_CHANCE (10)
-
+#include "engine/SpriteFactory.h"
+#include "tile/TilesetManager.h"
+#include "common/Rect.h"
 
 class Map{
 
 	Rect					drawField;
-	TileFactory				tileFactory;
+	TilesetManager			tilesetManager;
 	Grid					grid;
 
 	bool change;
 
-	void		LoadTilesets();
-	void 		LoadBasicTilesets();
-	void 		LoadExtendedTilesets();
-	void 		LoadOceanTileset();
-
 public:
 	explicit	Map(const Rect& drawField_);
-				~Map();
+				~Map() = default;
 
 	void		Clicked(int screenX, int screenY);
 	void		Render();

@@ -8,13 +8,13 @@
 #include "SimplexNoise.h"
 #include "common/Common.h"
 #include "tile/Tile.h"
-#include "tile/TileFactory.h"
+#include "tile/TilesetManager.h"
 #include "Log.h"
 
 
 class WorldGenerator{
 
-	const TileFactory& 	tileFactory;
+	const TilesetManager& 	tilesetManager;
 
 	std::mt19937 		rng;
 
@@ -41,7 +41,7 @@ class WorldGenerator{
 	bool 				IsTundra(double elevation, double temperature, double moisture);
 
 public:
-						WorldGenerator(const TileFactory& tileFactory_, uint32_t seed);
+						WorldGenerator(const TilesetManager& tilesetManager_, uint32_t seed);
 						~WorldGenerator() = default;
 
 	void 				Generate(Grid& grid);

@@ -6,8 +6,8 @@ noise.GetOctavedNoise(node->GetX(), node->GetY(), 6, 0.2, 0.02) > 0.33 || noise.
 
 using namespace std;
 
-WorldGenerator::WorldGenerator(const TileFactory& tileFactory_, uint32_t seed):
-	tileFactory{ tileFactory_ },
+WorldGenerator::WorldGenerator(const TilesetManager& tilesetManager_, uint32_t seed):
+	tilesetManager{ tilesetManager_ },
 	rng{ seed },
 	landmassNoise{ static_cast<uint32_t>(rng()) },
 	elevationNoise{ static_cast<uint32_t>(rng()) },
@@ -62,27 +62,27 @@ void WorldGenerator::CalculateTile(Tile& tile){
 	moisture *= moistureMod;
 
 	if(!isLand)
-		tile.SetTerrainset(tileFactory.GetTerrainset("ocean"));
+		tile.SetTerrainset(tilesetManager.GetTerrainset("ocean"));
 	else if(IsMountain(elevation, temperature, moisture))
-		tile.SetTerrainset(tileFactory.GetTerrainset("mountains"));
+		tile.SetTerrainset(tilesetManager.GetTerrainset("mountains"));
 	else if(IsHills(elevation, temperature, moisture))
-		tile.SetTerrainset(tileFactory.GetTerrainset("hills"));
+		tile.SetTerrainset(tilesetManager.GetTerrainset("hills"));
 	else if(IsDesert(elevation, temperature, moisture))
-		tile.SetTerrainset(tileFactory.GetTerrainset("desert"));
+		tile.SetTerrainset(tilesetManager.GetTerrainset("desert"));
 	else if(IsPrairie(elevation, temperature, moisture))
-		tile.SetTerrainset(tileFactory.GetTerrainset("prairie"));
+		tile.SetTerrainset(tilesetManager.GetTerrainset("prairie"));
 	else if(IsJungle(elevation, temperature, moisture))
-		tile.SetTerrainset(tileFactory.GetTerrainset("jungle"));
+		tile.SetTerrainset(tilesetManager.GetTerrainset("jungle"));
 	else if(IsSwamp(elevation, temperature, moisture))
-		tile.SetTerrainset(tileFactory.GetTerrainset("swamp"));
+		tile.SetTerrainset(tilesetManager.GetTerrainset("swamp"));
 	else if(IsForest(elevation, temperature, moisture))
-		tile.SetTerrainset(tileFactory.GetTerrainset("forest"));
+		tile.SetTerrainset(tilesetManager.GetTerrainset("forest"));
 	else if(IsArctic(elevation, temperature, moisture))
-		tile.SetTerrainset(tileFactory.GetTerrainset("arctic"));
+		tile.SetTerrainset(tilesetManager.GetTerrainset("arctic"));
 	else if(IsTundra(elevation, temperature, moisture))
-		tile.SetTerrainset(tileFactory.GetTerrainset("tundra"));
+		tile.SetTerrainset(tilesetManager.GetTerrainset("tundra"));
 	else
-		tile.SetTerrainset(tileFactory.GetTerrainset("grasslands"));
+		tile.SetTerrainset(tilesetManager.GetTerrainset("grasslands"));
 
 	tile.RandomizeBaseSprite(rng);
 	tile.RandomizeResource(rng);

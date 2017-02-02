@@ -24,7 +24,7 @@ class SimplexNoise{
 public:
                 SimplexNoise();
     explicit    SimplexNoise(uint32_t seed_);
-                ~SimplexNoise();
+                ~SimplexNoise() = default;
 
     uint32_t    GetSeed() const;
     double      GetNoise(double x, double y);

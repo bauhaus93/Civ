@@ -11,7 +11,7 @@
 #include "common/Color.h"
 #include "common/Hash.h"
 #include "exception/CivException.h"
-#include "tileset/TilesetType.h"
+#include "map/tile/TilesetType.h"
 
 extern const std::string TERRAIN1;
 extern const std::string TERRAIN2;

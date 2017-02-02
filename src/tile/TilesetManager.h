@@ -15,7 +15,7 @@
 #include "common/Rect.h"
 #include "exception/CivException.h"
 
-class TileFactory{
+class TilesetManager{
 
     SpriteManager& spriteManager;
     std::map<std::string, std::shared_ptr<Tileset>> tilesets;
@@ -24,7 +24,7 @@ class TileFactory{
 
 public:
 
-            TileFactory();
+            TilesetManager();
 
     void    AddBasicTileset(const std::string& name, unsigned int resourceChance);
     void    AddExtendedTileset(const std::string& name, unsigned int resourceChance);

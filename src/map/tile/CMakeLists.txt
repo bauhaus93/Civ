@@ -1,4 +1,7 @@
 add_sources(
+	Resource.cpp
+	Tile.cpp
+	TilesetManager.cpp
   Tileset.cpp
   BasicTerrainset.cpp
   ExtendedTerrainset.cpp

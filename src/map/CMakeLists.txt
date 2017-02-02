@@ -4,3 +4,5 @@ add_sources(
 	WorldGenerator.cpp
 	SimplexNoise.cpp
 )
+
+add_subdirectory(tile)

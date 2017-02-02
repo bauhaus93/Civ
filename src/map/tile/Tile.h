@@ -3,8 +3,8 @@
 #include <memory>
 #include <vector>
 
-#include "tileset/BasicTerrainset.h"
-#include "tileset/TilesetType.h"
+#include "BasicTerrainset.h"
+#include "TilesetType.h"
 #include "engine/Sprite.h"
 #include "engine/SpriteManager.h"
 #include "map/Neighbour.h"
