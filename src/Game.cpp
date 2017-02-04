@@ -93,6 +93,7 @@ void Game::Render(){
 	Engine::Instance().SetColor(RGBAColor{ 0, 0, 0, 0xFF });
 	Engine::Instance().ClearScene();
 	map->Render();
+    //SpriteManager::Instance().GetDitherMask().Render(10, 10);
 	Engine::Instance().ShowScene();
 
 	lastRenderTime = common::TimeDiff(start);

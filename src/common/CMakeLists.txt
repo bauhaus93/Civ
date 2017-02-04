@@ -3,5 +3,4 @@ add_sources(
 	Common.cpp
 	Point.cpp
 	Rect.cpp
-	Hash.cpp
 )

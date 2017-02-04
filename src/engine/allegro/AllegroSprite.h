@@ -28,6 +28,7 @@ public:
 					~AllegroSprite();
 
 	void			MakeColorTransparent(const RGBColor& color);
+    void            ReplaceColor(const RGBAColor& from, const RGBAColor& to);
 	int				GetWidth() const;
 	int				GetHeight() const;
 	void			Add(const AllegroSprite& add);
@@ -35,7 +36,8 @@ public:
 	void			Render(int x, int y) const;
 	void			SetAsRenderTarget();
 	RGBAColor		PixelAt(int x, int y);
-	
+
+
 	void 			CalculateHash();
 	uint32_t		GetHash() const;
 };

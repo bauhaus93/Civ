@@ -10,7 +10,6 @@ Tile::Tile(int x_, int y_) :
     x { x_ },
     y { y_ },
     neighbour { nullptr, nullptr, nullptr, nullptr },
-    neighbourMask { 0 },
 	sprite{ nullptr }{
 }
 
@@ -30,12 +29,20 @@ void Tile::RandomizeResource(mt19937& rng){
 }
 
 void Tile::Update(){
-    vector<uint32_t> spriteHashes;
 
-    UpdateNeighbourMask();
-    terrainset->GetSpriteHashes(spriteHashes, basicSpriteID, resourceID, neighbourMask);
-    sprite = SpriteManager::Instance().GetTerrainComposite(spriteHashes, terrainset->GetType());
+    uint8_t neighbourMask = 0;
+
+    if(terrainset->GetType() != TilesetType::BASIC)
+        neighbourMask = GetNeighbourMask();
+
+    uint32_t floorHash = GetBasicSpriteHash();
+    uint32_t resourceHash = GetResourceSpriteHash();
+
+    sprite = terrainset->CreateComposite(floorHash, resourceHash, neighbourMask);
+
 }
+
+
 
 void Tile::SetNeighbour(Tile* tile, Neighbour dir){
     assert((uint8_t)dir < 4);
@@ -103,17 +110,16 @@ void Tile::LinkNeighbours(Tile* tile, Neighbour dir){
     }
 }
 
-void Tile::UpdateNeighbourMask(){
+uint8_t Tile::GetNeighbourMask(){
 	auto ts = GetTerrainset();
-
-    neighbourMask = 0;
+    uint8_t neighbourMask = 0;
 
     for(int i = 0; i < 8; i++){
         auto nb = GetNeighbour(static_cast<Neighbour>(i));
         if(nb != nullptr && nb->GetTerrainset() == ts)
             neighbourMask |= (1 << i);
     }
-    //neighbourMask = 0xFF;
+    return neighbourMask;
 }
 
 void Tile::RenderRow(int screenX, int screenY, int maxX){

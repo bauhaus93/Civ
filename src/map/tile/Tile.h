@@ -9,8 +9,6 @@
 #include "engine/SpriteManager.h"
 #include "map/Neighbour.h"
 
-
-
 class Tile{
 	std::shared_ptr<const BasicTerrainset> 	terrainset;
 	int						basicSpriteID;
@@ -20,7 +18,6 @@ class Tile{
     int                     y;
 
     Tile*                   neighbour[4];
-    uint8_t                 neighbourMask;
 
 	std::shared_ptr<const Sprite> sprite;
 
@@ -33,7 +30,7 @@ public:
 	void                   RandomizeBaseSprite(std::mt19937& rng);
 	void                   RandomizeResource(std::mt19937& rng);
     void                   Update();
-    void                   UpdateNeighbourMask();
+    uint8_t                GetNeighbourMask();
     void                   SetTerrainset(std::shared_ptr<const BasicTerrainset> terrainset_);
 	const BasicTerrainset& GetTerrainset() const;
 	uint32_t 			   GetBasicSpriteHash() const;
@@ -59,6 +56,11 @@ inline const BasicTerrainset& Tile::GetTerrainset() const{
 
 inline uint32_t Tile::GetBasicSpriteHash() const{
 	return terrainset->GetBasicSpriteHash(basicSpriteID);
+}
+inline uint32_t Tile::GetResourceSpriteHash() const{
+    if(resourceID == -1)
+        return 0;
+    return terrainset->GetResourceSpriteHash(resourceID);
 }
 
 inline void Tile::Render(int x, int y){

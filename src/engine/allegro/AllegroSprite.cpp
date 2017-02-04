@@ -44,6 +44,7 @@ AllegroSprite::AllegroSprite(AllegroSprite&& other) noexcept:
 
 //TODO maybe check if caller has already a bmp? (also in SDLSprite)
 AllegroSprite& AllegroSprite::operator=(AllegroSprite&& other) noexcept{
+    assert(bmp == nullptr);
 	bmp = other.bmp;
 	hash = other.hash;
 	size.x = other.GetWidth();
@@ -88,6 +89,38 @@ void AllegroSprite::MakeColorTransparent(const RGBColor& color){
 	//TODO maybe free region?
 }
 
+void AllegroSprite::ReplaceColor(const RGBAColor& from, const RGBAColor& to){
+
+    ALLEGRO_LOCKED_REGION* region = al_lock_bitmap(bmp, ALLEGRO_PIXEL_FORMAT_ARGB_8888, ALLEGRO_LOCK_READWRITE);
+    if (region == nullptr)
+        throw AllegroException("al_lock_bitmap");
+
+    assert(region->pixel_size == 4);
+
+    uint32_t srcColor =     (static_cast<uint32_t>(from.a) << 24) |
+                            (static_cast<uint32_t>(from.r) << 16) |
+                            (static_cast<uint32_t>(from.g) << 8 ) |
+                             static_cast<uint32_t>(from.b);
+
+    uint32_t targetColor =  (static_cast<uint32_t>(to.a) << 24) |
+                            (static_cast<uint32_t>(to.r) << 16) |
+                            (static_cast<uint32_t>(to.g) << 8 ) |
+                             static_cast<uint32_t>(to.b);
+
+    for(int x = 0; x < GetWidth(); x++){
+        for(int y = 0; y < GetHeight(); y++){
+            uint32_t* ptr = (uint32_t*)(((uint8_t*)region->data) + region->pitch*y + 4 * x);
+
+            if (*ptr == srcColor)
+                *ptr = targetColor;
+
+        }
+    }
+
+    al_unlock_bitmap(bmp);
+    //TODO maybe free region?
+}
+
 int AllegroSprite::GetWidth() const{
 	return al_get_bitmap_width(bmp);
 }
@@ -130,7 +163,6 @@ void AllegroSprite::CalculateHash(){
 	int bmpH = al_get_bitmap_height(bmp);
 	int bmpW = al_get_bitmap_width(bmp);
 
-
 	ALLEGRO_LOCKED_REGION* region = al_lock_bitmap(bmp, ALLEGRO_PIXEL_FORMAT_ARGB_8888, ALLEGRO_LOCK_READWRITE);
 	if (region == nullptr)
 		throw AllegroException("al_lock_bitmap");
@@ -144,7 +176,6 @@ void AllegroSprite::CalculateHash(){
 			hash += color;
 			hash += hash << 10;
 			hash ^= hash >> 6;
-
 		}
 	}
 	al_unlock_bitmap(bmp);

@@ -16,6 +16,24 @@ void BasicTerrainset::AddResource(Resource res){
     resource.push_back(res);
 }
 
+shared_ptr<Sprite> BasicTerrainset::CreateComposite(uint32_t floorHash, uint32_t resourceHash, uint8_t neighbourMask) const{
+    uint32_t compositeHash = Hash(floorHash, resourceHash);
+
+    assert(floorHash != 0);
+    assert(compositeHash != 0);
+
+    auto sprite = SpriteManager::Instance().GetElement(compositeHash);
+    if(sprite == nullptr){
+        sprite = make_shared<Sprite>(*SpriteManager::Instance().GetExistingElement(floorHash), Rect{ 0, 0, 64, 32 });
+
+
+        if(resourceHash != 0)
+            sprite->Add(*SpriteManager::Instance().GetExistingElement(resourceHash));
+        SpriteManager::Instance().RegisterSprite(sprite, compositeHash);
+    }
+    return sprite;
+}
+
 int BasicTerrainset::GetRandomBasicID() const{
     return common::Random(basic.size());
 }
@@ -36,15 +54,6 @@ int BasicTerrainset::GetBasicSpriteCount() const{
 
 int BasicTerrainset::GetResourceCount() const{
     return resource.size();
-}
-
-void BasicTerrainset::GetSpriteHashes(vector<uint32_t>& hashes, int basicID, int resourceID, uint8_t neighbourMask) const{
-    hashes.push_back(basic.at(basicID)->GetHash());
-
-    if(resourceID > -1)
-        hashes.push_back(resource.at(resourceID).GetSprite()->GetHash());
-    else
-        hashes.push_back(0);
 }
 
 TilesetType BasicTerrainset::GetType() const{

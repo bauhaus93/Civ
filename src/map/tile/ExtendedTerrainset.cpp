@@ -12,9 +12,25 @@ void ExtendedTerrainset::AddExtendedSprite(shared_ptr<Sprite> sprite, uint8_t ne
         throw CivException("ExtendedTerrainset::AddExtension", "Neighourmask " + to_string((int) neighbourMask) + " already existing!");
 }
 
-void ExtendedTerrainset::GetSpriteHashes(vector<uint32_t>& spriteHashes, int basicID, int resourceID, uint8_t neighbourMask) const{
-    BasicTerrainset::GetSpriteHashes(spriteHashes, basicID, resourceID, neighbourMask);
-    spriteHashes.push_back(extension.at(neighbourMask & 0xF)->GetHash());
+shared_ptr<Sprite> ExtendedTerrainset::CreateComposite(uint32_t floorHash, uint32_t resourceHash, uint8_t neighbourMask) const{
+    uint32_t extensionHash = GetExtensionSpriteHash(neighbourMask);
+    uint32_t compositeHash = Hash(floorHash, resourceHash, extensionHash);
+
+    assert(floorHash != 0);
+    assert(extensionHash != 0);
+    assert(compositeHash != 0);
+
+    auto sprite = SpriteManager::Instance().GetElement(compositeHash);
+    if(sprite == nullptr){
+        sprite = make_shared<Sprite>(*SpriteManager::Instance().GetExistingElement(floorHash), Rect{ 0, 0, 64, 32 });
+
+        sprite->Add(*SpriteManager::Instance().GetExistingElement(extensionHash));
+
+        if(resourceHash != 0)
+            sprite->Add(*SpriteManager::Instance().GetExistingElement(resourceHash));
+        SpriteManager::Instance().RegisterSprite(sprite, compositeHash);
+    }
+    return sprite;
 }
 
 TilesetType ExtendedTerrainset::GetType() const{

@@ -24,18 +24,11 @@ So the composite hash of a sprite and the hash of the sprite do not match!*/
 
 class SpriteManager{
 
-    static SpriteManager*       instance;
+    static SpriteManager*                       instance;
 
-    SpriteFactory               factory;
+    SpriteFactory                               factory;
+    std::shared_ptr<Sprite>                     ditherMask;
     std::map<uint32_t, std::weak_ptr<Sprite>>   storage;
-
-    std::shared_ptr<Sprite> GetElement(uint32_t hash);
-    std::shared_ptr<Sprite> GetExistingElement(uint32_t hash);
-
-    std::shared_ptr<Sprite> CreateBasicTerrainComposite(const std::vector<uint32_t>& spriteHashes);
-    std::shared_ptr<Sprite> CreateExtendedTerrainComposite(const std::vector<uint32_t>& spriteHashes);
-    std::shared_ptr<Sprite> CreateOceanTerrainComposite(const std::vector<uint32_t>& spriteHashes);
-
 
     SpriteManager();
     ~SpriteManager();
@@ -46,13 +39,15 @@ public:
     static void                 Stop();
     static SpriteManager&       Instance();
 
+    std::shared_ptr<Sprite>     GetElement(uint32_t hash);
+    std::shared_ptr<Sprite>     GetExistingElement(uint32_t hash);
+    bool                        RegisterSprite(std::shared_ptr<Sprite> sprite, uint32_t hash);
+
     int                         ClearUnneeded();
 
     std::shared_ptr<Sprite>     CreateFromSpritesheet(const std::string& sheetname, const Rect& rect);
     std::shared_ptr<Sprite>     CreateDiamondFromSpritesheet(const std::string& sheetname, const Point& pos);
 
-
-    std::shared_ptr<Sprite>     GetTerrainComposite(const std::vector<uint32_t>& spriteHashes, TilesetType type);
     int                         GetStorageSize() const;
     void                        PrintStatistics() const;
 

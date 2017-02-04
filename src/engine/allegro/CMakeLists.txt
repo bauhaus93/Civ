@@ -5,4 +5,3 @@ add_sources(
 	AllegroSprite.cpp
 	AllegroSpriteFactory.cpp
 )
-#TODO include allegro libraries
